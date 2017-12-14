@@ -1,0 +1,70 @@
+pipelines:
+  Taiko:
+    group: Gauge-JS
+    materials:
+      taiko:
+        git: https://github.com/getgauge/taiko.git
+    stages:
+      - test:
+          jobs:
+            test:
+              elastic_profile_id: debian-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - test
+      - specs:
+          jobs:
+            specs:
+              elastic_profile_id: debian-node
+              tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge-examples/js_puppeteer
+                - exec:
+                    working_directory: js_puppeteer
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                - exec:
+                    working_directory: js_puppeteer
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    working_directory: js_puppeteer
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ./gauge install && ./gauge run -v specs
+      - publish:
+          approval: manual
+          jobs:
+            publish:
+              elastic_profile_id: debian-node
+              secure_variables:
+                NPM_USER: H823fPlEtpleifTInoCYLg==
+                NPM_PASS: oh2CbQ+jb6z0X4rwUJcV3w==
+                NPM_EMAIL: Yez13CDJn4MbEN9tXonlpHeuoRowrAJE
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - login
+                - exec:
+                    command: npm
+                    arguments:
+                      - publish
