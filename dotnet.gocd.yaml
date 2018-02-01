@@ -132,10 +132,10 @@ pipelines:
                    pipeline: dotnet-package
                    stage: artifact
                    job: installer
-                   source: artifacts/gauge-dotnet*.zip
-                   is_file: yes
+                   source: artifacts
                - exec:
                    command: /bin/sh
+                   working_directory: artifacts
                    arguments:
                     - -c
                     - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
