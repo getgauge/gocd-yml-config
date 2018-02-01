@@ -133,6 +133,7 @@ pipelines:
                    stage: artifact
                    job: installer
                    source: artifacts/gauge-dotnet*.zip
+                   is_file: yes
                - exec:
                    command: /bin/sh
                    arguments:
