@@ -127,13 +127,18 @@ pipelines:
                 repoName: gauge-dotnet
                 GOPATH: /tmp
               secure_variables:
-                GITHUB_TOKEN: "NQJXCgXvHwzebDC27DfhkpsmjcMjRNwbguFJXdMvVXJyw5eSaKXE2EFPgji/6/ug"
+                GITHUB_TOKEN: NQJXCgXvHwzebDC27DfhkpsmjcMjRNwbguFJXdMvVXJyw5eSaKXE2EFPgji/6/ug
               tasks:
                - fetch:
                    pipeline: dotnet-package
                    stage: artifact
                    job: installer
                    source: artifacts
+               - exec:
+                   command: ls
+                   working_directory: artifacts
+                   arguments:
+                    - -ltr
                - exec:
                    command: /bin/sh
                    working_directory: artifacts
