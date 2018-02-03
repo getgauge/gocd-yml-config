@@ -145,3 +145,40 @@ pipelines:
                    arguments:
                     - -c
                     - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
+  gauge-dotnet-nightly:
+    group: Nightly
+    materials:
+      package:
+        pipeline: dotnet-package
+        stage: artifact
+    timer:
+      spec: "0 30 5 ? * MON-FRI"
+      only_on_changes: yes
+    stages:
+      - PushToBintray:
+          jobs:
+            publish:
+              elastic_profile_id: gauge-centos-all
+              environment_variables:
+                UPDATE_INSTALL_JSON: 1
+                INSTALL_PLUGIN_JSON: dotnet
+                PACKAGE: gauge-dotnet
+                PACKAGE_TYPE: nightly
+                RENAME: 1
+              secure_variables:
+                BINTRAY_USER: QAivy9ZCRsA=
+                BINTRAY_API_KEY: Angyd8nUVY+KsDuH2fVsnkM8uVacdsZt37zR5/+A03t9Lbcte6cHldrk8CMywio/
+                GITHUB_SSH_PRIVATE_KEY: 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
+              tasks:
+               - fetch:
+                   pipeline: dotnet-package
+                   stage: artifact
+                   job: installer
+                   source: artifacts
+                   destination: gauge-dotnet
+               - exec:
+                   command: /bin/sh
+                   working_directory: gauge-dotnet/artifacts
+                   arguments:
+                    - -c
+                    - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
