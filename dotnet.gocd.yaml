@@ -165,6 +165,7 @@ pipelines:
                 PACKAGE: gauge-dotnet
                 PACKAGE_TYPE: nightly
                 RENAME: 1
+                NOPLATFORM: 1
               secure_variables:
                 BINTRAY_USER: QAivy9ZCRsA=
                 BINTRAY_API_KEY: Angyd8nUVY+KsDuH2fVsnkM8uVacdsZt37zR5/+A03t9Lbcte6cHldrk8CMywio/
