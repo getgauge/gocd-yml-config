@@ -34,7 +34,7 @@ pipelines:
           jobs:
             installer:
               resources:
-               - windows
+               - darwin
               tasks:
                - exec:
                    command: run
