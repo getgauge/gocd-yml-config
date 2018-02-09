@@ -37,8 +37,9 @@ pipelines:
                - darwin
               tasks:
                - exec:
-                   command: run
+                   command: /bin/sh
                    arguments:
+                    - run.sh
                     - package
               artifacts:
                - build:
