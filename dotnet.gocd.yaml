@@ -100,13 +100,13 @@ pipelines:
                    arguments:
                     - install
                - exec:
-                   command: mvn
-                   arguments:
+                    command: mvn
+                    arguments:
                     - -q
                     - clean
-                    - install
+                    - test-compile 
+                    - gauge:execute
                     - -Denv=ci-dotnet
-                    - -Dnodes=4
                     - -Dtags="csharp"
                     - -DinParallel=true
             osx:
@@ -153,9 +153,9 @@ pipelines:
                     arguments:
                     - -q
                     - clean
-                    - install
+                    - test-compile 
+                    - gauge:execute
                     - -Denv=ci-dotnet
-                    - -Dnodes=4
                     - -Dtags="csharp"
                     - -DinParallel=true
   dotnet-release:
