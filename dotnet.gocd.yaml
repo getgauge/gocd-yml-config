@@ -178,23 +178,23 @@ pipelines:
               secure_variables:
                 GITHUB_TOKEN: NQJXCgXvHwzebDC27DfhkpsmjcMjRNwbguFJXdMvVXJyw5eSaKXE2EFPgji/6/ug
               tasks:
-               - fetch:
+                - fetch:
                    pipeline: dotnet-package
                    stage: artifact
                    job: installer
                    source: artifacts
-               - exec:
+                - exec:
                    command: ls
                    working_directory: artifacts
                    arguments:
                     - -ltr
-               - exec:
+                - exec:
                    command: /bin/sh
                    working_directory: artifacts
                    arguments:
                     - -c
                     - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
-              - exec:
+                - exec:
                    command: touch
                    arguments:
                     - /vagrant/rollback.txt
