@@ -142,7 +142,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - (version=$(ls gauge-java-*-darwin.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-darwin.x86_64.zip)
+                    - (version=$(ls gauge-dotnet-*.zip | sed "s/^gauge-dotnet-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install dotnet -f gauge-dotnet-$version.zip)
                 - exec:
                     command: gauge
                     arguments:
