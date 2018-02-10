@@ -149,10 +149,10 @@ pipelines:
                     - -c
                     - $GAUGE_ROOT/bin/gauge install
                 - exec:
-                    command: PATH=$PATH:/tmp/bin /bin/sh
+                    command: /bin/sh
                     arguments:
                       - -c
-                      - mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp   -DinParallel=true
+                      - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp   -DinParallel=true
   dotnet-release:
     group: Gauge-Dotnet
     materials:
