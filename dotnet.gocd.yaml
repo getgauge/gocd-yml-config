@@ -209,6 +209,7 @@ pipelines:
       only_on_changes: yes
     stages:
       - PushToBintray:
+          approval: manual
           jobs:
             publish:
               elastic_profile_id: gauge-centos-all
