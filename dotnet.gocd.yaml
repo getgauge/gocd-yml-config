@@ -58,7 +58,7 @@ pipelines:
     stages:
       - build:
           jobs:
-            FT:
+            windows:
               resources:
                - windows
                - FT
@@ -109,6 +109,54 @@ pipelines:
                     - -Dnodes=4
                     - -Dtags="csharp"
                     - -DinParallel=true
+            osx:
+              resources:
+                - darwin
+                - FT
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-darwin.x86_64.zip
+                - fetch:
+                    pipeline: dotnet-package
+                    stage: artifact
+                    job: installer
+                    source: artifacts
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                    - -c
+                    - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                    - -c
+                    - $GAUGE_ROOT/bin/gauge uninstall dotnet
+                - exec:
+                    working_directory: artifacts
+                    command: /bin/sh
+                    arguments:
+                    - -c
+                    - (version=$(ls gauge-java-*-darwin.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-darwin.x86_64.zip)
+                - exec:
+                    command: gauge
+                    arguments:
+                    - install
+                - exec:
+                    command: mvn
+                    arguments:
+                    - -q
+                    - clean
+                    - install
+                    - -Denv=ci-dotnet
+                    - -Dnodes=4
+                    - -Dtags="csharp"
+                    - -DinParallel=true
   dotnet-release:
     group: Gauge-Dotnet
     materials:
@@ -146,6 +194,10 @@ pipelines:
                    arguments:
                     - -c
                     - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
+              - exec:
+                   command: touch
+                   arguments:
+                    - /vagrant/rollback.txt
   gauge-dotnet-nightly:
     group: Nightly
     materials:
