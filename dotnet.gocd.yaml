@@ -144,9 +144,10 @@ pipelines:
                     - -c
                     - (version=$(ls gauge-dotnet-*.zip | sed "s/^gauge-dotnet-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install dotnet -f gauge-dotnet-$version.zip)
                 - exec:
-                    command: $GAUGE_ROOT/bin/gauge
-                    arguments:
-                    - install
+                    command:
+                    arguments: /bin/sh
+                    - -c
+                    - $GAUGE_ROOT/bin/gauge install
                 - exec:
                     command: mvn
                     arguments:
