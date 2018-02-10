@@ -115,7 +115,6 @@ pipelines:
                 - FT
               environment_variables:
                 GAUGE_ROOT: /tmp
-                PATH: $PATH:/tmp/bin
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
@@ -143,16 +142,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - (version=$(ls gauge-dotnet-*.zip | sed "s/^gauge-dotnet-\([^;]*\).zip/\1/"); gauge install dotnet -f gauge-dotnet-$version.zip)
-                - exec:
-                    command: gauge
-                    arguments:
-                    - install
+                    - (version=$(ls gauge-dotnet-*.zip | sed "s/^gauge-dotnet-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install dotnet -f gauge-dotnet-$version.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
+                    - -c
+                    - $GAUGE_ROOT/bin/gauge install
+                - exec:
+                    command: PATH=$PATH:/tmp/bin /bin/sh
+                    arguments:
                       - -c
-                      - mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true
+                      - mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp   -DinParallel=true
   dotnet-release:
     group: Gauge-Dotnet
     materials:
