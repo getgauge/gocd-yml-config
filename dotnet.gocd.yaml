@@ -80,7 +80,7 @@ pipelines:
                    command: cmd
                    arguments:
                     - /c
-                    - "gauge-windows.x86_64.exe /S /D=C:\gauge_root"
+                    - "gauge-windows.x86_64.exe /S /D=C:\\gauge_root"
                - exec:
                    command: cmd
                    arguments:
