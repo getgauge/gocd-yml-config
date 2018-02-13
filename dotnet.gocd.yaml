@@ -95,19 +95,16 @@ pipelines:
                     - /c
                     - "for %f in (gauge-dotnet*.zip) do %GAUGE_ROOT%/bin/gauge install dotnet -f %f"
                - exec:
-                   command: gauge
+                   command: cmd
                    arguments:
+                    - /c
+                    - "%GAUGE_ROOT%/bin/gauge"
                     - install
                - exec:
-                    command: mvn
+                    command: cmd
                     arguments:
-                    - -q
-                    - clean
-                    - test-compile 
-                    - gauge:execute
-                    - -Denv=ci-dotnet
-                    - -Dtags="csharp"
-                    - -DinParallel=true
+                    - /c
+                    - path %PATH%;%GAUGE_ROOT%/bin & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true
             osx:
               resources:
                 - darwin
