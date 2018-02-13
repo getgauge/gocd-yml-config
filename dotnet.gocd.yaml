@@ -62,7 +62,7 @@ pipelines:
               resources:
                - new_windows
               environment_variables:
-                GAUGE_ROOT: C:/gauge_root
+                GAUGE_ROOT: C:\gauge_root
                 JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
               tasks:
                - fetch:
@@ -80,7 +80,7 @@ pipelines:
                    command: cmd
                    arguments:
                     - /c
-                    - "gauge-windows.x86_64.exe /S /D=%GAUGE_ROOT%"
+                    - "gauge-windows.x86_64.exe /S /D=C:\gauge_root"
                - exec:
                    command: cmd
                    arguments:
