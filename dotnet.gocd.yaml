@@ -104,7 +104,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %PATH%;%GAUGE_ROOT%/bin & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true
+                    - path %PATH%;%GAUGE_ROOT%/bin & mvn -X clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true
             osx:
               resources:
                 - darwin
