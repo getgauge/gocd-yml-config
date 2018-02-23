@@ -197,7 +197,7 @@ pipelines:
         pipeline: dotnet-package
         stage: artifact
     timer:
-      spec: "0 30 5 ? * MON-FRI"
+      spec: "0 30 7 ? * MON-FRI"
       only_on_changes: yes
     stages:
       - PushToBintray:
