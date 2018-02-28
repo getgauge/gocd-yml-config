@@ -1,9 +1,3 @@
-environments:
-  all:
-    pipelines:
-      - dotnet-build
-      - dotnet-package
-      - dotnet-FT
 pipelines:
   dotnet-build:
     group: Gauge-Dotnet

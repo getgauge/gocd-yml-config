@@ -1,0 +1,10 @@
+environments:
+  all:
+    pipelines:
+      - dotnet-build
+      - dotnet-package
+      - dotnet-FT
+      - python-build
+      - python-package
+      - python-FT
+      - python-lsp-tests
