@@ -64,7 +64,7 @@ pipelines:
                    stage: sign
                    job: windows
                    is_file: yes
-                   source: test_installers/gauge-windows.x86_64.exe
+                   source: test_installers/gauge-windows.x86_64.zip
                - fetch:
                    pipeline: dotnet-package
                    stage: artifact
@@ -74,12 +74,12 @@ pipelines:
                    command: cmd
                    arguments:
                     - /c
-                    - "gauge-windows.x86_64.exe /S /D=C:\\gauge_root"
+                    - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
                - exec:
                    command: cmd
                    arguments:
                     - /c
-                    - "%GAUGE_ROOT%/bin/gauge"
+                    - "%GAUGE_ROOT%/gauge"
                     - uninstall
                     - dotnet
                - exec:
@@ -87,18 +87,18 @@ pipelines:
                    command: cmd
                    arguments:
                     - /c
-                    - "for %f in (gauge-dotnet*.zip) do %GAUGE_ROOT%/bin/gauge install dotnet -f %f"
+                    - "for %f in (gauge-dotnet*.zip) do %GAUGE_ROOT%/gauge install dotnet -f %f"
                - exec:
                    command: cmd
                    arguments:
                     - /c
-                    - "%GAUGE_ROOT%/bin/gauge"
+                    - "%GAUGE_ROOT%gauge"
                     - install
                - exec:
                     command: cmd
                     arguments:
                     - /c
-                    - path %PATH%;%GAUGE_ROOT%/bin & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true -Dnodes=4
+                    - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=true -Dnodes=4
             osx:
               resources:
                 - darwin
