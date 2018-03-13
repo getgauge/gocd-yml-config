@@ -143,7 +143,7 @@ pipelines:
                   stage: sign
                   job: windows
                   is_file: yes
-                  source: test_installers/gauge-windows.x86_64.exe
+                  source: test_installers/gauge-windows.x86_64.zip
                - fetch:
                   pipeline: python-package
                   stage: package
@@ -158,12 +158,12 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - "gauge-windows.x86_64.exe /S /D=%GAUGE_ROOT%"
+                   - "unzip -o gauge-windows.x86_64.exe -d %GAUGE_ROOT%"
                - exec:
                   command: cmd
                   arguments:
                    - /c
-                   - "%GAUGE_ROOT%/bin/gauge"
+                   - "%GAUGE_ROOT%/gauge"
                    - uninstall
                    - python
                - exec:
@@ -171,7 +171,7 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/bin/gauge install python -f %f"
+                   - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/gauge install python -f %f"
                - exec:
                   working_directory: dist
                   command: cmd
@@ -182,13 +182,13 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - "%GAUGE_ROOT%/bin/gauge"
+                   - "%GAUGE_ROOT%/gauge"
                    - install
                - exec:
                   command: cmd
                   arguments:
                    - /c
-                   - path %PATH%;%GAUGE_ROOT%/bin & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python -DinParallel=true -Dnodes=4
+                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python -DinParallel=true -Dnodes=4
             osx:
               resources:
                 - darwin
@@ -506,7 +506,7 @@ pipelines:
                     stage: sign
                     job: windows
                     is_file: yes
-                    source: test_installers/gauge-windows.x86_64.exe
+                    source: test_installers/gauge-windows.x86_64.zip
                 - fetch:
                     pipeline: python-package
                     stage: package
@@ -521,12 +521,12 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "gauge-windows.x86_64.exe /S /D=%GAUGE_ROOT%"
+                      - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
                 - exec:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/bin/gauge"
+                      - "%GAUGE_ROOT%/gauge"
                       - uninstall
                       - python
                 - exec:
@@ -534,7 +534,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/bin/gauge install python -f %f"
+                      - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/gauge install python -f %f"
                 - exec:
                     working_directory: dist
                     command: cmd
@@ -545,7 +545,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/bin/gauge"
+                      - "%GAUGE_ROOT%/gauge"
                       - install
                 - exec:
                     command: cmd
@@ -557,7 +557,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/bin/gauge"
+                      - "%GAUGE_ROOT%/gauge"
                       - run
                       - specs
                       - --env=python-wd
