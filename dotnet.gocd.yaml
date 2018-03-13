@@ -92,7 +92,7 @@ pipelines:
                    command: cmd
                    arguments:
                     - /c
-                    - "%GAUGE_ROOT%gauge"
+                    - "%GAUGE_ROOT%/gauge"
                     - install
                - exec:
                     command: cmd
