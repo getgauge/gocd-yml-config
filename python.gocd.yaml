@@ -158,7 +158,7 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - "unzip -o gauge-windows.x86_64.exe -d %GAUGE_ROOT%"
+                   - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
                - exec:
                   command: cmd
                   arguments:
