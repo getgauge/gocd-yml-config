@@ -678,4 +678,4 @@ pipelines:
                    command: /bin/sh
                    arguments:
                     - -c
-                    - (file=$(ls dist/getgauge-*.dev.*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
+                    - (file=$(ls dist/getgauge-*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
