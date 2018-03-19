@@ -657,8 +657,6 @@ pipelines:
           jobs:
             pypi_upload:
               elastic_profile_id: gocd-jdk-mvn-python
-              environment_variables:
-               NIGHTLY: true
               secure_variables:
                PYPI_USER: +A8MwngWBLI=
                PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
