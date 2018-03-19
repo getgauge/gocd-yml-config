@@ -623,3 +623,59 @@ pipelines:
                    arguments:
                     - -c
                     -  (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
+  gauge-python-release:
+    group: Gauge-Python
+    materials:
+      package:
+        pipeline: python-package
+        stage: package
+    stages:
+      - github:
+          approval: manual
+          jobs:
+            release:
+              elastic_profile_id: gauge-centos-all
+              environment_variables:
+                repoName: gauge-python
+                GOPATH: /tmp
+              secure_variables:
+                GITHUB_TOKEN: NQJXCgXvHwzebDC27DfhkpsmjcMjRNwbguFJXdMvVXJyw5eSaKXE2EFPgji/6/ug
+              tasks:
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: bin
+                - exec:
+                   command: /bin/sh
+                   working_directory: bin
+                   arguments:
+                    - -c
+                    - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
+      - pypi:
+          approval: manual
+          jobs:
+            pypi_upload:
+              elastic_profile_id: gocd-jdk-mvn-python
+              environment_variables:
+               NIGHTLY: true
+              secure_variables:
+               PYPI_USER: +A8MwngWBLI=
+               PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
+              tasks:
+               - fetch:
+                  pipeline: python-package
+                  stage: package
+                  job: package
+                  source: dist
+               - exec:
+                  command: pip
+                  arguments:
+                    - install
+                    - twine
+                    - --user
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - (file=$(ls dist/getgauge-*.dev.*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
