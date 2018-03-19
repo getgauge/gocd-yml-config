@@ -8,3 +8,4 @@ environments:
       - python-package
       - python-FT
       - python-lsp-tests
+      - python-release

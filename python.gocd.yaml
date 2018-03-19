@@ -623,7 +623,7 @@ pipelines:
                    arguments:
                     - -c
                     -  (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
-  gauge-python-release:
+  python-release:
     group: Gauge-Python
     materials:
       package:
