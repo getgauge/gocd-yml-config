@@ -142,7 +142,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -Dnodes=2 -DinParallel=true
+                      - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=false
   dotnet-release:
     group: Gauge-Dotnet
     materials:
