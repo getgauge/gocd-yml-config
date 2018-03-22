@@ -188,7 +188,7 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python -DinParallel=true -Dnodes=2
+                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python -DinParallel=false
             osx:
               resources:
                 - darwin
