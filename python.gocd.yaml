@@ -555,30 +555,30 @@ pipelines:
             build_package:
               elastic_profile_id: gocd-jdk-mvn-python
               environment_variables:
-               NIGHTLY: true
+                NIGHTLY: true
               tasks:
-               - fetch:
-                  pipeline: python-package
-                  stage: package
-                  job: package
-                  source: src
-               - exec:
-                  command: /bin/sh
-                  arguments:
-                   - -c
-                   - rm -rf dist bin
-              - exec:
-                  command: pip
-                  arguments:
-                   - install
-                   - -r
-                   - requirements.txt
-                   - --user
-              - exec:
-                  command: python
-                  arguments:
-                   - build.py
-                   - --dist
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: src
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf dist bin
+                - exec:
+                    command: pip
+                    arguments:
+                      - install
+                      - -r
+                      - requirements.txt
+                      - --user
+                - exec:
+                    command: python
+                    arguments:
+                      - build.py
+                      - --dist
   python-release:
     group: Gauge-Python
     materials:
