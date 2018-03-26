@@ -585,7 +585,7 @@ pipelines:
                     working_directory: bin
                     arguments:
                       - -c
-                       -  (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
+                      - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
   python-release:
     group: Gauge-Python
     materials:
