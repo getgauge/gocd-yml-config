@@ -93,7 +93,7 @@ pipelines:
                - build:
                    source: dist/
                - build:
-                   source: .
+                   source: *
                    destination: src
   python-FT:
     group: Gauge-Python
