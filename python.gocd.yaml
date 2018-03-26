@@ -567,14 +567,14 @@ pipelines:
                   arguments:
                    - -c
                    - rm -rf dist bin
-                - exec:
+              - exec:
                   command: pip
                   arguments:
                    - install
                    - -r
                    - requirements.txt
                    - --user
-                - exec:
+              - exec:
                   command: python
                   arguments:
                    - build.py
