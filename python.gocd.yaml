@@ -92,31 +92,9 @@ pipelines:
                    source: bin/
                - build:
                    source: dist/
-            package_nightly:
-              elastic_profile_id: gocd-jdk-mvn-python
-              tasks:
-                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - rm -rf dist bin
-                - exec:
-                   command: pip
-                   arguments:
-                    - install
-                    - -r
-                    - requirements.txt
-                    - --user
-                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - NIGHTLY=true python build.py --dist
-              artifacts:
                - build:
-                   source: bin/
-               - build:
-                   source: dist/
+                   source: .
+                   destination: src
   python-FT:
     group: Gauge-Python
     materials:
