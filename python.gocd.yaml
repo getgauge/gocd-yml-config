@@ -92,9 +92,6 @@ pipelines:
                    source: bin/
                - build:
                    source: dist/
-               - build:
-                   source: *
-                   destination: src
   python-FT:
     group: Gauge-Python
     materials:
@@ -542,9 +539,8 @@ pipelines:
   gauge-python-nightly:
     group: Nightly
     materials:
-      package:
-        pipeline: python-package
-        stage: package
+      python:
+        git: https://github.com/getgauge/gauge-python.git
     timer:
       spec: "0 30 5 ? * MON-FRI"
       only_on_changes: yes
@@ -557,11 +553,6 @@ pipelines:
               environment_variables:
                 NIGHTLY: true
               tasks:
-                - fetch:
-                    pipeline: python-package
-                    stage: package
-                    job: package
-                    source: src
                 - exec:
                     command: /bin/sh
                     arguments:
