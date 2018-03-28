@@ -103,8 +103,15 @@ pipelines:
       gauge:
         pipeline: Gauge-Package
         stage: sign
+      html-report:
+        pipeline: HTML_Report
+        stage: package
+      xml-report:
+        pipeline: XML_Report
+        stage: package
     stages:
       - FT:
+          clean_workspace: true
           jobs:
             windows:
               resources:
@@ -129,6 +136,16 @@ pipelines:
                   stage: package
                   job: package
                   source: dist
+               - fetch:
+                  pipeline: HTML_Report
+                  stage: package
+                  job: package
+                  source: deploy
+               - fetch:
+                  pipeline: XML_Report
+                  stage: package
+                  job: package
+                  source: deploy
                - exec:
                   command: cmd
                   arguments:
@@ -142,6 +159,32 @@ pipelines:
                    - uninstall
                    - python
                - exec:
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "%GAUGE_ROOT%/gauge"
+                   - uninstall
+                   - html-report
+               - exec:
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "%GAUGE_ROOT%/gauge"
+                   - uninstall
+                   - xml-report
+               - exec:
+                  working_directory: deploy
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
+               - exec:
+                  working_directory: deploy
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
+               - exec:
                   working_directory: bin
                   command: cmd
                   arguments:
@@ -153,12 +196,6 @@ pipelines:
                   arguments:
                    - /c
                    - "for %f in (getgauge-*.tar.gz) do pip install %f --upgrade"
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "%GAUGE_ROOT%/gauge"
-                   - install
                - exec:
                   command: cmd
                   arguments:
@@ -178,6 +215,16 @@ pipelines:
                     job: windows
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
                 - fetch:
                     pipeline: python-package
                     stage: package
@@ -208,6 +255,26 @@ pipelines:
                     arguments:
                       - -c
                       - $GAUGE_PREFIX/bin/gauge uninstall python
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall html-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall xml-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install html-report -f deploy/html-report-*-darwin.x86_64.zip
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install xml-report -f deploy/xml-report-*-darwin.x86_64.zip
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -264,6 +331,16 @@ pipelines:
                     stage: package
                     job: package
                     source: dist
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -284,6 +361,26 @@ pipelines:
                     arguments:
                       - -c
                       - $GAUGE_PREFIX/bin/gauge uninstall python
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall html-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall xml-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install html-report -f deploy/html-report-*-linux.x86_64.zip
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install xml-report -f deploy/xml-report-*-linux.x86_64.zip
                 - exec:
                     command: /bin/sh
                     arguments:
