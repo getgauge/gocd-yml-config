@@ -163,7 +163,7 @@ pipelines:
                   command: cmd
                   arguments:
                    - /c
-                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python -DinParallel=false
+                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
             osx:
               resources:
                 - darwin
@@ -237,7 +237,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dnodes=2 -Dtags="python" -DinParallel=true
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
                 - exec:
                    command: touch
                    arguments:
@@ -308,7 +308,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dnodes=2 -Dtags="python" -DinParallel=true
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
   python-lsp-tests:
     group: Gauge-Python
     materials:
