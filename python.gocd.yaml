@@ -419,6 +419,7 @@ pipelines:
         stage: sign
     stages:
       - lsp-tests:
+          cleanWorkingDir: true
           jobs:
             osx:
               resources:
