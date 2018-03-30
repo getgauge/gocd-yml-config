@@ -103,6 +103,9 @@ pipelines:
       gauge:
         pipeline: Gauge-Package
         stage: sign
+      html-report:
+        pipeline: HTML_Report
+        stage: package
       xml-report:
         pipeline: XML_Report
         stage: package
@@ -134,6 +137,11 @@ pipelines:
                   job: package
                   source: dist
                - fetch:
+                  pipeline: HTML_Report
+                  stage: package
+                  job: package
+                  source: deploy
+               - fetch:
                   pipeline: XML_Report
                   stage: package
                   job: package
@@ -156,7 +164,20 @@ pipelines:
                    - /c
                    - "%GAUGE_ROOT%/gauge"
                    - uninstall
+                   - html-report
+               - exec:
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "%GAUGE_ROOT%/gauge"
+                   - uninstall
                    - xml-report
+               - exec:
+                  working_directory: deploy
+                  command: cmd
+                  arguments:
+                   - /c
+                   - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
                - exec:
                   working_directory: deploy
                   command: cmd
@@ -194,6 +215,11 @@ pipelines:
                     job: windows
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
                 - fetch:
                     pipeline: XML_Report
                     stage: package
@@ -233,7 +259,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall html-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - $GAUGE_PREFIX/bin/gauge uninstall xml-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install html-report -f deploy/html-report-*-darwin.x86_64.zip
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -296,6 +332,11 @@ pipelines:
                     job: package
                     source: dist
                 - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - fetch:
                     pipeline: XML_Report
                     stage: package
                     job: package
@@ -324,7 +365,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall html-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - $GAUGE_PREFIX/bin/gauge uninstall xml-report
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install html-report -f deploy/html-report-*-linux.x86_64.zip
                 - exec:
                     command: /bin/sh
                     arguments:
