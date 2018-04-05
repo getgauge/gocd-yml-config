@@ -1,5 +1,5 @@
 pipelines:
-  stubs:
+  gauge-proto:
     group: gauge-proto
     materials:
       dotnet:
