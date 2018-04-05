@@ -2,7 +2,7 @@ pipelines:
   gauge-proto:
     group: gauge-proto
     materials:
-      dotnet:
+      proto:
         git: https://github.com/getgauge/gauge-proto.git
     stages:
       - java:
