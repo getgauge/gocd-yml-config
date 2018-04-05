@@ -1,0 +1,37 @@
+pipelines:
+  stubs:
+    group: gauge-proto
+    materials:
+      dotnet:
+        git: https://github.com/getgauge/gauge-proto.git
+    stages:
+      - java:
+          jobs:
+            maven:
+              secure_variables:
+                username: H823fPlEtpleifTInoCYLg==
+                password: +XmmR6u9SU66f3mTUanEWA==
+              elastic_profile_id: gauge-centos-all
+              tasks:
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c 
+                    - echo -e "$MAVEN_GPG_SIGN_KEY" | gpg --import -
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - (gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys $gpgkey)
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - mkdir -p $HOME/.gradle && echo -e "nexusUsername=$username\nnexusPassword=$password\n"
+               - exec:
+                   command: ./gradlew
+                   arguments:
+                    - clean
+                    - build
+                    - uploadArchives
+                    - closeAndReleaseRepository

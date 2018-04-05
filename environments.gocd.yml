@@ -9,3 +9,4 @@ environments:
       - python-FT
       - python-lsp-tests
       - python-release
+      - gauge-proto
