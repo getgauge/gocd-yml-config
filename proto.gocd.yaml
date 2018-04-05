@@ -28,7 +28,7 @@ pipelines:
                    command: /bin/sh
                    arguments:
                     - -c
-                    - mkdir -p $HOME/.gradle && echo -e "nexusUsername=$username\nnexusPassword=$password\n"
+                    - mkdir -p $HOME/.gradle && echo -e "nexusUsername=$username\nnexusPassword=$password\n" > $HOME/.gradle/gradle.properties
                - exec:
                    command: ./gradlew
                    arguments:
