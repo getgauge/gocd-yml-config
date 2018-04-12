@@ -494,7 +494,15 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --tags=!knownIssue --env=python-wd
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run specs --env=python-wd --tags=!knownIssue
+                - exec:
+                   command: touch
+                   arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
             linux:
               elastic_profile_id: gocd-node-python
               environment_variables:
@@ -566,7 +574,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --tags=!knownIssue --env=python-wd
+                      - PATH=/tmp/bin:$PATH gauge run specs --env=python-wd --tags=!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
             windows:
               resources:
                 - new_windows
@@ -634,6 +646,11 @@ pipelines:
                       - run
                       - --tags=!knownIssue
                       - --env=python-wd
+                      - --tags=!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
   gauge-python-nightly:
     group: Nightly
     materials:
