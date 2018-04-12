@@ -494,6 +494,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - PATH=/tmp/bin:$PATH gauge version
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - npm install
                 - exec:
                     command: /bin/sh
