@@ -23,6 +23,7 @@ pipelines:
                     - -c
                     - PATH=$HOME/Library/Python/3.6/bin:$PATH python3 build.py --test
                 - exec:
+                   run_if: any
                    command: touch
                    arguments:
                     - /vagrant/rollback.txt
@@ -306,6 +307,7 @@ pipelines:
                       - -c
                       - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
                 - exec:
+                   run_if: any
                    command: touch
                    arguments:
                     - /vagrant/rollback.txt
@@ -506,6 +508,7 @@ pipelines:
                       - -c
                       - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run specs --env=python-wd --tags=!knownIssue
                 - exec:
+                   run_if: any
                    command: touch
                    arguments:
                     - /vagrant/rollback.txt
