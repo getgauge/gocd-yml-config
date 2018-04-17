@@ -647,13 +647,18 @@ pipelines:
                 - exec:
                     command: cmd
                     arguments:
-                      - -c
+                      - /c
                       - "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
                 - exec:
                     command: cmd
                     arguments:
-                      - -c
+                      - /c
                       - "%GAUGE_ROOT%/gauge install"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge version"
                 - exec:
                     command: cmd
                     arguments:
