@@ -653,6 +653,13 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - js
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
                       - "%GAUGE_ROOT%/gauge install"
                 - exec:
                     command: cmd
