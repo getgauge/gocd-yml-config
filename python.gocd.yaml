@@ -688,16 +688,13 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - del
-                      - %GAUGE_ROOT%\gauge
+                      - del %GAUGE_ROOT%\gauge
                 - exec:
                     run_if: any
                     command: cmd
                     arguments:
                       - /c
-                      - del
-                      - /q
-                      - %GAUGE_ROOT%\*
+                      - del /q %GAUGE_ROOT%\*
               artifacts:
                 - build:
                     source: logs
