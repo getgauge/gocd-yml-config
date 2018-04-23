@@ -461,7 +461,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - $GAUGE_PREFIX/bin/gauge uninstall js
+                      - PATH=$GAUGE_PREFIX/bin:$PATH gauge version
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -471,7 +471,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - $GAUGE_PREFIX/bin/gauge install python -f bin/gauge-python-*.zip
+                      - PATH=$GAUGE_PREFIX/bin:$PATH gauge install python -f bin/gauge-python-*.zip
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -552,17 +552,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - $GAUGE_PREFIX/bin/gauge uninstall js
+                      - PATH=/tmp/bin:$PATH gauge version
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - $GAUGE_PREFIX/bin/gauge uninstall python
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - $GAUGE_PREFIX/bin/gauge install python -f bin/gauge-python-*.zip
+                      - PATH=/tmp/bin:$PATH gauge install python -f bin/gauge-python-*.zip
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -587,6 +582,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - PATH=/tmp/bin:$PATH gauge version
+
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - npm install
                 - exec:
                     command: /bin/sh
@@ -603,6 +604,7 @@ pipelines:
               environment_variables:
                 JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                 GAUGE_ROOT: C:\gauge_root
+                GAUGE_HOME: C:\gauge_plugins
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
@@ -681,6 +683,21 @@ pipelines:
                       - --tags=!knownIssue
                       - --env=python-wd
                       - --tags=!knownIssue
+                - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                      - /c
+                      - del
+                      - %GAUGE_ROOT%\gauge
+                - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                      - /c
+                      - del
+                      - /q
+                      - %GAUGE_ROOT%\*
               artifacts:
                 - build:
                     source: logs
