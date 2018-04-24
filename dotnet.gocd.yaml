@@ -58,6 +58,7 @@ pipelines:
               environment_variables:
                 GAUGE_ROOT: C:\gauge_root
                 JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
+                GAUGE_HOME: C:\gauge_plugins
               tasks:
                - fetch:
                    pipeline: Gauge-Package
@@ -99,6 +100,18 @@ pipelines:
                     arguments:
                     - /c
                     - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=false
+               - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                    - /c
+                    - del %GAUGE_ROOT%\gauge
+               - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                    - /c
+                    - del /q %GAUGE_HOME%\*
             osx:
               resources:
                 - darwin

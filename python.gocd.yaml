@@ -694,7 +694,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - del /q %GAUGE_ROOT%\*
+                      - del /q %GAUGE_HOME%\*
               artifacts:
                 - build:
                     source: logs
