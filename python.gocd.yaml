@@ -557,6 +557,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - PATH=/tmp/bin:$PATH gauge uninstall python
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - PATH=/tmp/bin:$PATH gauge install python -f bin/gauge-python-*.zip
                 - exec:
                     command: /bin/sh
