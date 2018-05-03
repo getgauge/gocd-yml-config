@@ -193,11 +193,6 @@ pipelines:
                    arguments:
                     - -c
                     - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
-                - exec:
-                   run_if: any
-                   command: touch
-                   arguments:
-                    - /vagrant/rollback.txt
   gauge-dotnet-nightly:
     group: Nightly
     materials:
