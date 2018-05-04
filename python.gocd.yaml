@@ -420,7 +420,7 @@ pipelines:
         pipeline: Gauge-Package
         stage: sign
     stages:
-      - lsp-tests:
+      - wd:
           cleanWorkingDir: true
           jobs:
             osx:
@@ -687,6 +687,290 @@ pipelines:
                       - run
                       - --tags=!knownIssue
                       - --env=python-wd
+                      - --tags=!knownIssue
+                - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                      - /c
+                      - del %GAUGE_ROOT%\gauge
+                - exec:
+                    run_if: any
+                    command: cmd
+                    arguments:
+                      - /c
+                      - del /q %GAUGE_HOME%\*
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+      - no-wd:
+          cleanWorkingDir: true
+          jobs:
+            osx:
+              resources:
+                - darwin
+                - FT
+              environment_variables:
+                GAUGE_PREFIX: /tmp
+                GAUGE_HOME: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-darwin.x86_64.zip
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: bin
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: dist
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_PREFIX/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - unzip -o gauge-darwin.x86_64.zip -d $GAUGE_PREFIX/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_PREFIX/bin:$PATH gauge version
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge uninstall python
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_PREFIX/bin:$PATH gauge install python -f bin/gauge-python-*.zip
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ls dist
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (file=$(ls dist/getgauge-*.tar.gz); pip3 install $file --user --upgrade)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge version
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run specs --env=python-no-wd --tags=!knownIssue
+                - exec:
+                   run_if: any
+                   command: touch
+                   arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            linux:
+              elastic_profile_id: gocd-node-python
+              environment_variables:
+                GAUGE_PREFIX: /tmp
+                GAUGE_HOME: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-linux.x86_64.zip
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: bin
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: dist
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_PREFIX/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - unzip -o gauge-linux.x86_64.zip -d $GAUGE_PREFIX/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge version
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge uninstall python
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge install python -f bin/gauge-python-*.zip
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ls dist
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (file=$(ls dist/getgauge-*.tar.gz); pip install $file --user --upgrade)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge version
+
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge run specs --env=python-no-wd --tags=!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            windows:
+              resources:
+                - new_windows
+              environment_variables:
+                JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
+                GAUGE_ROOT: C:\gauge_root
+                GAUGE_HOME: C:\gauge_plugins
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-windows.x86_64.zip
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: bin
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: dist
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - python
+                - exec:
+                    working_directory: bin
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/gauge install python -f %f"
+                - exec:
+                    working_directory: dist
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (getgauge-*.tar.gz) do pip install %f --upgrade"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - js
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - npm
+                      - install
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - run
+                      - --tags=!knownIssue
+                      - --env=python-no-wd
                       - --tags=!knownIssue
                 - exec:
                     run_if: any
