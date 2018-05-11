@@ -99,7 +99,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=false
+                    - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp
                - exec:
                     run_if: any
                     command: cmd
@@ -155,7 +155,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp -DinParallel=false
+                      - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp
   dotnet-release:
     group: Gauge-Dotnet
     materials:
