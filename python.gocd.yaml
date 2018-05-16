@@ -513,6 +513,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - pip3 show getgauge
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - npm install
                 - exec:
                     command: /bin/sh
@@ -600,7 +605,11 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=/tmp/bin:$PATH gauge version
-
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - pip show getgauge
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -685,6 +694,11 @@ pipelines:
                     arguments:
                       - /c
                       - "%GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "pip show getgauge"
                 - exec:
                     command: cmd
                     arguments:
