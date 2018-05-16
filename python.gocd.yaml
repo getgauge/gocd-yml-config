@@ -202,7 +202,7 @@ pipelines:
                     arguments:
                       - /c
                       - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
-              artifiacts:
+              artifacts:
                 - build:
                     source: testLogs
                     destination: test-logs
