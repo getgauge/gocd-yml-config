@@ -121,91 +121,91 @@ pipelines:
                JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                GAUGE_ROOT: C:\gauge_root
               tasks:
-               - fetch:
-                  pipeline: Gauge-Package
-                  stage: sign
-                  job: windows
-                  is_file: yes
-                  source: test_installers/gauge-windows.x86_64.zip
-               - fetch:
-                  pipeline: python-package
-                  stage: package
-                  job: package
-                  source: bin
-               - fetch:
-                  pipeline: python-package
-                  stage: package
-                  job: package
-                  source: dist
-               - fetch:
-                  pipeline: HTML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-               - fetch:
-                  pipeline: XML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "%GAUGE_ROOT%/gauge"
-                   - uninstall
-                   - python
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "%GAUGE_ROOT%/gauge"
-                   - uninstall
-                   - html-report
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "%GAUGE_ROOT%/gauge"
-                   - uninstall
-                   - xml-report
-               - exec:
-                  working_directory: deploy
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
-               - exec:
-                  working_directory: deploy
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
-               - exec:
-                  working_directory: bin
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/gauge install python -f %f"
-               - exec:
-                  working_directory: dist
-                  command: cmd
-                  arguments:
-                   - /c
-                   - "for %f in (getgauge-*.tar.gz) do pip install %f --upgrade"
-               - exec:
-                  command: cmd
-                  arguments:
-                   - /c
-                   - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
-              - artifiacts:
-                - build:
-                    source: testLogs
-                    destination: test-logs
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-windows.x86_64.zip
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: bin
+                - fetch:
+                    pipeline: python-package
+                    stage: package
+                    job: package
+                    source: dist
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - python
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - html-report
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge"
+                      - uninstall
+                      - xml-report
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
+                - exec:
+                    working_directory: bin
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (gauge-python-*.zip) do %GAUGE_ROOT%/gauge install python -f %f"
+                - exec:
+                    working_directory: dist
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (getgauge-*.tar.gz) do pip install %f --upgrade"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
+                - artifiacts:
+                  - build:
+                      source: testLogs
+                      destination: test-logs
             osx:
               resources:
                 - darwin
