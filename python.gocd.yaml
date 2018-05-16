@@ -202,10 +202,10 @@ pipelines:
                     arguments:
                       - /c
                       - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
-                - artifiacts:
-                  - build:
-                      source: testLogs
-                      destination: test-logs
+              artifiacts:
+                - build:
+                    source: testLogs
+                    destination: test-logs
             osx:
               resources:
                 - darwin
@@ -315,7 +315,7 @@ pipelines:
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt
-              - artifiacts:
+              artifiacts:
                 - build:
                     source: testLogs
                     destination: test-logs
@@ -416,7 +416,7 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
-              - artifiacts:
+              artifiacts:
                 - build:
                     source: testLogs
                     destination: test-logs
