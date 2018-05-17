@@ -186,6 +186,21 @@ pipelines:
                       - /c
                       - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
                 - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge version"
+                - exec:
                     working_directory: bin
                     command: cmd
                     arguments:
@@ -289,6 +304,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - PATH=/tmp/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - ls dist
                 - exec:
                     command: /bin/sh
@@ -299,7 +319,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge install
+                      - PATH=/tmp/bin:$PATH gauge install && PATH=/tmp/bin:$PATH gauge version
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -410,7 +430,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge install
+                      - PATH=/tmp/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH gauge install && PATH=/tmp/bin:$PATH gauge version
                 - exec:
                     command: /bin/sh
                     arguments:
