@@ -734,8 +734,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/gauge"
-                      - "run specs"
+                      - "%GAUGE_ROOT%/gauge run specs"
                       - --tags=!knownIssue
                       - --env=python-wd
                 - exec:
