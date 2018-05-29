@@ -99,7 +99,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %PATH%;%GAUGE_ROOT% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp
+                    - path %GAUGE_ROOT%;%PATH% & mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp
                - exec:
                     run_if: any
                     command: cmd
