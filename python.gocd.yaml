@@ -734,13 +734,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-<<<<<<< HEAD
-                      - "%GAUGE_ROOT%/gauge run specs"
-                      - --tags=!knownIssue
-                      - --env=python-wd
-=======
                       - path %GAUGE_ROOT%;%PATH% & gauge run specs --tags=!knownIssue --env=python-wd
->>>>>>> Adding gauge_root in path n windows.
                 - exec:
                     run_if: any
                     command: cmd
