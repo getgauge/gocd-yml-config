@@ -36,7 +36,7 @@ pipelines:
               elastic_profile_id: gauge-centos-all
               secure_variables:
                 aws_access_key_id: MsgNaRPRZFDlyccRoC5exAK9DfmTzzaT
-                aws_secret_access_key: 3nrdaiGyESQtV0VzXplN14zffxSFbvKY5YxGOmNM4ccsN7Omu0FMx7sH6bF8y
+                aws_secret_access_key: Ya/3nrdaiGyESQtV0VzXplN14zffxSFbvKY5YxGOmNM4ccsN7Omu0FMx7sH6bF8y
               tasks:
                 - exec:
                     command: /bin/sh
