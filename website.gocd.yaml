@@ -59,6 +59,7 @@ pipelines:
                     job: build
                     source: deploy
                 - exec:
+                    working_directory: deploy
                     command: aws
                     arguments:
                       - s3
@@ -97,7 +98,6 @@ pipelines:
                    source: build/*
                    destination: deploy
       - deploy:
-          approval: manual
           jobs:
             aws:
               elastic_profile_id: gauge-centos-all
@@ -122,6 +122,7 @@ pipelines:
                     job: build
                     source: deploy
                 - exec:
+                    working_directory: deploy
                     command: aws
                     arguments:
                       - s3
