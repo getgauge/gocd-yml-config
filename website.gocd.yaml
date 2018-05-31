@@ -16,6 +16,10 @@ pipelines:
                       - local
                       - 2.4.0
                 - exec:
+                    command: bundle
+                    arguments:
+                      - install
+                - exec:
                     command: /bin/sh
                     arguments:
                       - -c
@@ -79,6 +83,10 @@ pipelines:
                     arguments:
                       - local
                       - 2.4.0
+                - exec:
+                    command: bundle
+                    arguments:
+                      - install
                 - exec:
                     command: /bin/sh
                     arguments:
