@@ -77,6 +77,9 @@ pipelines:
       - build:
           jobs:
             build:
+              environment_variables:
+                DOCS_VERSION: master
+                BASE_URL: https://preview.gauge.org
               elastic_profile_id: gauge-centos-all
               tasks:
                 - exec:
