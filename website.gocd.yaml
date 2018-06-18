@@ -31,7 +31,7 @@ pipelines:
                - build:
                    source: build/*
                    destination: deploy
-      - deploy:
+      - deploy-preview:
           jobs:
             aws:
               elastic_profile_id: gauge-centos-all
@@ -65,7 +65,7 @@ pipelines:
                       - s3://preview.gauge.org
                       - --cache-control
                       - max-age=604800,s-maxage=1800
-      - deploy:
+      - deploy-live:
           approval: manual
           jobs:
             aws:
