@@ -3,11 +3,14 @@ pipelines:
     group: Websites
     materials:
       website:
-        git: https://github.com/getgauge/getgauge.github.io.git
+        git: https://github.com/getgauge/gauge.org.git
     stages:
       - build:
           jobs:
             build:
+              environment_variables:
+                DOCS_VERSION: master
+                BASE_URL: https://preview.gauge.org
               elastic_profile_id: gauge-centos-all
               tasks:
                 - exec:
@@ -24,15 +27,44 @@ pipelines:
                     arguments:
                       - -c
                       - (LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rh/nodejs010/root/usr/lib64/ bundle exec middleman build --verbose)
-                - exec:
-                    command: cp
-                    arguments:
-                      - Gauge_Badge.svg
-                      - build/
               artifacts:
                - build:
                    source: build/*
                    destination: deploy
+      - deploy:
+          jobs:
+            aws:
+              elastic_profile_id: gauge-centos-all
+              secure_variables:
+                aws_access_key_id: MsgNaRPRZFDlyccRoC5exAK9DfmTzzaT
+                aws_secret_access_key: Ya/3nrdaiGyESQtV0VzXplN14zffxSFbvKY5YxGOmNM4ccsN7Omu0FMx7sH6bF8y
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://preview.gauge.org
+                      - --recursive
+                - fetch:
+                    stage: build
+                    job: build
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: aws
+                    arguments:
+                      - s3
+                      - sync
+                      - .
+                      - s3://preview.gauge.org
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
       - deploy:
           approval: manual
           jobs:
