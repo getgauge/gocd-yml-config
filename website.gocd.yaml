@@ -27,6 +27,11 @@ pipelines:
                     arguments:
                       - -c
                       - (LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rh/nodejs010/root/usr/lib64/ bundle exec middleman build --verbose)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - echo $GO_REVISION_WEBSITE > build/version.txt
               artifacts:
                - build:
                    source: build/*
