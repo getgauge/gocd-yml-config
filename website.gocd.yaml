@@ -124,7 +124,7 @@ pipelines:
                       - --recursive
                 - fetch:
                     stage: build
-                    job: build
+                    job: build-live
                     source: deploy
                 - exec:
                     working_directory: deploy
