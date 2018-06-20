@@ -123,8 +123,8 @@ pipelines:
                       - s3://gauge.org
                       - --recursive
                 - fetch:
-                    stage: build
-                    job: build-live
+                    stage: build-live
+                    job: build
                     source: deploy
                 - exec:
                     working_directory: deploy
