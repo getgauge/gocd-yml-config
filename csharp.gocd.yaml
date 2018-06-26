@@ -10,6 +10,7 @@ pipelines:
             test:
               resources:
                - windows
+               - package
               tasks:
                - exec:
                    command: build
@@ -24,6 +25,7 @@ pipelines:
             package:
               resources:
                - windows
+               - package
               tasks:
                - exec:
                    command: build
