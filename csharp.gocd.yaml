@@ -38,3 +38,19 @@ pipelines:
               artifacts:
                - build:
                    source: artifacts/
+      - release:
+          approval: manual
+          jobs:
+            nuget:
+              tasks:
+                 - fetch:
+                   pipeline: CSharp-Lib
+                   stage: package
+                   job: package
+                   source: artifacts
+                - exec:
+                  command: powershell.exe
+                  working_directory: artifacts
+                  arguments:
+                    - -command
+                    - "try{gci Gauge.CSharp.Lib*.nupkg | select -f 1 | %{nuget.exe push $_ $env:NUGET_API_KEY -Source https://www.nuget.org/api/v2/package}}catch{Write-Error $_;exit -1}"
