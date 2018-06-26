@@ -11,3 +11,4 @@ environments:
       - python-release
       - gauge-proto
       - CSharp-Lib
+      - CSharp-Core
