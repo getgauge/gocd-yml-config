@@ -1,0 +1,38 @@
+pipelines:
+  CSharp-Lib:
+    group: Gauge-Csharp
+    materials:
+      dotnet:
+        git: https://github.com/getgauge/gauge-csharp-lib.git
+    stages:
+      - test:
+          jobs:
+            test:
+              resources:
+               - windows
+              tasks:
+               - exec:
+                   command: build
+                   arguments:
+                    - build
+               - exec:
+                   command: build
+                   arguments:
+                    - test
+      - package:
+          jobs:
+            package:
+              resources:
+               - windows
+              tasks:
+               - exec:
+                   command: build
+                   arguments:
+                    - build
+               - exec:
+                   command: build
+                   arguments:
+                    - package
+
+              
+  

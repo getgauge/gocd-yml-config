@@ -6,7 +6,8 @@ environments:
       - dotnet-FT
       - python-build
       - python-package
-      - python-FT
+      - python-FT 
       - python-lsp-tests
       - python-release
       - gauge-proto
+      - CSharp-Lib
