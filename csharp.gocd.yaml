@@ -42,10 +42,10 @@ pipelines:
           approval: manual
           jobs:
             nuget:
+              resources:
+                - windows
+                - nuget
               tasks:
-                resources:
-                  - windows
-                  - nuget
                 - fetch:
                   pipeline: CSharp-Lib
                   stage: package
