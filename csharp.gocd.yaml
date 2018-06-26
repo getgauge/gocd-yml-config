@@ -43,11 +43,11 @@ pipelines:
           jobs:
             nuget:
               tasks:
-                 - fetch:
-                   pipeline: CSharp-Lib
-                   stage: package
-                   job: package
-                   source: artifacts
+                - fetch:
+                  pipeline: CSharp-Lib
+                  stage: package
+                  job: package
+                  source: artifacts
                 - exec:
                   command: powershell.exe
                   working_directory: artifacts
