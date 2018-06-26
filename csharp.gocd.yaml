@@ -35,6 +35,6 @@ pipelines:
                    command: build
                    arguments:
                     - package
-
-              
-  
+              artifacts:
+               - build:
+                   source: artifacts/
