@@ -45,9 +45,16 @@ pipelines:
               resources:
                 - windows
                 - nuget
+              secure_variables:
+                NUGET_API_KEY: D0OsIi/XZlaf90sCRr+1lGR8USfMBzShprxi/Wdcb1m7Xpb1cEuq9A==
               tasks:
                 - fetch:
                     pipeline: CSharp-Lib
                     stage: package
                     job: package
                     source: artifacts
+                - exec:
+                    command: powershell.exe
+                    arguments:
+                      - -command
+                      - "try{gci Gauge.CSharp.Lib*.nupkg | select -f 1 | %{nuget.exe push $_ $env:NUGET_API_KEY -Source https://www.nuget.org/api/v2/package}}catch{Write-Error $_;exit -1}"
