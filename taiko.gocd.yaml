@@ -69,12 +69,12 @@ pipelines:
                     arguments:
                       - publish
   Taiko-Nightly:
-  group: Nightly
-  materials:
-    taiko:
-      git: https://github.com/getgauge/taiko.git
-  stages:
-    - publish:
+    group: Nightly
+    materials:
+      taiko:
+        git: https://github.com/getgauge/taiko.git
+    stages:
+      - publish:
         jobs:
           nightly:
             elastic_profile_id: debian-node
