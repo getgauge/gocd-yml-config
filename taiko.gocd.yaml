@@ -75,12 +75,12 @@ pipelines:
         git: https://github.com/getgauge/taiko.git
     stages:
       - publish:
-        jobs:
-          nightly:
-            elastic_profile_id: debian-node
-            tasks:
-              - exec:
-                command: npm
-                arguments:
-                  - run
-                  - publish:nightly
+          jobs:
+            publish:
+              elastic_profile_id: debian-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - publish:nightly
