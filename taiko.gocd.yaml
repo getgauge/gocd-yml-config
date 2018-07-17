@@ -78,6 +78,7 @@ pipelines:
       only_on_changes: yes
     stages:
       - publish:
+          approval: manual
           jobs:
             publish:
               elastic_profile_id: debian-node
