@@ -275,7 +275,7 @@ pipelines:
                     arguments:
                     - -c
                     - $GAUGE_ROOT/bin/gauge install
-               - exec:
+                - exec:
                    command: /bin/sh
                    arguments:
                     - /c
