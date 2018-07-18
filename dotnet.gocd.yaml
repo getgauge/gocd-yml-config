@@ -215,10 +215,11 @@ pipelines:
                     - "%GAUGE_ROOT%/gauge"
                     - install
                - exec:
-                   command: /bin/sh
+                   command: cmd
                    arguments:
                     - /c
-                    - npm install
+                    - npm
+                    - install
                - exec:
                     command: cmd
                     arguments:
@@ -278,7 +279,7 @@ pipelines:
                 - exec:
                    command: /bin/sh
                    arguments:
-                    - /c
+                    - -c
                     - npm install
                 - exec:
                     command: /bin/sh
