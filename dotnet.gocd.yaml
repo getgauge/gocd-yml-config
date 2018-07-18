@@ -221,10 +221,16 @@ pipelines:
                     - npm
                     - install
                - exec:
+                   command: cmd
+                   arguments:
+                    - /c
+                    - "%GAUGE_ROOT%/gauge"
+                    - version
+               - exec:
                     command: cmd
                     arguments:
                     - /c
-                    - path %PATH%;%GAUGE_ROOT% & gauge run specs --env=dotnet-wd --tags=\!knownIssue
+                    - "%GAUGE_ROOT%/gauge run specs --env=dotnet-wd --tags=\!knownIssue"
                - exec:
                     run_if: any
                     command: cmd
@@ -277,10 +283,10 @@ pipelines:
                     - -c
                     - $GAUGE_ROOT/bin/gauge install
                 - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - npm install
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - npm install
                 - exec:
                     command: /bin/sh
                     arguments:
