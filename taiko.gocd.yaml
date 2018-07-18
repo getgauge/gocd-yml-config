@@ -51,18 +51,17 @@ pipelines:
             publish:
               elastic_profile_id: debian-node
               secure_variables:
-                NPM_TOKEN: efUvjzmZzPgw+zldFDyT8faQLZbL4k22+a4wkQe67TUZp9pXU4XCAA==
+                NPM_USERNAME: 
+                NPM_PASSWORD: 
+                NPM_OTP: 
+                NPM_EMAIL: 
               tasks:
                 - exec:
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    command: /bin/sh
+                    command: /bin/bash
                     arguments:
                       - -c
-                      - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc
-                - exec:
-                    command: npm
-                    arguments:
-                      - publish
+                      - echo "${NPM_USERNAME}\n${NPM_PASSWORD}\n${NPM_PASSWORD}\n${NPM_EMAIL}\n${NPM_OTP}" | npm login && echo "{NPM_OTP}" | npm publish
