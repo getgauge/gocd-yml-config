@@ -230,7 +230,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - "%GAUGE_ROOT%/gauge run specs --env=dotnet-wd --tags=\!knownIssue"
+                    - "%GAUGE_ROOT%/gauge run specs --env=dotnet-wd --tags=!knownIssue"
                - exec:
                     run_if: any
                     command: cmd
