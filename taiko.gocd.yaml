@@ -32,6 +32,7 @@ pipelines:
                     working_directory: js-taiko
                     command: npm
                     arguments:
+                      - -c
                       - uninstall -g taiko
                 - exec:
                     working_directory: js-taiko
