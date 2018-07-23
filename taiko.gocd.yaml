@@ -30,10 +30,10 @@ pipelines:
                       - https://github.com/getgauge-examples/js-taiko
                 - exec:
                     working_directory: js-taiko
-                    command: npm
+                    command: /bin/sh
                     arguments:
                       - -c
-                      - uninstall -g taiko
+                      - npm uninstall -g taiko
                 - exec:
                     working_directory: js-taiko
                     command: npm
