@@ -21,7 +21,7 @@ pipelines:
                    command: /bin/sh
                    arguments:
                     - -c
-                    - PATH=$HOME/Library/Python/3.6/bin:$PATH python3 build.py --test
+                    - PATH=$HOME/Library/Python/3.7/bin:$PATH python3 build.py --test
                 - exec:
                    run_if: any
                    command: touch
