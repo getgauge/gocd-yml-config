@@ -113,6 +113,10 @@ pipelines:
                     arguments:
                     - /c
                     - del /q %GAUGE_HOME%\*
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
             osx:
               resources:
                 - darwin
@@ -157,6 +161,10 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=$PATH:/tmp/bin mvn -q clean test-compile gauge:execute -Denv=ci-dotnet -Dtags=csharp
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
   dotnet-LSP:
     group: Gauge-Dotnet
     materials:
@@ -309,6 +317,10 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=$PATH:/tmp/bin gauge run specs --env=dotnet-wd --tags=\!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
   dotnet-release:
     group: Gauge-Dotnet
     materials:
