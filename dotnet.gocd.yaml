@@ -52,6 +52,7 @@ pipelines:
         stage: sign
     stages:
       - build:
+          clean_workspace: true
           jobs:
             windows:
               resources:
@@ -178,6 +179,7 @@ pipelines:
         stage: sign
     stages:
       - build:
+          clean_workspace: true
           jobs:
             windows:
               resources:
