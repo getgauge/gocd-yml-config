@@ -281,7 +281,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
+                    - $GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                    - -c
                     - $GAUGE_ROOT/bin/gauge install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                    - -c
+                    - $GAUGE_ROOT/bin/gauge version
                 - exec:
                     command: /bin/bash
                     arguments:
