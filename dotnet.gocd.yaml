@@ -246,6 +246,10 @@ pipelines:
                     arguments:
                     - /c
                     - del /q %GAUGE_HOME%\*
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
             osx:
               resources:
                 - darwin
