@@ -43,8 +43,7 @@ pipelines:
                     - build.py
                     - --test
             windows:
-              resources:
-                - new_windows
+              elastic_profile_id: windows-all
               tasks:
                 - exec:
                    command: pip
@@ -115,8 +114,7 @@ pipelines:
           clean_workspace: true
           jobs:
             windows:
-              resources:
-                - new_windows
+              elastic_profile_id: windows-all
               environment_variables:
                JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                GAUGE_ROOT: C:\gauge_root
@@ -650,8 +648,7 @@ pipelines:
                     source: logs
                     destination: logs
             windows:
-              resources:
-                - new_windows
+              elastic_profile_id: windows-all
               environment_variables:
                 JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                 GAUGE_ROOT: C:\gauge_root
@@ -935,8 +932,7 @@ pipelines:
                     source: logs
                     destination: logs
             windows:
-              resources:
-                - new_windows
+              elastic_profile_id: windows-all
               environment_variables:
                 JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                 GAUGE_ROOT: C:\gauge_root
