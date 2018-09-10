@@ -28,7 +28,7 @@ pipelines:
                    arguments:
                     - /vagrant/rollback.txt
             linux:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               tasks:
                 - exec:
                    command: pip
@@ -69,7 +69,7 @@ pipelines:
       - package:
           jobs:
             package:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               tasks:
                 - exec:
                    command: /bin/sh
@@ -340,7 +340,7 @@ pipelines:
                     source: testLogs
                     destination: test-logs
             linux:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               environment_variables:
                 GAUGE_PREFIX: /tmp
                 GAUGE_HOME: /tmp
@@ -559,7 +559,7 @@ pipelines:
                     source: logs
                     destination: logs
             linux:
-              elastic_profile_id: gocd-node-python
+              elastic_profile_id: centos-node-python
               environment_variables:
                 GAUGE_PREFIX: /tmp
                 GAUGE_HOME: /tmp
@@ -848,7 +848,7 @@ pipelines:
                     source: logs
                     destination: logs
             linux:
-              elastic_profile_id: gocd-node-python
+              elastic_profile_id: centos-node-python
               environment_variables:
                 GAUGE_PREFIX: /tmp
                 GAUGE_HOME: /tmp
@@ -1044,7 +1044,7 @@ pipelines:
           approval: manual
           jobs:
             package:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               environment_variables:
                 NIGHTLY: true
               tasks:
@@ -1073,7 +1073,7 @@ pipelines:
       - upload:
           jobs:
             pypi_upload:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               environment_variables:
                 NIGHTLY: true
               secure_variables:
@@ -1097,7 +1097,7 @@ pipelines:
                       - -c
                       - (file=$(ls dist/getgauge-*.dev.*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
             bintray_upload:
-              elastic_profile_id: gauge-centos-all
+              elastic_profile_id: centos-all
               environment_variables:
                 UPDATE_INSTALL_JSON: 1
                 INSTALL_PLUGIN_JSON: python
@@ -1132,7 +1132,7 @@ pipelines:
           approval: manual
           jobs:
             release:
-              elastic_profile_id: gauge-centos-all
+              elastic_profile_id: centos-all
               environment_variables:
                 repoName: gauge-python
                 GOPATH: /tmp
@@ -1154,7 +1154,7 @@ pipelines:
           approval: manual
           jobs:
             pypi_upload:
-              elastic_profile_id: gocd-jdk-mvn-python
+              elastic_profile_id: centos-jdk-mvn-python
               secure_variables:
                PYPI_USER: +A8MwngWBLI=
                PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
