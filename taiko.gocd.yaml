@@ -8,7 +8,7 @@ pipelines:
       - test:
           jobs:
             test:
-              elastic_profile_id: debian-node
+              elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
                     command: npm
@@ -21,7 +21,7 @@ pipelines:
       - specs:
           jobs:
             specs:
-              elastic_profile_id: debian-node
+              elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
                     command: git
@@ -60,7 +60,7 @@ pipelines:
           approval: manual
           jobs:
             publish:
-              elastic_profile_id: debian-node
+              elastic_profile_id: ubuntu-node
               secure_variables:
                 NPM_TOKEN: efUvjzmZzPgw+zldFDyT8faQLZbL4k22+a4wkQe67TUZp9pXU4XCAA==
               tasks:
