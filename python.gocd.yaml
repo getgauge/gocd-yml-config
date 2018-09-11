@@ -116,7 +116,6 @@ pipelines:
             windows:
               elastic_profile_id: windows-all
               environment_variables:
-               JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                GAUGE_ROOT: C:\gauge_root
               tasks:
                 - fetch:
@@ -650,7 +649,6 @@ pipelines:
             windows:
               elastic_profile_id: windows-all
               environment_variables:
-                JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                 GAUGE_ROOT: C:\gauge_root
                 GAUGE_HOME: C:\gauge_plugins
               tasks:
@@ -934,7 +932,6 @@ pipelines:
             windows:
               elastic_profile_id: windows-all
               environment_variables:
-                JAVA_HOME: C:\Program Files\Java\jdk1.8.0_162
                 GAUGE_ROOT: C:\gauge_root
                 GAUGE_HOME: C:\gauge_plugins
               tasks:
