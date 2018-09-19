@@ -256,12 +256,6 @@ pipelines:
                     arguments:
                     - /c
                     - del %GAUGE_ROOT%\gauge
-               - exec:
-                    run_if: any
-                    command: cmd
-                    arguments:
-                    - /c
-                    - del /q %GAUGE_HOME%\*
               artifacts:
                 - build:
                     source: logs
