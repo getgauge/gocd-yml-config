@@ -55,7 +55,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ./gauge install && ./gauge run -v specs --tags=\!knownIssue
+                      - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
       - publish:
           approval: manual
           jobs:
