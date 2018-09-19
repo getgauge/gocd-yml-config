@@ -249,7 +249,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - "path %GAUGE_ROOT%;%PATH% & gauge run specs --env=dotnet-wd --tags=!knownIssue"
+                    - path %GAUGE_ROOT%;%PATH% & gauge run specs --tags=!knownIssue --env=dotnet-wd
                - exec:
                     run_if: any
                     command: cmd
