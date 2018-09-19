@@ -182,7 +182,6 @@ pipelines:
               elastic_profile_id: windows-all
               environment_variables:
                 GAUGE_ROOT: C:\gauge_root
-                GAUGE_HOME: C:\gauge_plugins
               tasks:
                - fetch:
                    pipeline: Gauge-Package
@@ -200,6 +199,18 @@ pipelines:
                    arguments:
                     - /c
                     - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+               - exec:
+                   command: cmd
+                   arguments:
+                    - /c
+                    - "%GAUGE_ROOT%/gauge"
+                    - version
+               - exec:
+                   command: cmd
+                   arguments:
+                    - /c
+                    - "npm"
+                    - version
                - exec:
                    command: cmd
                    arguments:
