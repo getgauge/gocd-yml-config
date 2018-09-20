@@ -15,17 +15,12 @@ pipelines:
                - exec:
                   command: /bin/sh
                   arguments:
-                   - -c
-                   - go version
-               - exec:
-                  command: /bin/sh
-                  arguments:
                    - ./src/github.com/getgauge/gauge/build/run.sh
                    - test
             darwin:
               resources:
-               - UT
                - darwin
+               - UT
               tasks:
                - exec:
                   command: /bin/sh
