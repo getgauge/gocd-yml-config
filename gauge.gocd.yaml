@@ -1,0 +1,23 @@
+pipelines:
+  gauge-build-new:
+    group: Gauge
+    materials:
+      dotnet:
+        git: https://github.com/getgauge/gauge.git
+        destination: src/github.com/getgauge/gauge
+        shallow_clone: true
+    stages:
+      - build:
+          jobs:
+            linux:
+              elastic_profile_id: golang-ubuntu
+              tasks:
+               - exec:
+                   command: go
+                   arguments:
+                    - version
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - ./src/github.com/getgauge/gauge/build/run.sh
+                    - test
