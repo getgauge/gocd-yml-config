@@ -13,9 +13,10 @@ pipelines:
               elastic_profile_id: golang-ubuntu
               tasks:
                - exec:
-                  command: go
+                  command: /bin/sh
                   arguments:
-                   - version
+                   - -c
+                   - go version
                - exec:
                   command: /bin/sh
                   arguments:
