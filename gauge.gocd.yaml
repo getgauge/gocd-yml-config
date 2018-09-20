@@ -19,7 +19,8 @@ pipelines:
                    - test
             darwin:
               resources:
-               - UT
+                - UT
+                - darwin
               tasks:
                - exec:
                   command: /bin/sh
