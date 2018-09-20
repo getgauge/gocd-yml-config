@@ -10,16 +10,15 @@ pipelines:
       - build:
           jobs:
             linux:
-              elastic_profile_id: golang-ubuntu
+              elastic_profile_id: centos-all
               tasks:
                - exec:
-                  command: /bin/sh
+                  command: /bin/bash
                   arguments:
                    - ./src/github.com/getgauge/gauge/build/run.sh
                    - test
             darwin:
               resources:
-               - darwin
                - UT
               tasks:
                - exec:
