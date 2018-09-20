@@ -13,11 +13,45 @@ pipelines:
               elastic_profile_id: golang-ubuntu
               tasks:
                - exec:
-                   command: go
-                   arguments:
-                    - version
+                  command: go
+                  arguments:
+                   - version
                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - ./src/github.com/getgauge/gauge/build/run.sh
-                    - test
+                  command: /bin/sh
+                  arguments:
+                   - ./src/github.com/getgauge/gauge/build/run.sh
+                   - test
+            darwin:
+              resources:
+               - UT
+               - darwin
+              tasks:
+               - exec:
+                  command: /bin/sh
+                  arguments:
+                   - -c
+                   - go version
+               - exec:
+                  command: /bin/sh
+                  arguments:
+                   - ./src/github.com/getgauge/gauge/build/run.sh
+                   - test
+               - exec:
+                  command: touch
+                  arguments:
+                   - /vagrant/rollback.txt
+            windows:
+              elastic_profile_id: windows-all
+              tasks:
+               - exec:
+                  command: powershell.exe
+                  arguments:
+                   - -ExecutionPolicy
+                   - Bypass
+                   - -NoLogo
+                   - -NonInteractive
+                   - -NoProfile
+                   - -File
+                   - .\src\github.com\getgauge\gauge\build\run.ps1
+                   - -task
+                   - test
