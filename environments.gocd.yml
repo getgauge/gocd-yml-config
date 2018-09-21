@@ -13,3 +13,4 @@ environments:
       - CSharp-Lib
       - CSharp-Core
       - dotnet-LSP
+      - gauge-build-new
