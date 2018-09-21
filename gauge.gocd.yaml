@@ -2,10 +2,12 @@ pipelines:
   gauge-build-new:
     group: Gauge
     materials:
-      dotnet:
+      gauge:
         git: https://github.com/getgauge/gauge.git
         destination: src/github.com/getgauge/gauge
         shallow_clone: true
+    secure_variables:
+      GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
     stages:
       - build:
           jobs:
@@ -51,3 +53,80 @@ pipelines:
                    - .\src\github.com\getgauge\gauge\build\run.ps1
                    - -task
                    - test
+      - package:
+          jobs:
+            darwin_linux:
+              resources:
+               - codesign
+               - darwin
+              secure_variables:
+                CERT_PASSWORD: AES:w0p53dM+BZvru/9GxU2J2Q==:cZHB0o+pBGNREQm6ivX1kg==
+                KEYCHAIN_PASSWORD: AES:WhpWbkcroEF8rqp2GyhuZg==:m3FS56+gZxzbBtQXNM4+1g==
+                OS_SIGNING_IDENTITY: AES:fyyLntOF7H8v8engHWxigQ==:kv4fxZni5PQNs0PnT8ntUuA/Y6IETNBLcMCfpCydDhsuztMq9gJ79XTc3qbXt8GhBU8BkKP5a7py0YwsT/6nPw==
+              tasks:
+               - exec:
+                  command: /bin/bash
+                  arguments:
+                   - -c
+                   - src/github.com/getgauge/gauge/build/package.sh
+              artifacts:
+               - build:
+                  source: src/github.com/getgauge/gauge/bin/*
+                  destination: bin
+               - build:
+                  source: src/github.com/getgauge/gauge/deploy/*
+                  destination: deploy
+      - deb:
+          jobs:
+            create_deb:
+              elastic_profile_id: golang-ubuntu
+              tasks:
+               - exec:
+                  command: /bin/bash
+                  arguments:
+                   - -c
+                   - PATH=/usr/lib/go-1.10/bin:$PATH src/github.com/getgauge/gauge/build/mkdeb.sh
+              artifacts:
+               - build:
+                  source: src/github.com/getgauge/gauge/deploy/*.deb
+                  destination: deploy
+      - rpm:
+          jobs:
+            create_rpm:
+              elastic_profile_id: centos-all
+              tasks:
+               - exec:
+                  command: /bin/bash
+                  arguments:
+                   - -c
+                   - src/github.com/getgauge/gauge/build/mkrpm.sh
+              artifacts:
+               - build:
+                  source: src/github.com/getgauge/gauge/deploy/*.rpm
+                  destination: deploy
+      - windows:
+          jobs:
+            sign:
+              resources:
+               - sign
+              secure_variables:
+                CERT_FILE_PWD: AES:6QvH8KFyuZu8rmmPs9YgmQ==:F8qSDGXyuJFeMFsIqed9ig==
+                CERT_FILE: AES:ciq0hCGH4CCFjkQqnuhLiQ==:aJ9Ap2srncy1/VA97EDMnYHYcmBdgikjmL1vuuCfoW8lc+o5mjUzGXHE9LAQ3tc9
+              tasks:
+               - exec:
+                  command: powershell.exe
+                  arguments:
+                   - -ExecutionPolicy
+                   - Bypass
+                   - -NoLogo
+                   - -NonInteractive
+                   - -NoProfile
+                   - -File
+                   - .\src\github.com\getgauge\gauge\build\sign_windows_artifacts.ps1
+              artifacts:
+               - build:
+                  source: src/github.com/getgauge/gauge/deploy/*
+                  destination: deploy
+               - build:
+                  source: src/github.com/getgauge/gauge/test_installers/*
+                  destination: test_installers
