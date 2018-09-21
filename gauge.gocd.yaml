@@ -113,6 +113,18 @@ pipelines:
                 CERT_FILE_PWD: AES:6QvH8KFyuZu8rmmPs9YgmQ==:F8qSDGXyuJFeMFsIqed9ig==
                 CERT_FILE: AES:ciq0hCGH4CCFjkQqnuhLiQ==:aJ9Ap2srncy1/VA97EDMnYHYcmBdgikjmL1vuuCfoW8lc+o5mjUzGXHE9LAQ3tc9
               tasks:
+               - fetch:
+                  pipeline: gauge-build-new
+                  stage: package
+                  job: darwin_linux
+                  source: bin
+                  destination: src/github.com/getgauge/gauge/
+               - fetch:
+                  pipeline: gauge-build-new
+                  stage: package
+                  job: darwin_linux
+                  source: deploy
+                  destination: src/github.com/getgauge/gauge/
                - exec:
                   command: powershell.exe
                   arguments:
