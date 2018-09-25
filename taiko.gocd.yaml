@@ -61,10 +61,10 @@ pipelines:
                - windows
               tasks:
                 - exec:
-                    command: git
+                    command: cmd
                     arguments:
-                      - clone
-                      - https://github.com/getgauge-examples/js_puppeteer
+                      - /c
+                      - "git clone https://github.com/getgauge-examples/js_puppeteer"
                - exec:
                    working_directory: js_puppeteer
                    command: cmd
@@ -75,9 +75,10 @@ pipelines:
                     - dotnet
                 - exec:
                     working_directory: js_puppeteer
-                    command: npm
+                    command: cmd
                     arguments:
-                      - install
+                      - /c
+                      - "npm install"
                 - exec:
                     working_directory: js_puppeteer
                     command: cmd
