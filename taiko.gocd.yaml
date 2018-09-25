@@ -4,6 +4,9 @@ pipelines:
     materials:
       taiko:
         git: https://github.com/getgauge/taiko.git
+      gauge:
+        pipeline: Gauge-Package
+        stage: sign
     stages:
       - test:
           jobs:
