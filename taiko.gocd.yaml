@@ -19,72 +19,43 @@ pipelines:
                     arguments:
                       - test
       - specs:
-        jobs:
-          linux-specs:
-            elastic_profile_id: ubuntu-node
-            tasks:
-              - exec:
-                  command: git
-                  arguments:
-                    - clone
-                    - https://github.com/getgauge-examples/js-taiko
-              - exec:
-                  working_directory: js-taiko
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - npm uninstall -g taiko
-              - exec:
-                  working_directory: js-taiko
-                  command: npm
-                  arguments:
-                    - install
-              - exec:
-                  working_directory: js-taiko
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
-              - exec:
-                  working_directory: js-taiko
-                  command: npm
-                  arguments:
-                    - update
-              - exec:
-                  working_directory: js-taiko
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
-          windows-specs:
-            resources:
-              - windows
-            tasks:
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "git clone https://github.com/getgauge-examples/js_puppeteer"
-              - exec:
-                  working_directory: js_puppeteer
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)"
-                    - uninstall
-                    - dotnet
-              - exec:
-                  working_directory: js_puppeteer
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "npm install"
-              - exec:
-                  working_directory: js_puppeteer
-                  command: cmd
-                  arguments:
-                    - /c
-                    - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
+          jobs:
+            linux-specs:
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge-examples/js-taiko
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm uninstall -g taiko
+                - exec:
+                    working_directory: js-taiko
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                - exec:
+                    working_directory: js-taiko
+                    command: npm
+                    arguments:
+                      - update
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
       - publish:
           approval: manual
           jobs:
