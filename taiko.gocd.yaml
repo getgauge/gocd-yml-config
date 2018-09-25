@@ -20,7 +20,7 @@ pipelines:
                       - test
       - specs:
           jobs:
-            specs:
+            linux-specs:
               elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
@@ -56,6 +56,34 @@ pipelines:
                     arguments:
                       - -c
                       - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
+            windows-specs:
+              resources:
+               - windows
+              tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge-examples/js_puppeteer
+               - exec:
+                   working_directory: js_puppeteer
+                   command: cmd
+                   arguments:
+                    - /c
+                    - "curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)"
+                    - uninstall
+                    - dotnet
+                - exec:
+                    working_directory: js_puppeteer
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    working_directory: js_puppeteer
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "./gauge install && ./gauge run -p -v specs --tags=\!knownIssue"
       - publish:
           approval: manual
           jobs:
