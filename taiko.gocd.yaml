@@ -61,6 +61,8 @@ pipelines:
                       - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
             windows-specs:
               elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:\gauge_root
               tasks:
                 - exec:
                     command: git
@@ -99,7 +101,8 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/gauge install"
+                      - "%GAUGE_ROOT%/gauge"
+                      - install
                 - exec:
                     working_directory: js-taiko
                     command: cmd
