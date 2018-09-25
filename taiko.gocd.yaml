@@ -75,12 +75,17 @@ pipelines:
                     command: npm
                     arguments:
                       - install
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    is_file: yes
+                    source: test_installers/gauge-windows.x86_64.zip
                 - exec:
-                    working_directory: js-taiko
-                    command: cmd
-                    arguments:
-                      - /c
-                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                   command: cmd
+                   arguments:
+                    - /c
+                    - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
                 - exec:
                     working_directory: js-taiko
                     command: npm
@@ -91,7 +96,13 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
+                      - "%GAUGE_ROOT%/gauge install"
+                - exec:
+                    working_directory: js-taiko
+                    command: cmd
+                    arguments:
+                      - /c                      
+                      - "%GAUGE_ROOT%/gauge run specs --tags=!knownIssue"
       - publish:
           approval: manual
           jobs:
