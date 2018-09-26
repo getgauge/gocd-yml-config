@@ -59,6 +59,44 @@ pipelines:
                     arguments:
                       - -c
                       - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
+            osx-specs:
+              resources:
+                - darwin
+                - FT
+              tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge-examples/js-taiko
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm uninstall -g taiko
+                - exec:
+                    working_directory: js-taiko
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                - exec:
+                    working_directory: js-taiko
+                    command: npm
+                    arguments:
+                      - update
+                - exec:
+                    working_directory: js-taiko
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ./gauge install && ./gauge run -v specs --tags=\!knownIssue
             windows-specs:
               elastic_profile_id: windows-all
               environment_variables:
