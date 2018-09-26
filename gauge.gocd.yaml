@@ -145,7 +145,7 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/test_installers/*
                   destination: test_installers
-  gauge-deploy-new:
+  Gauge-Deploy:
     group: Gauge
     materials:
       Gauge-Package:
@@ -200,7 +200,7 @@ pipelines:
                       - -c
                       - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git clone git@github.com:getgauge/gauge.org.git
                 - fetch:
-                    pipeline: gauge-deploy-new
+                    pipeline: Gauge-Deploy
                     stage: github-release
                     job: draft
                     source: version
@@ -245,7 +245,7 @@ pipelines:
                       - -c
                       - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git clone git@github.com:getgauge/docs.getgauge.io.git)
                 - fetch:
-                    pipeline: gauge-deploy-new
+                    pipeline: Gauge-Deploy
                     stage: github-release
                     job: draft
                     source: version
@@ -271,7 +271,7 @@ pipelines:
                 - codesign
               tasks:
                 - fetch:
-                    pipeline: gauge-deploy-new
+                    pipeline: Gauge-Deploy
                     stage: github-release
                     job: draft
                     source: version
@@ -331,7 +331,7 @@ pipelines:
                 apiKey: AES:o8CSdm0rHgpnxFeB4CWITA==:M44DH6hQ47o7qvmIWCOwlHVcWhMizrtPd+fkqrbIwqg2xsz0/NeAXJKeCXpbXAJz
               tasks:
                 - fetch:
-                    pipeline: gauge-deploy-new
+                    pipeline: Gauge-Deploy
                     stage: github-release
                     job: draft
                     source: version
