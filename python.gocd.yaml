@@ -102,7 +102,7 @@ pipelines:
         stage: package
       gauge:
         pipeline: Gauge-Package
-        stage: sign
+        stage: windows
       html-report:
         pipeline: HTML_Report
         stage: package
@@ -120,8 +120,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-windows.x86_64.zip
                 - fetch:
@@ -228,8 +228,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline:  Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
                 - fetch:
@@ -344,8 +344,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-linux.x86_64.zip
                 - fetch:
@@ -452,7 +452,7 @@ pipelines:
         stage: package
       gauge:
         pipeline: Gauge-Package
-        stage: sign
+        stage: windows
     stages:
       - wd:
           cleanWorkingDir: true
@@ -467,8 +467,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
                 - fetch:
@@ -563,8 +563,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-linux.x86_64.zip
                 - fetch:
@@ -654,8 +654,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-windows.x86_64.zip
                 - fetch:
@@ -759,8 +759,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
                 - fetch:
@@ -850,8 +850,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-linux.x86_64.zip
                 - fetch:
@@ -937,8 +937,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-windows.x86_64.zip
                 - fetch:
