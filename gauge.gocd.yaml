@@ -142,3 +142,278 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/test_installers/*
                   destination: test_installers
+  gauge-deploy-new:
+    group: Gauge
+    materials:
+      Gauge-Package:
+        pipeline: gauge-build-new
+        stage: windows
+      chocolatey-packages:
+        git: https://github.com/getgauge/chocolatey-packages
+        shallow_clone: true
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
+      - github-release:
+          approval: manual
+          jobs:
+            draft:
+              elastic_profile_id: centos-all
+              environment_variables: 
+                GOPATH: /tmp
+                repoName: gauge
+              secure_variables:
+                GITHUB_SSH_PRIVATE_KEY: AES:Ttll/Xj5Wu/ZYHsHCmPUnQ==:J3W2ZMNmlOhrHwaat18RBKGKsvUKWLPYuqXWapjrOkLTPgWYsrH90P2jy4TUpRwt85Mq6tMg8D5R0hkDe7NXNwDZJRJIc1G94xBnOao6zp0nl4aN4aqdj/h8F2ABvMi9tXLuYbhJbsluob7mGf/VmcF/oadF53oYVvA634EUl4rzUeWsAsG+03A8NBJkFSIOfMguNamAdhV9pIGaK8eadYDLNrzSHECoNX5e9svLrizkeS9MMl9VD2jxON0CD7j5cmKtVQY2nZ7wAK+7GFBhOL+4OZ8eKOLDwk6fki3JtRYrz9ryaOf/J/7aDpspExc71k/89wqfpBtpcb/v2OYBzpKEM+pJT7JEr2OU4Lbgfv5b2JQwZtbYQxs9i0hzpmpW950pzLUx6SUZ3/yOhKnVE13iDR9LHCsPPc9fP0mYZpk/0haNstB9DtdtJWkySDLqi98TBdcsPWmDriEa49g1+WUqeA21hBGh+QohCpng8SU9ienRB4MhJyJAy/6PwNSy27UpA9LSasBstYvk1e7+/KknxciCiKj2UeP1aBctgAiWVAD+IzMZyF2jvSgMKNLc9+JeDoDnzBPcLQjG6mfereSzSKmIaT+pQldNltfQ/zv4VXl6VJF06KXB3cxmYZ2W8T8HJawoaoJVXv/evwleiR+gfVEJXDD3IlK81Zp1ORHqidMcrtecfpSZ3Do1B4SR7WQKB5ElB3mioPd4dyNrI8fyCa+i0OX3AANX9VNWj3El+yNvkNtKiM9T0Cn7i6Y2i5cysagDle5vMvwX1R0fJAwz0tA++JjvCdA+sXC009YBfX+W/YgHm0iHVGCI2XsV5Ed6DwWeF1KzlO8eUuq7eN85RjZj61hkwOpbQqaDPAceZo0j9O1h1EWl/yZhCXsSId5zrn9zQqQHqDtmCi/lSDBW3kQSSdBFriqOhULa7WFWvnwMMuJGPdPIlEA9acOvbeK+GquwhliTjOl8iorqKc1AyL2eH/dFKuRfhMJwXUbSukf1WmsAiUggp64IGq0YSMYTzbDBWJsLpAN6EjRo/kI1cVdrsz86YJ+DNV9KTbKmLWEzjZVakNkHfxp3BMAxJX6630fjyzbW87PUTQOyvagCB7kg1pqQUscnLwFETazra3c/wykx8fXhi6Gk/aKrsGwbhBJDENV+xCMAetpmawEo3cjru0xRAaLLJ8AZjfPmzqGkuxNCDFcRMejiWo/I1SslSfEQRw/RmzCP6YXQFBebOqZyDrrbzsfdl+erI4CCc5R7NyXguW7Chkq68ZiPOAi09StBBxswtWJ3FgIPBsljOjMbLO8Ze8Tf+KHIYbjnx8djUUPFf2bULO7L+cPtADVQ3ya44LHL7x8fJHvX+mRwiEVlcUK4m3txeOoF1mGPEXfeIqJFqAd97KWW0yMOz5fdce/FTThMmaT36Q43wGDbnUZCTe7L80Ar6kyyVT+IiG7P35FuIlE4kzzKHqL+NIKBDqBSpIe/Ewlq7copJSIM1u4l+SgVFlF7a15yp1mQdYCBemgxMxRyL4l4HcP21QeS/I0rmJFvbXQGMYalEMtQfrP+tCIG8bbskI9kpqYmH74R7sKYSSR1WAVacdvWAMcHYTZ4Dej9WmTTNtDuS7YLcqT4UOJms5s24DNuUGfC+pyVJWzUCKRR0E2J0XC/lJxj5n20RwwEuuha9Op4I0cVse1bE9f96pIDQiOnVYjcqVxW+01DtPbUq0TKkjo/Iii6FqaJAtghLBGlX2KY4xV0HMKrJLSMw6ElJHuoBUVyZ5ckRkEqlsfu6mEDoJjPzWJ6MkB3vP4U166ZKjerbCFolLmrbh6Gf4Ja+0jwOGGMUx57q2QHGO8K+UWUV7Qh1t2aoQL7nDBDXLekOPj3cJsj3kSn0C6FLkOf7ZL8OC3HAtUpZmlGgRVpeZeZLkt85Xco70uFj25lbevmWdZBZlcDpoMFk7hACCHBDna5oG2uCNZiByd51xPsnMHgnPFDYTDVhIG6y5MrbAzmZWUvY0QIX1nWtL/NOhRo/34xoDE/XOiDq7f88vDeKy+fVJ/HaG7Oo0gEhGEaV2n6vBQ/N2FRVWvX8Vjb4US8O8qtkVFkNLvID7dkizWpwsIPzg2PEAfi8Kj+rpd9kT7bptOIGWxX6LDHJwlhQvnr6745IG1P3aT/Vhv81QmOCzLB0bVtA9oWPKjPUmLOv52YFyt4Byk2saFGnAXJne8ObnG0kLtrI3cEbRpePOSiKsDiDMYRhiOVEiGP8HGc/j8qSWxn2mV1Qxa2p1CDqHTIvdXpSZ9llbnXVYPmPSYCEgzwp0wKaF+uoiJaPQmMk+//wcYsxtK9EeW+IW4kRr3hwMNGgWiemXBi/nbeagAblWL5CmQtaEylggy06scg5rSSKrzltS9vUhsoqQ1j+BzcZlCjv/KGaZ7dGdkpTIL1EYnIvM4fhEoiIC6MJsQeNpvIue6WRDNsfjuqAsjLHSSf/nBeiThPdJoBwS2S9n5gCspegh5/19Ul/uygJ3aRLVdxAFXbYo2o44TiiQMMzY/p79I+927ezEglrDuvtDYKwgNpZro4irglp4/Qr6ncBkpZdS2tZap28iQF4Y0pVDVsf9X2UZNulfhHggXABANuK3qrOVYa7VXhD4/9p0ySpGmxl9hdwpgfi1DP+v5edlXUnmuX2APHTk4qupll6KT0v/3IFcSsvJpY2SdujooJKjZliuOLeJmqGEVAoML3Gsfa9TEeIP36WyXfaQZZYbdNWiSUtaR0RZnBEdXsW6yiSzLgZIjnIMseRNZ/KuOFiF+cxGAtO8FgxuIJu2xiHh75yAWbf3VlrQl07QH0ACeckz4foC0NcrncmsgGuKhuawRwtt4xw2AjJl7IlvbWvDLyBGZpgB0vQIBAWn743jvQX0FZiSbJRBlJ2ThkVSyQcnBEuZ/APibD8RFwo/fMiabTW9zTBxhNvSvW/1NGi86avFOwVKQkUDpVc+YlDi0sxKWXjCYePfQvh28qHzO4ed17oKJapfwr/7c5lVIoUYeQ16RGDXcO8gLssXtxMCGeKC2rVxlM9nGqV4PTBKSGQ6i9XfgAuV+u4sFJXaRHvi8XbbEI56wREhULvidcxtOQUXI/lsDQq8FBomKf/FOXamOP14h2QpxcC9HerUGQGB6Un1g4RhN6psKGS8Mk8AmaH+D5ZfrkC5y837AqYSz/xZz8BjSDX7cE8U9qZhkZizjH0P2qD+FHbtST3RekQeO0R3w54VaOi2k/QsqGuxW9Qiy6uwZf+PDBsm2o3MTs5rX672dppXHIibd2E357Wawe0b2N8dw9x/UfO6ZyQIqVFNj1d67h0K9FtPlK88NBX/fppgcYSruiIFME5QfeG/Z+YH6MwYyybByuInLu7Y5sMDF14xPryZwWYPvVZdfqx0+aXy12VeqVsrhljT+I2iFNY+TBiGnvCo0KC/SNQ1nv8pKVeyQcNGl1h3NXOZz2XodTe6duwZWEPwH+A3Oq4OO3BlYIBUQBmAlgXUVk6aHAIdVr9BEmDfruZZ8fS3+FVy3NuPl/3NndV1/jwt9ueIlbnNSshDIkHcq1RA98jFdCi7Z9H68/hn3oEVn9h01ZTDi3SfEssM7fszrQ+eijuFXPgQcp6hbUzNU4F/v4LuM8uJqkFqdEQ6C3zGmGpLCUolyJcnfvO/KMPxurKjHGc2/ztXPG/LZVpbKON3VLarIIiqwgig7HcIzJG5Vr8F7cVS0iW6VqNm7H9ZTXOqFLgaB5ZalMv8XZAC3gOAJSEPRGL+iYTQj2609doRqMJpVH3wcOeVebXuAyuQE2UIlvphItVCaFQwKPjsocETXNX/gRHeGUEIT8e3Fm15f+RxyHuHqUaL6ro/Z5/IkN/hAgKsFKfXB+bvTXsjXdjM3jsZxfaH+qzrZu5Vy3/9zRvcwOPOMwPwxMUnbDUWVApYI9pHiC9g+Pb4xj+Ys49KKSBwrpLbanIH0UwdLCrtYslo+qdukjrRXSYVkKW8eBbgS0PCyJdt1oM4gfdlGej/uavoX+HyekujH8gvvM++ystFvj9b9jUq6/5ENipHs1YyV31rwqR/bE6kK09bpb7MTETfcSASM2y5WPfn/KvkQku37jXaEt9HXXk14psqBLEo7V8AMN/IcOdZYBcDMmkJWzEY5FGFUM0+ouu7QhGDQs5NSJm5Y46ysHYAhDdhHBib0AdwpLPRMjnzDlIgYVZtyRupLLGlqcTgBmK9FxBOTq187RYfNV2ymwc37S+wOOUo0WPxTgWDwWpgOU3+A9A1nnuhUssWnYKcPRL4wP0xFj1P7rwwWz8HdHBIyLAw5Ey9lGfMG9zMEDkloU0cNBNsIKr4g5g/jaPxcs7yNVmv/aUxCynJ4SVIZ3YiQmiWb2pAlLkADc7K1ph3eO0o4=
+              tasks:
+               - fetch:
+                  pipeline: gauge-build-new
+                  stage: sign
+                  job: windows
+                  source: deploy
+               - exec:
+                  command: /bin/sh
+                  arguments:
+                   - -c
+                   - (echo $(ls deploy/$repoName-*-linux.x86.zip | sed "s/^deploy\/$repoName-\([^;]*\)-linux.x86.zip/\1/") >> version)
+               - exec:
+                  working_directory: deploy
+                  command: /bin/sh
+                  arguments:
+                   - -c
+                   - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
+              artifacts:
+                - build:
+                    source: version
+      - website-update:
+          jobs:
+            update:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git clone git@github.com:getgauge/gauge.org.git
+                - fetch:
+                    pipeline: gauge-deploy-new
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
+                - exec:
+                    working_directory: gauge.org
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(cat ../version); echo -e "gauge: $version" > data/version.yml)
+                - exec:
+                    working_directory: gauge.org
+                    command: git
+                    arguments:
+                      - add
+                      - -u
+                - exec:
+                    working_directory: gauge.org
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (git commit -m "Updating gauge version number")
+                - exec:
+                    working_directory: gauge.org
+                    command: bundle
+                    arguments:
+                      - install
+                - exec:
+                    working_directory: gauge.org
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git push origin master
+      - docs:
+          jobs:
+            docs:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git clone git@github.com:getgauge/docs.getgauge.io.git)
+                - fetch:
+                    pipeline: gauge-deploy-new
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
+                - exec:
+                    working_directory: docs.getgauge.io
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(cat ../version); git checkout -b $version)
+                - exec:
+                    working_directory: docs.getgauge.io
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git push -u origin $version)
+      - brew:
+          clean_workspace: true
+          jobs:
+            release:
+              resources:
+                - darwin
+                - codesign
+              tasks:
+                - fetch:
+                    pipeline: gauge-deploy-new
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -O -L https://github.com/getgauge/gauge/archive/v`cat version`.tar.gz
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - shasum -a 256 v`cat version`.tar.gz | cut -d " " -f1 > sha && cat sha
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - git config --global user.name "gaugeci"
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - git config --global user.email "$GITHUB_EMAIL"
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - export BRANCH=gauge-`cat version` && cd /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core && git checkout . && git checkout master && (!(git show-ref --verify --quiet "refs/heads/$BRANCH") || git branch -D $BRANCH)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - brew update
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (brew uninstall gauge || true) && (brew install gauge || brew link --overwrite gauge)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - eval $(ssh-agent) && echo $GITHUB_SSH_PRIVATE_KEY | ssh-add - && ssh-add -L
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - brew bump-formula-pr --url=https://github.com/getgauge/gauge/archive/v`cat version`.tar.gz --sha256=`cat sha` --message="Created by a bot. Please cc getgauge/core on issues"  gauge
+      - choco:
+          clean_workspace: true
+          jobs:
+            release:
+              resources:
+                - choco
+              secure_variables:
+                apiKey: AES:o8CSdm0rHgpnxFeB4CWITA==:M44DH6hQ47o7qvmIWCOwlHVcWhMizrtPd+fkqrbIwqg2xsz0/NeAXJKeCXpbXAJz
+              tasks:
+                - fetch:
+                    pipeline: gauge-deploy-new
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
+                - exec:
+                    working_directory: chocolatey-packages\gauge
+                    command: powershell.exe
+                    arguments:
+                      - .\package.ps1
+                - exec:
+                    working_directory: chocolatey-packages\gauge
+                    command: powershell.exe
+                    arguments:
+                      - gc ..\..\version | %{ choco push "gauge.$_.nupkg" -k $env:apiKey }
+      - deb_deploy:
+          jobs:
+            push_deb_to_bintray:
+              elastic_profile_id: centos-all
+              environment_variables:
+                DISTRIBUTIONS: stable
+                COMPONENTS: main
+                REPO: gauge-deb
+                PACKAGE: gauge
+              secure_variables:
+                API_KEY: AES:d9ZrvOzo29WEGJIdhM6f1Q==:bBdAs9Hwttz5WQDx63tg0A6y8OKG0L8BJzwC/AtVrcbISfNqEpg4i4hSZz6SNofB
+                USER: AES:xmSAf3Msk8Ob3d0MJSwH+A==:4F8ALF3P/QH2yleP95b53Q==
+              tasks:
+                - fetch:
+                    pipeline: gauge-build-new
+                    stage: deb
+                    job: create_deb
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_deb_to_bintray.sh | sh)
+      - rpm_deploy:
+          jobs:
+            publish_rpm_to_bintray:
+              elastic_profile_id: centos-all
+              environment_variables:
+                BINTRAY_PACKAGE: gauge-stable
+              secure_variables:
+                API_KEY: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
+                USER: AES:qg02Ljr0wN6SQaf21wnrfg==:+SKgEbD6IcmSV5pjPr+YQg==
+              tasks:
+                - fetch:
+                    pipeline: gauge-build-new
+                    stage: rpm
+                    job: create_rpm
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_rpm_to_bintray.sh | sh)
+      - npm_deploy:
+          jobs:
+            publish_rpm_to_bintray:
+              elastic_profile_id: centos-all
+              secure_variables:
+                NPM_TOKEN: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
+              tasks:
+                - fetch:
+                    pipeline: gauge-build-new
+                    stage: rpm
+                    job: create_rpm
+                    source: deploy
+                - exec:
+                    working_directory: build/npm
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm version `cat ../../version`
+                - exec:
+                    working_directory: build/npm
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - echo
+                      - '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc
+                      - &&
+                      - npm
+                      - publish
+                      - --access=public
