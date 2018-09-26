@@ -5,8 +5,8 @@ pipelines:
       taiko:
         git: https://github.com/getgauge/taiko.git
       gauge:
-        pipeline: Gauge-Package
-        stage: sign
+        pipeline: Gauge-Build
+        stage: windows
     stages:
       - test:
           jobs:
@@ -119,9 +119,9 @@ pipelines:
                     arguments:
                       - install
                 - fetch:
-                    pipeline: Gauge-Package
-                    stage: sign
-                    job: windows
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
                     is_file: yes
                     source: test_installers/gauge-windows.x86_64.zip
                 - exec:

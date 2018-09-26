@@ -148,7 +148,7 @@ pipelines:
   Gauge-Deploy:
     group: Gauge
     materials:
-      Gauge-Package:
+      Gauge:
         pipeline: Gauge-Build
         stage: windows
       chocolatey-packages:
