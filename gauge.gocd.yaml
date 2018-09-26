@@ -76,6 +76,10 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/deploy/*
                   destination: deploy
+               - build:
+                  source: src/github.com/getgauge/gauge/build/npm/*
+                  destination: npm
+
       - deb:
           jobs:
             create_deb:
