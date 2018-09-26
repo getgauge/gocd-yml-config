@@ -169,8 +169,8 @@ pipelines:
               tasks:
                - fetch:
                   pipeline: gauge-build-new
-                  stage: sign
-                  job: windows
+                  stage: windows
+                  job: sign
                   source: deploy
                - exec:
                   command: /bin/sh
