@@ -79,7 +79,6 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/build/npm/*
                   destination: npm
-
       - deb:
           jobs:
             create_deb:
@@ -401,17 +400,18 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: gauge-build-new
-                    stage: rpm
-                    job: create_rpm
-                    source: deploy
+                    stage: package
+                    job: darwin_linux
+                    source: npm
+                    destination: npm
                 - exec:
-                    working_directory: build/npm
+                    working_directory: npm
                     command: /bin/sh
                     arguments:
                       - -c
                       - npm version `cat ../../version`
                 - exec:
-                    working_directory: build/npm
+                    working_directory: npm
                     command: /bin/sh
                     arguments:
                       - -c
