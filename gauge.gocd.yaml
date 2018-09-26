@@ -1,5 +1,5 @@
 pipelines:
-  gauge-build:
+  gauge-build-new:
     group: Gauge
     materials:
       gauge:
@@ -117,13 +117,13 @@ pipelines:
                 CERT_FILE: AES:ciq0hCGH4CCFjkQqnuhLiQ==:aJ9Ap2srncy1/VA97EDMnYHYcmBdgikjmL1vuuCfoW8lc+o5mjUzGXHE9LAQ3tc9
               tasks:
                - fetch:
-                  pipeline: gauge-build
+                  pipeline: gauge-build-new
                   stage: package
                   job: darwin_linux
                   source: bin
                   destination: src/github.com/getgauge/gauge/
                - fetch:
-                  pipeline: gauge-build
+                  pipeline: gauge-build-new
                   stage: package
                   job: darwin_linux
                   source: deploy
@@ -145,11 +145,11 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/test_installers/*
                   destination: test_installers
-  gauge-deploy:
+  gauge-deploy-new:
     group: Gauge
     materials:
       Gauge-Package:
-        pipeline: gauge-build
+        pipeline: gauge-build-new
         stage: windows
       chocolatey-packages:
         git: https://github.com/getgauge/chocolatey-packages
@@ -171,7 +171,7 @@ pipelines:
                 GITHUB_SSH_PRIVATE_KEY: AES:Ttll/Xj5Wu/ZYHsHCmPUnQ==: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
               tasks:
                - fetch:
-                  pipeline: gauge-build
+                  pipeline: gauge-build-new
                   stage: windows
                   job: sign
                   source: deploy
@@ -200,7 +200,7 @@ pipelines:
                       - -c
                       - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git clone git@github.com:getgauge/gauge.org.git
                 - fetch:
-                    pipeline: gauge-deploy
+                    pipeline: gauge-deploy-new
                     stage: github-release
                     job: draft
                     source: version
@@ -245,7 +245,7 @@ pipelines:
                       - -c
                       - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git clone git@github.com:getgauge/docs.getgauge.io.git)
                 - fetch:
-                    pipeline: gauge-deploy
+                    pipeline: gauge-deploy-new
                     stage: github-release
                     job: draft
                     source: version
@@ -271,7 +271,7 @@ pipelines:
                 - codesign
               tasks:
                 - fetch:
-                    pipeline: gauge-deploy
+                    pipeline: gauge-deploy-new
                     stage: github-release
                     job: draft
                     source: version
@@ -331,7 +331,7 @@ pipelines:
                 apiKey: AES:o8CSdm0rHgpnxFeB4CWITA==:M44DH6hQ47o7qvmIWCOwlHVcWhMizrtPd+fkqrbIwqg2xsz0/NeAXJKeCXpbXAJz
               tasks:
                 - fetch:
-                    pipeline: gauge-deploy
+                    pipeline: gauge-deploy-new
                     stage: github-release
                     job: draft
                     source: version
@@ -360,7 +360,7 @@ pipelines:
                 USER: AES:xmSAf3Msk8Ob3d0MJSwH+A==:4F8ALF3P/QH2yleP95b53Q==
               tasks:
                 - fetch:
-                    pipeline: gauge-build
+                    pipeline: gauge-build-new
                     stage: deb
                     job: create_deb
                     source: deploy
@@ -381,7 +381,7 @@ pipelines:
                 USER: AES:qg02Ljr0wN6SQaf21wnrfg==:+SKgEbD6IcmSV5pjPr+YQg==
               tasks:
                 - fetch:
-                    pipeline: gauge-build
+                    pipeline: gauge-build-new
                     stage: rpm
                     job: create_rpm
                     source: deploy
@@ -399,7 +399,7 @@ pipelines:
                 NPM_TOKEN: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
               tasks:
                 - fetch:
-                    pipeline: gauge-build
+                    pipeline: gauge-build-new
                     stage: package
                     job: darwin_linux
                     source: npm

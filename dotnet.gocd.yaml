@@ -48,7 +48,7 @@ pipelines:
         stage: artifact
       gauge:
         pipeline: Gauge-Package
-        stage: windows
+        stage: sign
     stages:
       - build:
           clean_workspace: true
@@ -61,8 +61,8 @@ pipelines:
               tasks:
                - fetch:
                    pipeline: Gauge-Package
-                   stage: windows
-                   job: sign
+                   stage: sign
+                   job: windows
                    is_file: yes
                    source: test_installers/gauge-windows.x86_64.zip
                - fetch:
@@ -124,8 +124,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: windows
-                    job: sign
+                    stage: sign
+                    job: windows
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
                 - fetch:
@@ -173,7 +173,7 @@ pipelines:
         stage: artifact
       gauge:
         pipeline: Gauge-Package
-        stage: windows
+        stage: sign
     stages:
       - build:
           clean_workspace: true
@@ -269,8 +269,8 @@ pipelines:
               tasks:
                 - fetch:
                     pipeline: Gauge-Package
-                    stage: windows
-                    job: sign
+                    stage: sign
+                    job: windows
                     is_file: yes
                     source: test_installers/gauge-darwin.x86_64.zip
                 - fetch:
