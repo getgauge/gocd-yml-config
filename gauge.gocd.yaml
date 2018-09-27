@@ -35,6 +35,7 @@ pipelines:
                    - ./src/github.com/getgauge/gauge/build/run.sh
                    - test
                - exec:
+                  run_if: any
                   command: touch
                   arguments:
                    - /vagrant/rollback.txt
