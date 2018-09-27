@@ -267,7 +267,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Build/Gauge-Deploy
+        pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -337,7 +337,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Build/Gauge-Deploy
+        pipeline: Gauge-Deploy
         stage: docs
       chocolatey-packages:
         git: https://github.com/getgauge/chocolatey-packages
@@ -376,7 +376,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Build/Gauge-Deploy
+        pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -397,7 +397,7 @@ pipelines:
                 USER: AES:xmSAf3Msk8Ob3d0MJSwH+A==:4F8ALF3P/QH2yleP95b53Q==
               tasks:
                 - fetch:
-                    pipeline: Gauge-Build
+                    pipeline: Gauge-Build/Gauge-Deploy
                     stage: deb
                     job: create_deb
                     source: deploy
@@ -411,7 +411,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Build/Gauge-Deploy
+        pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -429,7 +429,7 @@ pipelines:
                 USER: AES:qg02Ljr0wN6SQaf21wnrfg==:+SKgEbD6IcmSV5pjPr+YQg==
               tasks:
                 - fetch:
-                    pipeline: Gauge-Build
+                    pipeline: Gauge-Build/Gauge-Deploy
                     stage: rpm
                     job: create_rpm
                     source: deploy
@@ -443,7 +443,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Build/Gauge-Deploy
+        pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -458,7 +458,7 @@ pipelines:
                 NPM_TOKEN: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
               tasks:
                 - fetch:
-                    pipeline: Gauge-Build
+                    pipeline: Gauge-Build/Gauge-Deploy
                     stage: package
                     job: darwin_linux
                     source: npm
