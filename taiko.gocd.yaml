@@ -47,7 +47,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                      - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$(pwd)
                 - exec:
                     working_directory: js-taiko
                     command: npm
@@ -85,7 +85,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -SsL https://downloads.getgauge.io/stable | sh -s -- --location=$(pwd)
+                      - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$(pwd)
                 - exec:
                     working_directory: js-taiko
                     command: npm
