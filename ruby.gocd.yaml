@@ -1,6 +1,6 @@
 pipelines:
   Ruby-FT-new:
-    group: Ruby
+    group: Gauge-Ruby
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests
