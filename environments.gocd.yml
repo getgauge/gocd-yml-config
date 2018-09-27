@@ -16,3 +16,4 @@ environments:
       - Gauge-Build
       - Gauge-Deploy
       - Ruby-FT-new
+      - Taiko
