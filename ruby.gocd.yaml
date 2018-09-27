@@ -1,0 +1,129 @@
+pipelines:
+  Ruby-FT-new:
+    group: Ruby
+    materials:
+      gauge-tests:
+        git: https://github.com/getgauge/gauge-tests
+        destination: gauge-tests
+        shallow_clone: true
+      gauge-package:
+        pipeline: Gauge-Build
+        stage: windows
+      Ruby-Package:
+        pipeline: Ruby-Package
+        stage: package
+      html-Package:
+        pipeline: HTML_Report
+        stage: package
+      xml-Package:
+        pipeline: XML_Report
+        stage: package
+    environment_variables:
+      enable_multithreading: true
+    stages:
+      - specs:
+          environment_variables:
+            language: ruby
+            TAGS: ruby
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GOPATH: /tmp
+                GOBIN: /tmp/bin
+                GAUGE_ROOT: /tmp
+                GAUGE_SOURCE_BUILD: true
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge install java)
+                - fetch:
+                    pipeline: Ruby-Package
+                    stage: package
+                    job: package
+                    source: deploy
+                - fetch:
+                    pipeline: Ruby-Package
+                    stage: package
+                    job: package
+                    source: build
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rbenv local 2.3.0 && gem install bundler
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-ruby-*-darwin.x86_64.zip | sed "s/^gauge-ruby-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install ruby -f gauge-ruby-$version-darwin.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall xml-report;sudo $GAUGE_ROOT/bin/gauge uninstall html-report)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: build
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby"
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-ruby/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-ruby/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+
