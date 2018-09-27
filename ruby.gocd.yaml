@@ -98,7 +98,7 @@ pipelines:
                     pipeline:  XML_Report
                     stage: package
                     job: package
-                    source: build
+                    source: deploy
                 - exec:
                     working_directory: deploy
                     command: /bin/sh
