@@ -15,5 +15,10 @@ environments:
       - dotnet-LSP
       - Gauge-Build
       - Gauge-Deploy
+      - Gauge-Deploy-Brew
+      - Gauge-Deploy-Choco
+      - Gauge-Deploy-Deb
+      - Gauge-Deploy-RPM
+      - Gauge-Deploy-NPM
       - Ruby-FT-new
       - Taiko

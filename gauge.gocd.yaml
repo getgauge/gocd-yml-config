@@ -263,6 +263,17 @@ pipelines:
                     arguments:
                       - -c
                       - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git push -u origin $version)
+  Gauge-Deploy-Brew:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
       - brew:
           clean_workspace: true
           jobs:
@@ -322,6 +333,20 @@ pipelines:
                     arguments:
                       - -c
                       - brew bump-formula-pr --url=https://github.com/getgauge/gauge/archive/v`cat version`.tar.gz --sha256=`cat sha` --message="Created by a bot. Please cc getgauge/core on issues"  gauge
+  Gauge-Deploy-Choco:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+      chocolatey-packages:
+        git: https://github.com/getgauge/chocolatey-packages
+        shallow_clone: true
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
       - choco:
           clean_workspace: true
           jobs:
@@ -347,6 +372,17 @@ pipelines:
                     command: powershell.exe
                     arguments:
                       - gc ..\..\version | %{ choco push "gauge.$_.nupkg" -k $env:apiKey }
+  Gauge-Deploy-Deb:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
       - deb_deploy:
           jobs:
             push_deb_to_bintray:
@@ -371,6 +407,17 @@ pipelines:
                     arguments:
                       - -c
                       - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_deb_to_bintray.sh | sh)
+  Gauge-Deploy-RPM:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
       - rpm_deploy:
           jobs:
             publish_rpm_to_bintray:
@@ -392,6 +439,17 @@ pipelines:
                     arguments:
                       - -c
                       - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_rpm_to_bintray.sh | sh)
+  Gauge-Deploy-NPM:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
       - npm_deploy:
           jobs:
             publish_rpm_to_bintray:
