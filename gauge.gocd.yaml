@@ -267,7 +267,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        pipeline: Gauge-Build/Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -337,7 +337,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        pipeline: Gauge-Build/Gauge-Deploy
         stage: docs
       chocolatey-packages:
         git: https://github.com/getgauge/chocolatey-packages
@@ -376,7 +376,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        pipeline: Gauge-Build/Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -411,7 +411,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        pipeline: Gauge-Build/Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
@@ -443,7 +443,7 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        pipeline: Gauge-Build/Gauge-Deploy
         stage: docs
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
