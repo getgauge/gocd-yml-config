@@ -20,6 +20,7 @@ pipelines:
         stage: package
     environment_variables:
       enable_multithreading: true
+      GAUGE_SOURCE_BUILD: true
     stages:
       - specs:
           environment_variables:
@@ -233,6 +234,8 @@ pipelines:
                     source: gauge-tests/testLogs
                     destination: test-logs
   Ruby-LSP-tests-new:
+    environment_variables:
+      GAUGE_SOURCE_BUILD: true
     group: Gauge-Ruby
     materials:
       gauge-tests:
