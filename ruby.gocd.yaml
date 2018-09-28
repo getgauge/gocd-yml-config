@@ -1,5 +1,5 @@
 pipelines:
-  Ruby-FT-new:
+  Ruby-FT:
     group: Gauge-Ruby
     materials:
       gauge-tests:
@@ -233,7 +233,7 @@ pipelines:
                 - build:
                     source: gauge-tests/testLogs
                     destination: test-logs
-  Ruby-LSP-tests-new:
+  Ruby-LSP-Tests:
     environment_variables:
       GAUGE_SOURCE_BUILD: true
     group: Gauge-Ruby
