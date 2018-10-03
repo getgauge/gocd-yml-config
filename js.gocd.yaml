@@ -101,10 +101,10 @@ pipelines:
                     - /vagrant/rollback.txt
               artifacts:
                 - build:
-                    source: gauge-tests/reports-ruby/html-report/*
+                    source: gauge-tests/reports-js/html-report/*
                     destination: html-report
                 - build:
-                    source: gauge-tests/reports-ruby/xml-report/*
+                    source: gauge-tests/reports-js/xml-report/*
                     destination: xml-report
                 - build:
                     source: gauge-tests/testLogs
@@ -177,10 +177,10 @@ pipelines:
                       - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
               artifacts:
                 - build:
-                    source: gauge-tests/reports-ruby/html-report/*
+                    source: gauge-tests/reports-js/html-report/*
                     destination: html-report
                 - build:
-                    source: gauge-tests/reports-ruby/xml-report/*
+                    source: gauge-tests/reports-js/xml-report/*
                     destination: xml-report
                 - build:
                     source: gauge-tests/testLogs
@@ -254,10 +254,10 @@ pipelines:
                       - path %GAUGE_ROOT%;%PATH% & mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
               artifacts:
                 - build:
-                    source: gauge-tests/reports-ruby/html-report/*
+                    source: gauge-tests/reports-js/html-report/*
                     destination: html-report
                 - build:
-                    source: gauge-tests/reports-ruby/xml-report/*
+                    source: gauge-tests/reports-js/xml-report/*
                     destination: xml-report
                 - build:
                     source: gauge-tests/testLogs

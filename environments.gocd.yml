@@ -22,4 +22,5 @@ environments:
       - Gauge-Deploy-NPM
       - Ruby-FT
       - Ruby-LSP-Tests
+      - JS-FT-new
       - Taiko
