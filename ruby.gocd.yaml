@@ -25,7 +25,6 @@ pipelines:
       - specs:
           environment_variables:
             language: ruby
-            TAGS: ruby
           jobs:
             darwin:
               resources:
@@ -119,7 +118,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby"
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
                 - exec:
                     run_if: any
                     command: touch
@@ -222,7 +221,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby"
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
               artifacts:
                 - build:
                     source: gauge-tests/reports-ruby/html-report/*
@@ -252,7 +251,6 @@ pipelines:
           clean_workspace: true
           environment_variables:
             language: ruby
-            TAGS: ruby
           jobs:
             darwin:
               resources:
@@ -405,7 +403,6 @@ pipelines:
           clean_workspace: true
           environment_variables:
             language: ruby
-            TAGS: ruby
           jobs:
             darwin:
               resources:

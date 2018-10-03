@@ -1,0 +1,264 @@
+pipelines:
+  JS-FT-new:
+    group: Gauge-JS
+    materials:
+      gauge-tests:
+        git: https://github.com/getgauge/gauge-tests
+        destination: gauge-tests
+        shallow_clone: true
+      gauge-package:
+        pipeline: Gauge-Build
+        stage: windows
+      JS-Build:
+        pipeline: JS-Build
+        stage: package
+      html-Package:
+        pipeline: HTML_Report
+        stage: package
+      xml-Package:
+        pipeline: XML_Report
+        stage: package
+    environment_variables:
+      enable_multithreading: true
+    stages:
+      - specs:
+          clean_workspace: true
+          environment_variables:
+            language: js
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job:  package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-ruby/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-ruby/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+            linux:
+              elastic_profile_id: centos-jdk-mvn-node
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline:  JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-ruby/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-ruby/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+            windows:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:\gauge_root
+                GAUGE_HOME: C:\gauge_plugins
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline:  JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\\gauge install html-report -f %f"
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\\gauge install xml-report -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
+                - exec:
+                    working_directory: gauge-tests
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/bin/gauge install && $GAUGE_ROOT/bin/gauge version"
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-ruby/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-ruby/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
