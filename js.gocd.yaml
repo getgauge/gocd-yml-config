@@ -48,7 +48,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js && $GAUGE_ROOT/bin/gauge uninstall html-report && $GAUGE_ROOT/bin/gauge uninstall xml-report)
+                      - ($GAUGE_ROOT/bin/gauge uninstall java && $GAUGE_ROOT/bin/gauge uninstall js && $GAUGE_ROOT/bin/gauge uninstall html-report && $GAUGE_ROOT/bin/gauge uninstall xml-report)
                 - fetch:
                     pipeline: JS-Build
                     stage: package
