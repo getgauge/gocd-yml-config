@@ -250,7 +250,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%\\gauge install && $GAUGE_ROOT\\gauge version"
+                      - "%GAUGE_ROOT%\\gauge install && %GAUGE_ROOT%\\gauge version"
                 - exec:
                     working_directory: gauge-tests
                     command: /bin/sh
