@@ -44,6 +44,11 @@ pipelines:
                     arguments:
                       - -c
                       - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js && $GAUGE_ROOT/bin/gauge uninstall html-report && $GAUGE_ROOT/bin/gauge uninstall xml-report)
                 - fetch:
                     pipeline: JS-Build
                     stage: package
