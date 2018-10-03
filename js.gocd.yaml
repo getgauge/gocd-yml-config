@@ -98,7 +98,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
                 - exec:
                     run_if: any
                     command: touch
@@ -179,7 +179,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
               artifacts:
                 - build:
                     source: gauge-tests/reports-js/html-report/*
@@ -256,7 +256,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean install -Denv=ci-js -Dtags="js" -DinParallel=true
+                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
               artifacts:
                 - build:
                     source: gauge-tests/reports-js/html-report/*

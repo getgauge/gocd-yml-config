@@ -118,7 +118,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
+                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q mvn -q clean test-compile gauge:execute -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
                 - exec:
                     run_if: any
                     command: touch
@@ -221,7 +221,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
+                      - PATH=$GAUGE_PREFIX/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
               artifacts:
                 - build:
                     source: gauge-tests/reports-ruby/html-report/*
