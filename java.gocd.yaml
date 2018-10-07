@@ -1,0 +1,346 @@
+pipelines:
+  java-build-new:
+    group: Gauge-Java
+    materials:
+      java:
+        git: https://github.com/getgauge/gauge-java.git
+    stages:
+      - build:
+          jobs:
+            compile_and_unit_test:
+              resources:
+                - UT
+                - darwin
+              tasks:
+               - exec:
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && go run make.go --all-platforms
+      - sign:
+          jobs:
+            sign-exe:
+              resoureces:
+                - sign
+              tasks:
+                - fetch:
+                    pipeline: Java-Build
+                    stage: build
+                    job: compile_and_unit_test
+                    source: gauge-java
+                - exec:
+                    command: powershell.exe
+                    arguments:
+                      - /c
+                      - signtool.exe sign /f "$env:CERT_FILE_PATH" /p "$env:CERT_FILE_PWD" bin\windows_386\gauge-java.exe
+                - exec:
+                    command: powershell.exe
+                    arguments:
+                      - /c
+                      - signtool.exe sign /f "$env:CERT_FILE_PATH" /p "$env:CERT_FILE_PWD" bin\windows_amd64\gauge-java.exe
+              artifacts:
+                - build:
+                    source: gauge-java/*
+                    destination: gauge-java
+      - package:
+          jobs:
+            distro:
+              elastic_profile_id: centos-all
+              tasks:
+                - fetch:
+                    pipeline: Java-Package
+                    stage: sign
+                    job: sign-exe
+                    source: gauge-java
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (chmod +x bin/*/*)
+                - exec:
+                    command: go
+                    arguments:
+                      - run
+                      - make.go
+                      - --distro
+                      - --all-platforms
+              artifacts:
+                - build:
+                    source: gauge-java/deploy/*
+                    destination: deploy
+  java-FT-new:
+    group: Gauge-Java
+    materials:
+      gauge-tests:
+        git: https://github.com/getgauge/gauge-tests.git
+      package:
+        pipeline: java-package
+        stage: package
+      gauge:
+        pipeline: Gauge-Build
+        stage: windows
+      html-report:
+        pipeline: HTML_Report
+        stage: package
+      xml-report:
+        pipeline: XML_Report
+        stage: package
+    stages:
+      - specs:
+          clean_workspace: true
+          jobs:
+            darwin:
+              environment_variables:
+                GOPATH: /tmp
+                GOBIN: /tmp/bin
+                GAUGE_ROOT: /tmp
+                GAUGE_PLUGINS: ""
+              resources:
+                - FT
+                - darwin
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (rm -r $GOPATH/bin | ls)
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall java)
+                - fetch:
+                    pipeline: Java-Package
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                    - -c
+                    - (version=$(ls gauge-java-*-darwin.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-darwin.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (sudo $GAUGE_ROOT/bin/gauge uninstall html-report)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                    - -c
+                    - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - ($GAUGE_ROOT/bin/gauge uninstall xml-report)
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="java"
+                - exec:
+                    command: touch
+                    arguments: /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-java/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-java/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+            linux:
+              environment_variables:
+                GOPATH: /tmp
+                GOBIN: /tmp/bin
+                GAUGE_ROOT: /tmp
+                GAUGE_PREFIX: /tmp
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/pkg | ls)
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    source: test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      -  -c 
+                      - ($GAUGE_PREFIX/bin/gauge uninstall java;$GAUGE_PREFIX/bin/gauge uninstall html-report;$GAUGE_PREFIX/bin/gauge uninstall xml-report)
+                - fetch:
+                    pipeline:  Java-Package
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)                                  
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c 
+                      - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-java -Dtags="java" -DinParallel=true -Dnodes=2
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-java/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-java/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+            windows:
+              environment_variables:
+                GOPATH: C:/gauge/
+                GOBIN: C:/gauge/bin
+                GAUGE_ROOT: C:/gauge_root
+                GAUGE_HOME: C:\gauge-plugins
+              elastic_profile_id: windows-all
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Package
+                    stage: sign
+                    job: windows
+                    source: test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c 
+                      - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c 
+                      - %GAUGE_ROOT%\gauge
+                      - uninstall
+                      - java
+                - fetch:
+                    pipeline: Java-Package
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      -  /c 
+                      - "for %f in (gauge-java-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install java -f %f"
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c 
+                      - "%GAUGE_ROOT%\gauge uninstall html-report"
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c 
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install html-report -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%\gauge uninstall xml-report"
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install xml-report -f %f"
+                - exec:
+                    working_directory: gauge-tests
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge version & mvn clean install -q -Denv=ci-java -Dtags="java" -DinParallel=true -Dnodes=2
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-java/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-java/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs

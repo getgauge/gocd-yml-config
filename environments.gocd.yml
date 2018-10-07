@@ -24,3 +24,5 @@ environments:
       - Ruby-LSP-Tests
       - JS-FT-new
       - Taiko
+      - java-build-new
+      - java-FT-new
