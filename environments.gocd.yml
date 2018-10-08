@@ -22,7 +22,7 @@ environments:
       - Gauge-Deploy-NPM
       - Ruby-FT
       - Ruby-LSP-Tests
-      - JS-FT-new
+      - JS-FT
       - Taiko
       - Java-Build-New
       - Java-FT-New
