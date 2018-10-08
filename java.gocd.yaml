@@ -171,7 +171,8 @@ pipelines:
                       - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="java"
                 - exec:
                     command: touch
-                    arguments: /vagrant/rollback.txt
+                    arguments:
+                      - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: gauge-tests/reports-java/html-report/*
@@ -209,7 +210,7 @@ pipelines:
                 - exec:
                     command: /bin/sh
                     arguments:
-                      -  -c 
+                      - -c 
                       - ($GAUGE_PREFIX/bin/gauge uninstall java;$GAUGE_PREFIX/bin/gauge uninstall html-report;$GAUGE_PREFIX/bin/gauge uninstall xml-report)
                 - fetch:
                     pipeline:  Java-Package
