@@ -321,7 +321,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install js -f gauge-js-$version.zip)
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -377,7 +377,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install js -f gauge-js-$version.zip)
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -494,7 +494,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install js -f gauge-js-$version.zip)
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -550,7 +550,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install js -f gauge-js-$version.zip)
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
