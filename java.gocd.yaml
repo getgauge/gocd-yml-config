@@ -265,7 +265,7 @@ pipelines:
                 GOPATH: C:/gauge/
                 GOBIN: C:/gauge/bin
                 GAUGE_ROOT: C:/gauge_root
-                GAUGE_HOME: C:\gauge-plugins
+                GAUGE_HOME: C:/gauge-plugins
               elastic_profile_id: windows-all
               tasks:
                 - fetch:
@@ -283,7 +283,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c 
-                      - %GAUGE_ROOT%\gauge
+                      - "%GAUGE_ROOT%/gauge"
                       - uninstall
                       - java
                 - fetch:
@@ -296,7 +296,7 @@ pipelines:
                     command: cmd
                     arguments:
                       -  /c 
-                      - "for %f in (gauge-java-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install java -f %f"
+                      - "for %f in (gauge-java-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install java -f %f"
                 - fetch:
                     pipeline: HTML_Report
                     stage: package
@@ -306,18 +306,18 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c 
-                      - "%GAUGE_ROOT%\gauge uninstall html-report"
+                      - "%GAUGE_ROOT%/gauge uninstall html-report"
                 - exec:
                     working_directory: deploy
                     command: cmd
                     arguments:
                       - /c 
-                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install html-report -f %f"
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
                 - exec:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%\gauge uninstall xml-report"
+                      - "%GAUGE_ROOT%/gauge uninstall xml-report"
                 - fetch:
                     pipeline: XML_Report
                     stage: package
@@ -327,7 +327,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\gauge install xml-report -f %f"
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
                 - exec:
                     working_directory: gauge-tests
                     command: cmd
