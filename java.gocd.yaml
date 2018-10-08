@@ -1,5 +1,5 @@
 pipelines:
-  java-build-new:
+  Java-Build-New:
     group: Gauge-Java
     materials:
       java:
@@ -24,7 +24,7 @@ pipelines:
                 - sign
               tasks:
                 - fetch:
-                    pipeline: Java-Build
+                    pipeline: Java-Build-New
                     stage: build
                     job: compile_and_unit_test
                     source: gauge-java
@@ -48,7 +48,7 @@ pipelines:
               elastic_profile_id: centos-all
               tasks:
                 - fetch:
-                    pipeline: Java-Package
+                    pipeline: Java-Build-New
                     stage: sign
                     job: sign-exe
                     source: gauge-java
@@ -68,13 +68,13 @@ pipelines:
                 - build:
                     source: gauge-java/deploy/*
                     destination: deploy
-  java-FT-new:
+  Java-FT-New:
     group: Gauge-Java
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
       package:
-        pipeline: java-package
+        pipeline: Java-Build-New
         stage: package
       gauge:
         pipeline: Gauge-Build
@@ -105,7 +105,7 @@ pipelines:
                       - -c
                       - (rm -r $GOPATH/bin | ls)
                 - fetch:
-                    pipeline: Gauge-Package
+                    pipeline: Gauge-Build
                     stage: sign
                     job: windows
                     source: test_installers/gauge-darwin.x86_64.zip
@@ -121,7 +121,7 @@ pipelines:
                       - -c
                       - ($GAUGE_ROOT/bin/gauge uninstall java)
                 - fetch:
-                    pipeline: Java-Package
+                    pipeline: Java-Build-New
                     stage: package
                     job: distro
                     source: deploy
@@ -197,7 +197,7 @@ pipelines:
                       - -c 
                       - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/pkg | ls)
                 - fetch:
-                    pipeline: Gauge-Package
+                    pipeline: Gauge-Build
                     stage: sign
                     job: windows
                     source: test_installers/gauge-linux.x86_64.zip
@@ -213,7 +213,7 @@ pipelines:
                       - -c 
                       - ($GAUGE_PREFIX/bin/gauge uninstall java;$GAUGE_PREFIX/bin/gauge uninstall html-report;$GAUGE_PREFIX/bin/gauge uninstall xml-report)
                 - fetch:
-                    pipeline:  Java-Package
+                    pipeline:  Java-Build-New
                     stage: package
                     job: distro
                     source: deploy
@@ -270,7 +270,7 @@ pipelines:
               elastic_profile_id: windows-all
               tasks:
                 - fetch:
-                    pipeline: Gauge-Package
+                    pipeline: Gauge-Build
                     stage: sign
                     job: windows
                     source: test_installers/gauge-windows.x86_64.zip
@@ -288,7 +288,7 @@ pipelines:
                       - uninstall
                       - java
                 - fetch:
-                    pipeline: Java-Package
+                    pipeline: Java-Build-New
                     stage: package
                     job: distro
                     source: deploy
