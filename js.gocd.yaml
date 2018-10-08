@@ -253,9 +253,9 @@ pipelines:
                       - "%GAUGE_ROOT%\\gauge install && %GAUGE_ROOT%\\gauge version"
                 - exec:
                     working_directory: gauge-tests
-                    command: /bin/sh
+                    command: cmd
                     arguments:
-                      - -c
+                      - /c
                       - path %GAUGE_ROOT%;%PATH% & mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
               artifacts:
                 - build:
