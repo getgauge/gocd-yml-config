@@ -36,11 +36,13 @@ pipelines:
                     job: compile_and_unit_test
                     source: gauge-java
                 - exec:
+                    working_directory: gauge-java
                     command: powershell.exe
                     arguments:
                       - /c
                       - signtool.exe sign /f "$env:CERT_FILE_PATH" /p "$env:CERT_FILE_PWD" bin\windows_386\gauge-java.exe
                 - exec:
+                    working_directory: gauge-java
                     command: powershell.exe
                     arguments:
                       - /c
@@ -60,11 +62,13 @@ pipelines:
                     job: sign-exe
                     source: gauge-java
                 - exec:
+                    working_directory: gauge-java
                     command: /bin/sh
                     arguments:
                       - -c
                       - (chmod +x bin/*/*)
                 - exec:
+                    working_directory: gauge-java
                     command: go
                     arguments:
                       - run
