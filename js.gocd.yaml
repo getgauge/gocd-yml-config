@@ -267,7 +267,7 @@ pipelines:
                 - build:
                     source: gauge-tests/testLogs
                     destination: test-logs
-  JS-LSP-Tests-new:
+  JS-LSP-Tests:
     group: Gauge-JS
     materials:
       gauge-tests:

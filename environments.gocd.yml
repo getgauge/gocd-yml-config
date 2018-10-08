@@ -23,6 +23,7 @@ environments:
       - Ruby-FT
       - Ruby-LSP-Tests
       - JS-FT
+      - JS-LSP-Tests
       - Taiko
       - Java-Build-New
       - Java-FT-New
