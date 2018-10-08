@@ -81,9 +81,11 @@ pipelines:
                     destination: deploy
   Java-FT-New:
     group: Gauge-Java
+    enable_multithreading: true
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
+        destination: gauge-tests
       package:
         pipeline: Java-Build-New
         stage: package
