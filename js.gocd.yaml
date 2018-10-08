@@ -443,7 +443,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/bin/gauge version"
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -616,7 +616,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/bin/gauge version"
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
                     command: /bin/sh
                     arguments:
