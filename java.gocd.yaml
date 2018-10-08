@@ -352,7 +352,7 @@ pipelines:
                 - build:
                     source: gauge-tests/testLogs
                     destination: test-logs
-  java-deploy:
+  Java-Deploy-New:
     group: Gauge-Java-New
     materials:
       Java-Package:
