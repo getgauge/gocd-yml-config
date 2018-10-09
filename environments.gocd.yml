@@ -12,6 +12,7 @@ environments:
       - gauge-proto
       - CSharp-Lib
       - CSharp-Core
+      - Csharp-FT-New
       - dotnet-LSP
       - Gauge-Build
       - Gauge-Deploy
