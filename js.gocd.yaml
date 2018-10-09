@@ -270,7 +270,7 @@ pipelines:
   JS-LSP-Tests:
     group: Gauge-JS
     materials:
-      gauge-tests:
+      gauge-lsp-tests:
         git: https://github.com/getgauge/gauge-lsp-tests
         shallow_clone: true
       gauge-package:

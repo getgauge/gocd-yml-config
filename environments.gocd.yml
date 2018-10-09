@@ -28,3 +28,5 @@ environments:
       - Taiko
       - Java-Build-New
       - Java-FT-New
+      - VSCode-Build
+      - VSCode-Tests
