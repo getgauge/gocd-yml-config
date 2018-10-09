@@ -133,11 +133,12 @@ pipelines:
           jobs:
             windows:
               environment_variables:
-                GOPATH: C:/gauge/
-                GOBIN: C:/gauge/bin
                 GAUGE_ROOT: C:/gauge_root
-                GAUGE_HOME: C:/gauge-plugins
-              elastic_profile_id: windows-all
+                GOPATH: C:/gauge
+                GAUGE_HOME: C:/gauge_plugins
+                JAVA_HOME: C:/Program Files/Java/jdk1.8.0_181
+              resources:
+                - windows
               Reports: reports-csharp/html-report/index.html
               tasks:
                 - fetch:
@@ -151,6 +152,25 @@ pipelines:
                     arguments:
                       - /c
                       - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                - exec:
+                    command: echo
+                    arguments:
+                      - "%JAVA_HOME%"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "if exist C:/gauge/src/ rmdir C:/gauge/src /s /q"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "if exist C:/gauge/pkg/ rmdir C:/gauge/pkg /s /q"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall csharp"
                 - fetch:
                     pipeline: Csharp-Package
                     stage: package
@@ -167,6 +187,11 @@ pipelines:
                     stage: package
                     job: package
                     source: deploy
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall html-report && %GAUGE_ROOT%/gauge uninstall xml-report"
                 - exec:
                     working_directory: deploy
                     command: cmd
@@ -189,6 +214,11 @@ pipelines:
                     arguments:
                       - /c
                       -  "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall java"
                 - exec:
                     command: cmd
                     arguments:
@@ -219,6 +249,11 @@ pipelines:
                 GOBIN: /tmp/bin
                 GAUGE_PREFIX: /tmp
               tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/bin | ls)
                 - fetch:
                     pipeline: Gauge-Build
                     stage: windows
@@ -230,6 +265,11 @@ pipelines:
                     arguments:
                       - -c
                       - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_PREFIX/bin/gauge uninstall csharp; $GAUGE_PREFIX/bin/gauge uninstall html-report; $GAUGE_PREFIX/bin/gauge uninstall xml-report)
                 - fetch:
                     pipeline: Csharp-Package
                     stage: package
