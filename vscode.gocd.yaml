@@ -84,7 +84,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp:$PATH xvfb-run npm test
+                      - PATH=$GAUGE_ROOT/bin:$PATH xvfb-run npm test
             darwin:
               resources:
                 - UT
@@ -129,7 +129,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp:$PATH npm test
+                      - PATH=$GAUGE_ROOT/bin:$PATH npm test
                 - exec:
                     run_if: any
                     command: touch
@@ -171,7 +171,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - rmdir /S node_modules & npm run build
+                      - rmdir /S /Q node_modules & npm run build
                 - exec:
                     working_directory: gauge-vscode
                     command: cmd
