@@ -365,12 +365,6 @@ pipelines:
   Java-Deploy-New:
     group: Gauge-Java
     materials:
-      Java-Build:
-        pipeline: Java-Build-New
-        stage: build
-      Java-FT:
-        pipeline: Java-FT-New
-        stage: specs
       Java-Package:
         pipeline: Java-Build-New
         stage: package
