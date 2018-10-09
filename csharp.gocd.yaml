@@ -130,202 +130,203 @@ pipelines:
           environment_variables:
             language: csharp
             TAGS: csharp
-          windows:
-            environment_variables:
-              GAUGE_ROOT: C:/gauge_root
-              GOPATH: C:/gauge
-              GAUGE_HOME: C:/gauge_plugins
-              JAVA_HOME: C:/Program Files/Java/jdk1.8.0_181
-            resources:
-              - windows
-            Reports: reports-csharp/html-report/index.html
-            tasks:
-              - fetch:
-                  pipeline: Gauge-Build
-                  stage: windows
-                  job: sign
-                  source: test_installers/gauge-windows.x86_64.zip
-                  is_file: yes
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
-              - exec:
-                  command: echo
-                  arguments:
-                    - "%JAVA_HOME%"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "if exist C:/gauge/src/ rmdir C:/gauge/src /s /q"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "if exist C:/gauge/pkg/ rmdir C:/gauge/pkg /s /q"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "%GAUGE_ROOT%/gauge uninstall csharp"
-              - fetch:
-                  pipeline: Csharp-Package
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  working_directory: deploy
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "for %f in (gauge-csharp-*.zip) do %GAUGE_ROOT%/gauge install csharp -f %f"
-              - fetch:
-                  pipeline: HTML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "%GAUGE_ROOT%/gauge uninstall html-report && %GAUGE_ROOT%/gauge uninstall xml-report"
-              - exec:
-                  working_directory: deploy
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
-              - fetch:
-                  pipeline: XML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  working_directory: deploy
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    -  "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "%GAUGE_ROOT%/gauge uninstall java"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "%GAUGE_ROOT%/gauge install java"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - "%GAUGE_ROOT%/gauge -v"
-              - exec:
-                  command: cmd
-                  arguments:
-                    - /c
-                    - path %GAUGE_ROOT%;%PATH% & mvn -q clean -e test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
-            artifacts:
-              - build:
-                  source: reports-csharp/html-report/*
-                  destination: html-report
-              - build:
-                  source: reports-csharp/xml-report/*
-                  destination: xml-report
-          linux:
-            elastic_profile_id: centos-all
-            environment_variables:
-              GAUGE_ROOT: /tmp
-              GOPATH: /tmp
-              GOBIN: /tmp/bin
-              GAUGE_PREFIX: /tmp
-            tasks:
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/bin | ls)
-              - fetch:
-                  pipeline: Gauge-Build
-                  stage: windows
-                  job: sign
-                  source: test_installers/gauge-linux.x86_64.zip
-                  is_file: yes
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - ($GAUGE_PREFIX/bin/gauge uninstall csharp; $GAUGE_PREFIX/bin/gauge uninstall html-report; $GAUGE_PREFIX/bin/gauge uninstall xml-report)
-              - fetch:
-                  pipeline: Csharp-Package
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  working_directory: deploy
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - (version=$(ls gauge-csharp-*.zip | sed "s/^gauge-csharp-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install csharp -f gauge-csharp-$version.zip)
-              - fetch:
-                  pipeline: HTML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  working_directory: deploy
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
-              - fetch:
-                  pipeline: XML_Report
-                  stage: package
-                  job: package
-                  source: deploy
-              - exec:
-                  working_directory: deploy
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - echo "gauge_repository_url = https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/" >> ~/.gauge/config/gauge.properties
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - $GAUGE_PREFIX/bin/gauge install
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - $GAUGE_PREFIX/bin/gauge -v
-              - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - PATH=/tmp/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
-            artifacts:
-              - build:
-                  source: reports-csharp/html-report/*
-                  destination: html-report
-              - build:
-                  source: reports-csharp/xml-report/*
-                  destination: xml-report
+          jobs:
+            windows:
+              environment_variables:
+                GAUGE_ROOT: C:/gauge_root
+                GOPATH: C:/gauge
+                GAUGE_HOME: C:/gauge_plugins
+                JAVA_HOME: C:/Program Files/Java/jdk1.8.0_181
+              resources:
+                - windows
+              Reports: reports-csharp/html-report/index.html
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                - exec:
+                    command: echo
+                    arguments:
+                      - "%JAVA_HOME%"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "if exist C:/gauge/src/ rmdir C:/gauge/src /s /q"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "if exist C:/gauge/pkg/ rmdir C:/gauge/pkg /s /q"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall csharp"
+                - fetch:
+                    pipeline: Csharp-Package
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (gauge-csharp-*.zip) do %GAUGE_ROOT%/gauge install csharp -f %f"
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall html-report && %GAUGE_ROOT%/gauge uninstall xml-report"
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      -  "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge uninstall java"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install java"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge -v"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean -e test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
+              artifacts:
+                - build:
+                    source: reports-csharp/html-report/*
+                    destination: html-report
+                - build:
+                    source: reports-csharp/xml-report/*
+                    destination: xml-report
+            linux:
+              elastic_profile_id: centos-all
+              environment_variables:
+                GAUGE_ROOT: /tmp
+                GOPATH: /tmp
+                GOBIN: /tmp/bin
+                GAUGE_PREFIX: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/bin | ls)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_PREFIX/bin/gauge uninstall csharp; $GAUGE_PREFIX/bin/gauge uninstall html-report; $GAUGE_PREFIX/bin/gauge uninstall xml-report)
+                - fetch:
+                    pipeline: Csharp-Package
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-csharp-*.zip | sed "s/^gauge-csharp-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install csharp -f gauge-csharp-$version.zip)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
+                - fetch:
+                    pipeline: XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - echo "gauge_repository_url = https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/" >> ~/.gauge/config/gauge.properties
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - $GAUGE_PREFIX/bin/gauge -v
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=/tmp/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
+              artifacts:
+                - build:
+                    source: reports-csharp/html-report/*
+                    destination: html-report
+                - build:
+                    source: reports-csharp/xml-report/*
+                    destination: xml-report
