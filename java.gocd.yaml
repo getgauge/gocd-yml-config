@@ -14,11 +14,15 @@ pipelines:
                 - UT
                 - darwin
               tasks:
-               - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && go run make.go --all-platforms
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && go run make.go --all-platforms
+                - exec:
+                    command: touch
+                    arguments:
+                      - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: "*"
@@ -208,11 +212,6 @@ pipelines:
                 GAUGE_PREFIX: /tmp
               elastic_profile_id: centos-all
               tasks:
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (rm -rf $GOPATH/src $GOPATH/pkg $GOPATH/pkg | ls)
                 - fetch:
                     pipeline: Gauge-Build
                     stage: windows
@@ -224,11 +223,6 @@ pipelines:
                     arguments:
                       - -c
                       - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_PREFIX/bin/gauge uninstall java;$GAUGE_PREFIX/bin/gauge uninstall html-report;$GAUGE_PREFIX/bin/gauge uninstall xml-report)
                 - fetch:
                     pipeline:  Java-Build-New
                     stage: package
@@ -297,13 +291,6 @@ pipelines:
                     arguments:
                       - /c
                       - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge"
-                      - uninstall
-                      - java
                 - fetch:
                     pipeline: Java-Build-New
                     stage: package
@@ -321,21 +308,11 @@ pipelines:
                     job: package
                     source: deploy
                 - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge uninstall html-report"
-                - exec:
                     working_directory: deploy
                     command: cmd
                     arguments:
                       - /c
                       - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge uninstall xml-report"
                 - fetch:
                     pipeline: XML_Report
                     stage: package
@@ -380,17 +357,12 @@ pipelines:
           clean_workspace: true
           jobs:
             github:
+              elastic_profile_id: centos-all
               environment_variables:
                 repoName: gauge-java
               secure_variables:
                 GITHUB_SSH_PRIVATE_KEY: AES:UG2/z5Bks1/YDGPYgHf5ZA==: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
-              elastic_profile_id: centos-all
               tasks:
-                - exec:
-                    command: rm
-                    arguments:
-                      - -rf
-                      - deploy
                 - fetch:
                     pipeline: Java-Build-New
                     stage: package
