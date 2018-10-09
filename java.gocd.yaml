@@ -366,10 +366,10 @@ pipelines:
     group: Gauge-Java
     materials:
       Java-Build:
-        pipeline: Java-Biuld-New
+        pipeline: Java-Build-New
         stage: build
       Java-FT:
-        pipeline: Java-Build-New
+        pipeline: Java-FT-New
         stage: specs
       Java-Package:
         pipeline: Java-Build-New
