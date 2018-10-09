@@ -445,9 +445,9 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: /bin/sh
+                    command: cmd
                     arguments:
-                      - -c
+                      - /c
                       - path %GAUGE_ROOT%;%PATH% & gauge run specs run specs --env=js-wd --tags=!knownIssue
               artifacts:
                 - build:
@@ -618,9 +618,9 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: /bin/sh
+                    command: cmd
                     arguments:
-                      - -c
+                      - /c
                       - path %GAUGE_ROOT%;%PATH% & gauge run specs run specs --env=js-no-wd --tags=!knownIssue
               artifacts:
                 - build:
