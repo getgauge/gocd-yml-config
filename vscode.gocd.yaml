@@ -57,7 +57,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -87,7 +87,7 @@ pipelines:
                       - npm run build && PATH=/tmp:$PATH xvfb-run npm test
             darwin:
               resources:
-                - FT
+                - UT
                 - darwin
               environment_variables:
                 GAUGE_ROOT: /tmp
@@ -123,13 +123,13 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm install
+                      - npm install && npm run build
                 - exec:
                     working_directory: gauge-vscode
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm run build && PATH=/tmp:$PATH xvfb-run npm test
+                      - PATH=/tmp:$PATH xvfb-run npm test
                 - exec:
                     run_if: any
                     command: touch
@@ -157,7 +157,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%\\gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
                 - exec:
-                    working_directory: gauge-tests
                     command: cmd
                     arguments:
                       - /c
