@@ -26,8 +26,9 @@ environments:
       - JS-FT
       - JS-LSP-Tests
       - Taiko
-      - Java-Build-New
+      - Java-Build
       - Java-FT
+      - Gauge-Java-Nightly
       - Java-Deploy
       - VSCode-Build
       - VSCode-Tests
