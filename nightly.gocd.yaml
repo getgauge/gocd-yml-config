@@ -1,7 +1,7 @@
 common:
   publish_nightly_bintray_tasks: &publish_nightly_bintray_tasks
     - fetch:
-        pipeline: dotnet-package
+        pipeline: #{pipeline}
         stage: artifact
         job: installer
         source: artifacts
