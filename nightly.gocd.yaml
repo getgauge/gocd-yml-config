@@ -33,21 +33,21 @@ pipelines:
     timer:
       spec: "0 30 7 ? * MON-FRI"
       only_on_changes: yes
+    parameters:
+      pipeline: dotnet-package
+      stage: artifact
+      job: installer
+      source: artifacts
+      plugin: gauge-dotnet
+      rename: 1
+      update_install_json: 1
+      install_plugin_json: dotnet
+      noplatform: 1
     stages:
       - PushToBintray:
           approval: manual
           jobs:
             publish:
-              parameters:
-                pipeline: dotnet-package
-                stage: artifact
-                job: installer
-                source: artifacts
-                plugin: gauge-dotnet
-                rename: 1
-                update_install_json: 1
-                install_plugin_json: dotnet
-                noplatform: 1
               environment_variables: *publish_nightly_bintray_env
               secure_variables: *publish_nightly_bintray_secure_env
               elastic_profile_id: centos-all
