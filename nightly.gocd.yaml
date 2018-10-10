@@ -58,3 +58,24 @@ pipelines:
       only_on_changes: yes
     stages:
       - *publish_nightly_bintray_publish_stage
+  Gauge-Java-Nightly:
+    group: Nightly
+    parameters:
+      pipeline: Java-Build
+      stage: package
+      job: distro
+      source: deploy
+      plugin: gauge-java
+      rename: 1
+      update_install_json: 1
+      install_plugin_json: java
+      noplatform: 0
+    materials:
+      package:
+        pipeline: "#{pipeline}"
+        stage: "#{stage}"
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
+    stages:
+      - *publish_nightly_bintray_publish_stage
