@@ -10,7 +10,6 @@ common:
             PACKAGE_TYPE: nightly
             PACKAGE: "#{plugin}"
             UPDATE_INSTALL_JSON: "#{update_install_json}"
-            INSTALL_PLUGIN_JSON: "#{install_plugin_json}"
             NOPLATFORM: "#{noplatform}"
           secure_variables:
             BINTRAY_USER: QAivy9ZCRsA=
@@ -47,8 +46,9 @@ pipelines:
       plugin: gauge-dotnet
       rename: 1
       update_install_json: 1
-      install_plugin_json: dotnet
       noplatform: 1
+    environment_variables:
+      INSTALL_PLUGIN_JSON: dotnet
     materials:
       package:
         pipeline: "#{pipeline}"
@@ -68,8 +68,31 @@ pipelines:
       plugin: gauge-java
       rename: 1
       update_install_json: 1
-      install_plugin_json: java
       noplatform: 0
+    environment_variables:
+      INSTALL_PLUGIN_JSON: java
+    materials:
+      package:
+        pipeline: "#{pipeline}"
+        stage: "#{stage}"
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
+    stages:
+      - *publish_nightly_bintray_publish_stage
+  VSCode-Nightly:
+    group: Nightly
+    parameters:
+      pipeline: VSCode-Build
+      stage: build
+      job: build
+      source: artifacts
+      plugin: gauge
+      rename: 1
+      update_install_json: 0
+      noplatform: 1
+    environment_variables:
+      BINTRAY_REPO: gauge-vscode
     materials:
       package:
         pipeline: "#{pipeline}"
