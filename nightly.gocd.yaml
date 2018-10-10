@@ -21,7 +21,13 @@ common:
           destination: "#{plugin}"
       - exec:
           command: /bin/sh
-          working_directory: "#{plugin}/#{stage}"
+          working_directory: "#{plugin}/#{source}"
+          arguments:
+            - -c
+            - ls -l
+      - exec:
+          command: /bin/sh
+          working_directory: "#{plugin}/#{source}"
           arguments:
           - -c
           - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
