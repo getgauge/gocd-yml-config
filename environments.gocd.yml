@@ -27,6 +27,7 @@ environments:
       - JS-LSP-Tests
       - Taiko
       - Java-Build-New
-      - Java-FT-New
+      - Java-FT
+      - Java-Deploy
       - VSCode-Build
       - VSCode-Tests

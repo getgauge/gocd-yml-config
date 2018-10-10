@@ -85,7 +85,7 @@ pipelines:
                 - build:
                     source: gauge-java/deploy/*
                     destination: deploy
-  Java-FT-New:
+  Java-FT:
     group: Gauge-Java
     enable_multithreading: true
     materials:
@@ -339,7 +339,7 @@ pipelines:
                 - build:
                     source: gauge-tests/testLogs
                     destination: test-logs
-  Java-Deploy-New:
+  Java-Deploy:
     group: Gauge-Java
     materials:
       Java-Package:
