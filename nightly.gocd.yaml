@@ -1,4 +1,3 @@
-format_version: 3
 common:
   publish_nightly_bintray_tasks: &publish_nightly_bintray_tasks
     - fetch:
