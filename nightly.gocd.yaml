@@ -27,8 +27,8 @@ pipelines:
       noplatform: 1
     materials:
       package:
-        pipeline: #{pipeline}
-        stage: #{stage}
+        pipeline: dotnet-package
+        stage: artifact
     timer:
       spec: "0 30 7 ? * MON-FRI"
       only_on_changes: yes
