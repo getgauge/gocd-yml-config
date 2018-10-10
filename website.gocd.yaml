@@ -138,13 +138,14 @@ pipelines:
                       - max-age=604800,s-maxage=1800
   docs.gauge.org:
     group: Websites
+    label_template: ${COUNT}
     materials:
       website:
         git: https://github.com/getgauge/docs.getgauge.io.git
       gauge:
         pipeline: gauge-deploy
         stage: docs
-    secure_variables:
+    environment_variables:
       LC_ALL: en_US.utf-8
       LANG: en_US.utf-8
     stages:
