@@ -28,8 +28,8 @@ pipelines:
       noplatform: 1
     materials:
       package:
-        pipeline: #{pipeline}
-        stage: #{stage}
+        pipeline: dotnet-package
+        stage: artifact
     timer:
       spec: "0 30 7 ? * MON-FRI"
       only_on_changes: yes
@@ -39,12 +39,12 @@ pipelines:
           jobs:
             publish:
               environment_variables:
-                RENAME: #{rename}
+                RENAME: 1
                 PACKAGE_TYPE: nightly
-                PACKAGE: #{plugin}
-                UPDATE_INSTALL_JSON: #{update_install_json}
-                INSTALL_PLUGIN_JSON: #{install_plugin_json}
-                NOPLATFORM: #{noplatform}
+                PACKAGE: gauge-dotnet
+                UPDATE_INSTALL_JSON: 1
+                INSTALL_PLUGIN_JSON: dotnet
+                NOPLATFORM: 1
               secure_variables:
                 BINTRAY_USER: QAivy9ZCRsA=
                 BINTRAY_API_KEY: Angyd8nUVY+KsDuH2fVsnkM8uVacdsZt37zR5/+A03t9Lbcte6cHldrk8CMywio/
