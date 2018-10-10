@@ -104,7 +104,7 @@ pipelines:
                     arguments:
                       - -command
                       - "try{gci Gauge.CSharp.Core*.nupkg | select -f 1 | %{nuget.exe push $_ $env:NUGET_API_KEY -Source https://www.nuget.org/api/v2/package}}catch{Write-Error $_;exit -1}"
-  Csharp-FT-New:
+  Csharp-FT:
     group: Gauge-Csharp
     materials:
       gauge-tests:
