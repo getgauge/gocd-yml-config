@@ -109,6 +109,8 @@ pipelines:
       xml-report:
         pipeline: XML_Report
         stage: package
+    environment_variables:
+      enable_multithreading: true
     stages:
       - FT:
           clean_workspace: true

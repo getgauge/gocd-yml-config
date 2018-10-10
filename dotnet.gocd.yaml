@@ -49,6 +49,8 @@ pipelines:
       gauge:
         pipeline: Gauge-Build
         stage: windows
+    environment_variables:
+      enable_multithreading: true
     stages:
       - build:
           clean_workspace: true
