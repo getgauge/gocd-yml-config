@@ -32,3 +32,4 @@ environments:
       - Java-Deploy
       - VSCode-Build
       - VSCode-Tests
+      - VSCode-Nightly
