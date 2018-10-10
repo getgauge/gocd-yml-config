@@ -87,7 +87,6 @@ pipelines:
                     destination: deploy
   Java-FT:
     group: Gauge-Java
-    enable_multithreading: true
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
@@ -105,6 +104,7 @@ pipelines:
         pipeline: XML_Report
         stage: package
     environment_variables:
+      enable_multithreading: true
       language: java
     stages:
       - specs:

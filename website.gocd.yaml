@@ -136,3 +136,72 @@ pipelines:
                       - s3://gauge.org
                       - --cache-control
                       - max-age=604800,s-maxage=1800
+  docs.gauge.org:
+    group: Websites
+    materials:
+      website:
+        git: https://github.com/getgauge/docs.getgauge.io.git
+      gauge:
+        pipeline: gauge-deploy
+        stage: docs
+      secure_variables:
+        LC_ALL: en_US.utf-8
+        LANG: en_US.utf-8
+    stages:
+      - build:
+          jobs:
+            build:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command:  git
+                    arguments:
+                      - version
+                - exec:
+                    command: virtualenv
+                    arguments:
+                      - docs
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - source ./docs/bin/activate && pip install -r requirements.txt && make zip && deactivate
+              artifacts:
+               - build:
+                    source: _build/html/*
+                    destination: deploy
+      - deploy:
+          jobs:
+            aws:
+              elastic_profile_id: centos-all
+              secure_variables:
+                aws_access_key_id: AES:dH5bwy34WSzQmUChLz5Sqw==:LCLuya+iy1vIuW5x1dBq1vKvHLfVMQncV6ABMdc+rFI=
+                aws_secret_access_key: AES:+PTrCMdaQCEAdhFM5z6EjA==:qGiUjD9Y6B5mtzPocpCt5DyHF/JvVQVKu0i1iD0su4CX6Nbr5GQq/GDU4JemreC9
+              tasks:
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3 rm s3://docs.gauge.org/latest --recursive
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3 rm s3://docs.gauge.org/master --recursive
+                - fetch:
+                    stage: build
+                    job: build
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: aws
+                    arguments:
+                      - s3 sync . s3://docs.getgauge.io --cache-control max-age=604800,s-maxage=1800
+                - exec:
+                    working_directory: deploy
+                    command: aws
+                    arguments:
+                      - s3 sync . s3://docs.gauge.org --cache-control max-age=604800,s-maxage=1800

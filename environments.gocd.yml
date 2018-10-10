@@ -7,7 +7,7 @@ environments:
       - gauge-dotnet-nightly
       - python-build
       - python-package
-      - python-FT 
+      - python-FT
       - python-lsp-tests
       - python-release
       - gauge-proto
@@ -34,3 +34,5 @@ environments:
       - VSCode-Build
       - VSCode-Tests
       - VSCode-Nightly
+      - gauge.org
+      - docs.gauge.org
