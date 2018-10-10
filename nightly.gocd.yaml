@@ -23,3 +23,32 @@ common:
           arguments:
           - -c
           - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/publish_nightly_to_bintray.sh  | sh)
+pipelines:
+  gauge-dotnet-nightly:
+    group: Nightly
+    materials:
+      package:
+        pipeline: dotnet-package
+        stage: artifact
+    timer:
+      spec: "0 30 7 ? * MON-FRI"
+      only_on_changes: yes
+    stages:
+      - PushToBintray:
+          approval: manual
+          jobs:
+            publish:
+              parameters:
+                pipeline: dotnet-package
+                stage: artifact
+                job: installer
+                source: artifacts
+                plugin: gauge-dotnet
+                rename: 1
+                update_install_json: 1
+                install_plugin_json: dotnet
+                noplatform: 1
+              environment_variables: *publish_nightly_bintray_env
+              secure_variables: *publish_nightly_bintray_secure_env
+              elastic_profile_id: centos-all
+              tasks: *publish_nightly_bintray_tasks
