@@ -144,9 +144,9 @@ pipelines:
       gauge:
         pipeline: gauge-deploy
         stage: docs
-      secure_variables:
-        LC_ALL: en_US.utf-8
-        LANG: en_US.utf-8
+    secure_variables:
+      LC_ALL: en_US.utf-8
+      LANG: en_US.utf-8
     stages:
       - build:
           jobs:
