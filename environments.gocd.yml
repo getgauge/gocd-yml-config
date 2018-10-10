@@ -4,6 +4,7 @@ environments:
       - dotnet-build
       - dotnet-package
       - dotnet-FT
+      - gauge-dotnet-nightly
       - python-build
       - python-package
       - python-FT 
