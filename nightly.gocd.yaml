@@ -2,11 +2,11 @@ format_version: 3
 common:
   publish_nightly_bintray_tasks: &publish_nightly_bintray_tasks
     - fetch:
-        pipeline: #{pipeline}
-        stage: #{stage}
-        job: #{job}
-        source: #{source}
-        destination: #{plugin}
+        pipeline: dotnet-package
+        stage: artifact
+        job: installer
+        source: artifacts
+        destination: gauge-dotnet
     - exec:
         command: /bin/sh
         working_directory: gauge-dotnet/artifacts
