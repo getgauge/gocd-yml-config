@@ -39,18 +39,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm i @getgauge/cli -g
-                - exec:
-                    working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - gauge install && gauge version
-                - exec:
-                    working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - gauge run -v specs --tags=\!knownIssue
+                      - npm test -- -v --tags=\!knownIssue
             osx-specs:
               resources:
                 - darwin
@@ -71,18 +60,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm i @getgauge/cli -g
-                - exec:
-                    working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - gauge install && gauge version
-                - exec:
-                    working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - gauge run -v specs --tags=\!knownIssue
+                      - npm test -- -v --tags=\!knownIssue
                 - exec:
                     run_if: any
                     command: touch
@@ -102,27 +80,11 @@ pipelines:
                     arguments:
                       - install
                 - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - npm i @getgauge/cli -g
-                - exec:
-                    working_directory: js-taiko
-                    command: npm
-                    arguments:
-                      - update
-                - exec:
-                    working_directory: js-taiko
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "gauge install & gauge version"
-                - exec:
                     working_directory: js-taiko
                     command: cmd
                     arguments:
                       - /c                      
-                      - "%GAUGE_ROOT%/gauge run specs --tags=!knownIssue"
+                      - npm test -- -v --tags=\!knownIssue
       - publish:
           approval: manual
           jobs:
