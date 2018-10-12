@@ -30,12 +30,6 @@ pipelines:
                       - https://github.com/getgauge-examples/js-taiko
                 - exec:
                     working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm uninstall -g taiko
-                - exec:
-                    working_directory: js-taiko
                     command: npm
                     arguments:
                       - install
@@ -44,18 +38,18 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$(pwd)
+                      - npm i @getgauge/cli -g
                 - exec:
                     working_directory: js-taiko
-                    command: npm
+                    command: /bin/sh
                     arguments:
-                      - update
+                      - gauge install && gauge version
                 - exec:
                     working_directory: js-taiko
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ./gauge install && ./gauge run -p -v specs --tags=\!knownIssue
+                      - gauge run -v specs --tags=\!knownIssue
             osx-specs:
               resources:
                 - darwin
@@ -68,12 +62,6 @@ pipelines:
                       - https://github.com/getgauge-examples/js-taiko
                 - exec:
                     working_directory: js-taiko
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm uninstall -g taiko
-                - exec:
-                    working_directory: js-taiko
                     command: npm
                     arguments:
                       - install
@@ -82,18 +70,18 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$(pwd)
+                      - npm i @getgauge/cli -g
                 - exec:
                     working_directory: js-taiko
-                    command: npm
+                    command: /bin/sh
                     arguments:
-                      - update
+                      - gauge install && gauge version
                 - exec:
                     working_directory: js-taiko
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ./gauge install && ./gauge run -v specs --tags=\!knownIssue
+                      - gauge run -v specs --tags=\!knownIssue
                 - exec:
                     run_if: any
                     command: touch
@@ -101,8 +89,6 @@ pipelines:
                     - /vagrant/rollback.txt
             windows-specs:
               elastic_profile_id: windows-all
-              environment_variables:
-                GAUGE_ROOT: C:\gauge_root
               tasks:
                 - exec:
                     command: git
@@ -111,12 +97,6 @@ pipelines:
                       - https://github.com/getgauge-examples/js-taiko
                 - exec:
                     working_directory: js-taiko
-                    command: cmd
-                    arguments:
-                      - /c
-                      - npm uninstall -g taiko
-                - exec:
-                    working_directory: js-taiko
                     command: npm
                     arguments:
                       - install
@@ -124,12 +104,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - cinst gauge -y
-                - exec:
-                   command: cmd
-                   arguments:
-                    - /c
-                    - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
+                      - npm i @getgauge/cli -g
                 - exec:
                     working_directory: js-taiko
                     command: npm
@@ -140,8 +115,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%/gauge"
-                      - install
+                      - "gauge install & gauge version"
                 - exec:
                     working_directory: js-taiko
                     command: cmd
