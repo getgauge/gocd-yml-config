@@ -18,7 +18,8 @@ pipelines:
                     command: npm
                     arguments:
                       - test
-      - specs:
+      - tests:
+          clean_workspace: true
           jobs:
             linux-specs:
               elastic_profile_id: ubuntu-node
