@@ -4,9 +4,6 @@ pipelines:
     materials:
       taiko:
         git: https://github.com/getgauge/taiko.git
-      gauge:
-        pipeline: Gauge-Build
-        stage: windows
     stages:
       - test:
           jobs:
@@ -123,12 +120,11 @@ pipelines:
                     command: npm
                     arguments:
                       - install
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    is_file: yes
-                    source: test_installers/gauge-windows.x86_64.zip
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - cinst gauge -y
                 - exec:
                    command: cmd
                    arguments:
