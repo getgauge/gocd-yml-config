@@ -67,7 +67,8 @@ pipelines:
                     arguments:
                     - /vagrant/rollback.txt
             windows-specs:
-              elastic_profile_id: windows-all
+              resources:
+                - windows
               tasks:
                 - exec:
                     command: git
