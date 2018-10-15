@@ -28,7 +28,6 @@ pipelines:
             installer:
               resources:
                - darwin
-               - installers
               tasks:
                - exec:
                    command: /bin/sh
