@@ -527,6 +527,11 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
+                      - PATH=/tmp/bin:$PATH gauge uninstall js
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
                       - PATH=/tmp/bin:$PATH gauge install
                 - exec:
                     command: /bin/sh

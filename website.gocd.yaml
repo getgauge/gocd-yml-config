@@ -208,7 +208,6 @@ pipelines:
                       - s3 sync . s3://docs.gauge.org --cache-control max-age=604800,s-maxage=1800
   insights.getgauge.org:
     group: Websites
-    label_template: ${COUNT}
     materials:
       website:
         git: https://github.com/getgauge/insights.getgauge.io
