@@ -482,15 +482,30 @@ pipelines:
         pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
-      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
-      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
-      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+      PYPI_USER: +A8MwngWBLI=
+      PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
     stages:
       - pypi_deploy:
           jobs:
             package:
               elastic_profile_id: centos-all
               tasks:
+                - fetch:
+                    pipeline: Gauge-Build/Gauge-Deploy
+                    stage: package
+                    job: darwin_linux
+                    source: deploy
+                    destination: deploy
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - export
+                      - GAUGE_VERSION=$(ls deploy/gauge* | head -1 | sed "s/[a-z]*-//" | sed "s/-[a-z]*.*//")
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - export
+                      - GAUGE_PACKAGE_NAME=getgauge-cli
                 - exec:
                     command: pip
                     arguments:
