@@ -475,3 +475,43 @@ pipelines:
                     arguments:
                       - -c
                       - "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc && npm publish --access=public"
+  Gauge-Deploy-PyPi:
+    group: Gauge
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    secure_variables:
+      GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
+      PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
+      GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
+    stages:
+      - pypi_deploy:
+          jobs:
+            package:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command: pip
+                    arguments:
+                      - install
+                      - requests
+                      - --user
+                - exec:
+                    working_directory: src/github.com/getgauge/gauge/build/pip
+                    command: python
+                    arguments:
+                      - build.py
+                      - --dist
+                - exec:
+                    command: pip
+                    arguments:
+                      - install
+                      - twine
+                      - --user
+                - exec:
+                    working_directory: src/github.com/getgauge/gauge/build/pip
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (file=$(ls dist/getgauge-cli-*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
