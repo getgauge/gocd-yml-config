@@ -59,6 +59,7 @@ pipelines:
               environment_variables:
                 GAUGE_ROOT: C:\gauge_root
                 GAUGE_HOME: C:\gauge_plugins
+                DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
               tasks:
                - fetch:
                    pipeline: Gauge-Build
