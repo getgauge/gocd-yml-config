@@ -212,12 +212,15 @@ pipelines:
     materials:
       website:
         git: https://github.com/getgauge/insights.getgauge.io
-      shallow_clone: true
+        shallow_clone: true
     timer:
       spec: "0 0 0 1 * ?"
     stages:
       - generate:
-          approval: manual
+          approval:
+            type: manual
+            roles:
+              - XD_UI
           secure_variables:
             GA_PRIVATE_KEY: AES:eVIFOtOYyv9l0hOMqXVYBQ==:Q+kyTUgwrdR71HnBt0o1oj5UGl3r+N6NHo6A2p+W2XI0W1xioMECceUBUHq+n87fgGgFqxGTNKs3YIow6kFOgNpfsRqVD7k7E4InKnBMJIsdhxm9F6+lYngDoslys/uLtg5FSGziSCsZXAGkJLw+/Qn27sd6ISzgopT7IgSYbMzf56QIhCeT21E8O87Z8jnKb6vF0lDcsVeSTmgi6H21HQD3BIYuvOP37ZjaYPUjKXSKQG5Of4Xkbkguk8bzOMZXs1P2UD1Rb5kzcjEgxI4ReLOoYcIk0U2k7gyTb3F4CfIZuw8ntbOth7Y9KDlf5119nAFi2IivHF2zimxUMcv1rGUX8x+pUHrNPVWJia1Prhl9xldHquM/IcJuBYMT6P/H7J0UlKISkgH9T++qWZyBM6cKOqtwGqGbe5dcgoJm6+o2cOVOpJUHhmEDxbFZO9hcqYilkW5tXdd1U3fk5LJXGOEY/KDt8JZs+H2X6QCROFJXC/akXLfCNBzNA84xXYhx23GlUr+lwJbMhKaTo9Iti5lZGhukOV0dCNmqYqMaftoeLUDxS02c9cwDsoHYpZo1K3M9c8oFICLGQQYIgE+kRUp1PDUSFVbR0+Zm8aTYx7iSssKjxZFqlyRlaEiawYIKL9+iQVM35zfsPZWpFFrW7cDsnZEJ1SC0/uccVgNp6fJJSrYPdiURrsjxMTXg0ILKLDj53HC9Fg52A48YuaxgUTJQF52kBueLglWzdP7nnhXyEOGOsF0WXvYIkI3K4ojD44AaH0qsvAVLExf7s+NFT1MSp4oEk5gtFeKpxptl9QfzfGC9I/BJwZYS2+IUqzGLgPkYurnDKaU8hkyxz/2PiPA1cf7xX4SI/Ptts+qitO3qGXDbR8Ktj3sOu6YIIkN9CaiqirN9sKjfd+2cCEIS2z+9sFimuySEpCANp+NFcm8ev1zcs7WcsO/Z1sPWkp2Z7Wq/dr39AwSZAT2pKODXKAcLa2DBJo6pWmPesTuVjKIP7fu1JH+xNvTE+ynNPLTmH0uKWYAfBS1fJEdZZss7V6BM0Kdzeq+1uCZI+0YI19+YpAIIe9LUrd+KmPOhBuCSh4dCWz7P8KhNokxfe3ARxAyDOCTppLNaUkPzGerJlE+1ycuLjWeZTs0gpfJvL1/tjN5kA8g6uNoVQy6e6lJ+PaUoR1rf38y+9dDF/IfnfjspS9/3DOlJpJL90cGaaUUA+VdXzHSwYT2myhs1Ck/w3SDMcC6rFY4RF7CZbZHLrBkw83IaZbNO2K0ir1cP3a5EtTgv3iBVvwGGz0oeomx2qstEs8HuL5/HeYTsE8ho94a3mbFchb27AfzVJ4NJiXCoZrY9H10Wk/rdktN8xEqbjNDTZsll9WZ83WhFUQbTyuUaSnN9CAZbGAXPFLhMvd9uQ68StWPnxdgxUvk1yV50mt5Hn1od1yBjrOklwZnJLahsyPbyb5s47A19NR0NiC2qYcVcWkoQD34zuAJjdRPCmkZGZUORP4ptm3EV0epCPm8cR/db/TZIG3cPUMrPQAd6u9kggn06AZSNtuIESaRDbCVjG0WfqZZ29BqsXuBwV8+IrtpZL5kTcz6gDSUSs2V8m8Q/Hcz0tVWRm9YFRiEsZJzLOSIUWOvhNv7AC4aYAro5kT2AqSy+rTvNKM0khjR2+PhIpgmNuIyNx+FTroRvnlKxqivjH0guwEzcyjBZWwdrSNC5sA6ZQIBnzs/8Ax7hEdSWhFnIOoDgXyYUFiSN5Vmr9wWX3f0U6vbCnXqK0IEpW2rr6+ytpChqr6ppZ8vVU8Jgy8c0YMxTRtfMkZ4hoW+vWtP7X3I8QX2soa4xiDro0y2ArDETz9fmp4OXk3HVr8LIxUVW5K4WbtCfa+A5mk2dz0RTr3hSuxmS2Ts2a8TsYSlMd0x8bhiWzR84G1tou4sWgg4XocJh51x1lNKDZNRecy9vkDx2UmbUlMv0afAIrokUUklIrLAfhzBUhH97dJ2cOG4YhbkHNfFW7d8EdPMKsko7UUzEzqyIYCXcLPxSKLOy6UjAIoEJawmIbKiN8cG9gNo88sMvkBLXQmNX1Kd+zdbtbwnisj4xCCqRZJNT87xQ2wyV29nlV1AYSt0AjYECB29wFsyOpMtPKQU4PMKUAgvDEV8KpqW3ZOV8HjrRimfl/QQlEH1gwbLIh+YorFU90RBL11aSPgMw/84TBLm3dcLrImzkTU7ynLN2glwck3EYhI6rkURuX91cFFEOU38qolyHrfWSNdvnK0nXL5Lp+I3Ht7XgVtPmwkC1q1Hau1IpjUgqn70YRbC2F4fgGopRzN0yhk2nHI6ajgi95Q==
             GA_TOKEN_URL: AES:GPtyDEYtKH8zcuEkd8ArgA==:r16Ly/RbMLNiZ48Ks8zKwniY302k0anYkewvGkI/LLJFm26PTLgdJGuksli9UsRK
