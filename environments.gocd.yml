@@ -36,4 +36,5 @@ environments:
       - VSCode-Nightly
       - gauge.org
       - docs.gauge.org
+      - insights.getgauge.org
       - HTML-Report-FT
