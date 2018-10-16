@@ -37,4 +37,5 @@ environments:
       - gauge.org
       - docs.gauge.org
       - insights.getgauge.org
+      - manpage.getgauge.org
       - HTML-Report-FT

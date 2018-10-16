@@ -282,3 +282,55 @@ pipelines:
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt
+  manpage.getgauge.org:
+    group: Websites
+    label_template: ${COUNT}
+    materials:
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    stages:
+      - deploy:
+          jobs:
+            environment_variables:
+              GOPATH: /tmp
+              GOBIN: /tmp/bin
+            secure_variables:
+              aws_access_key_id: AES:8Trjf9FYyI3Nx/tjYyrtHA==:G9NNxbIs0aR69ExYTAgEzFt291I6D/Va8ZMWUaqkKCk=
+              aws_secret_access_key: AES:/nHkQyp0aZxELF7VZbMf8Q==:mqAEnub+UmvdA5IwpQjg1TdQ4P5c7D6IR9ozDZV3JbCUFx3uMOLQWrF2yRJw4MIN
+            elastic_profile_id: centos-all
+            deploy:
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - go get -d -u -t -v github.com/getgauge/gauge
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (cd $GOPATH/src/github.com/getgauge/gauge && go get ./build/man/ && go run build/man/man.go)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3 rm s3://manpage.getgauge.io --recursive
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3 rm s3://manpage.gauge.org --recursive
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (cd $GOPATH/src/github.com/getgauge/gauge/_man/html && aws s3 sync . s3://manpage.getgauge.io --cache-control max-age=604800,s-maxage=1800)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (cd $GOPATH/src/github.com/getgauge/gauge/_man/html && aws s3 sync . s3://manpage.gauge.org --cache-control max-age=604800,s-maxage=1800)
