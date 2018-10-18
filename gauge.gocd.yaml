@@ -370,7 +370,7 @@ pipelines:
                     working_directory: gauge
                     command: powershell.exe
                     arguments:
-                      - gc ..\..\version | %{ choco push "gauge.$_.nupkg" -k $env:apiKey }
+                      - gc ..\version | %{ choco push "gauge.$_.nupkg" -k $env:apiKey }
   Gauge-Deploy-Deb:
     group: Gauge
     materials:
