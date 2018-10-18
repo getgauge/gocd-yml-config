@@ -454,7 +454,7 @@ pipelines:
             publish_npm:
               elastic_profile_id: centos-all
               secure_variables:
-                NPM_TOKEN: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
+                NPM_TOKEN: efUvjzmZzPgw+zldFDyT8faQLZbL4k22+a4wkQe67TUZp9pXU4XCAA==
               tasks:
                 - fetch:
                     pipeline: Gauge-Build/Gauge-Deploy
