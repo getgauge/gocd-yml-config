@@ -294,10 +294,6 @@ pipelines:
                     arguments:
                       - -c
                       - (cd $GOPATH/src/github.com/getgauge/insights.getgauge.io/_insights && aws s3 sync . s3://insights.gauge.org --cache-control max-age=604800,s-maxage=1800)
-                - exec:
-                    command: touch
-                    arguments:
-                      - /vagrant/rollback.txt
   manpage.gauge.org:
     group: Websites
     label_template: ${COUNT}
