@@ -501,16 +501,6 @@ pipelines:
                     source: deploy
                     destination: deploy
                 - exec:
-                    command: /bin/sh
-                    arguments:
-                      - export
-                      - GAUGE_VERSION=$(ls deploy/gauge* | head -1 | sed "s/[a-z]*-//" | sed "s/-[a-z]*.*//")
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - export
-                      - GAUGE_PACKAGE_NAME=getgauge-cli
-                - exec:
                     command: pip
                     arguments:
                       - install
@@ -518,10 +508,10 @@ pipelines:
                       - --user
                 - exec:
                     working_directory: src/github.com/getgauge/gauge/build/pip
-                    command: python
+                    command: /bin/sh
                     arguments:
-                      - build.py
-                      - --dist
+                      - -c
+                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(ls deploy/gauge* | head -1 | sed "s/[a-z]*-//" | sed "s/-[a-z]*.*//") python build.py --dist
                 - exec:
                     command: pip
                     arguments:
