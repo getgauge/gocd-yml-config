@@ -461,7 +461,6 @@ pipelines:
                     stage: package
                     job: darwin_linux
                     source: npm
-                    destination: npm
                 - fetch:
                     pipeline: Gauge-Deploy
                     stage: github-release
