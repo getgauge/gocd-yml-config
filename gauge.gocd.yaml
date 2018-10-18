@@ -451,7 +451,7 @@ pipelines:
     stages:
       - npm_deploy:
           jobs:
-            publish_rpm_to_bintray:
+            publish_npm:
               elastic_profile_id: centos-all
               secure_variables:
                 NPM_TOKEN: AES:XoXA67iuddT3LvUCNqXihQ==:TKqNhKHrH+ryEKwWwVHJtvIcL540BPx23JgYd0QWOaMfn51dogCgHHFR66DesAyQ
@@ -462,12 +462,18 @@ pipelines:
                     job: darwin_linux
                     source: npm
                     destination: npm
+                - fetch:
+                    pipeline: Gauge-Deploy
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
                 - exec:
                     working_directory: npm
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm version `cat ../../version`
+                      - npm version `cat ../version`
                 - exec:
                     working_directory: npm
                     command: /bin/sh
