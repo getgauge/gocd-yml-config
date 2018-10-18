@@ -187,11 +187,17 @@ pipelines:
                 - exec:
                     command: aws
                     arguments:
-                      - s3 rm s3://docs.gauge.org/latest --recursive
+                      - s3
+                      - rm
+                      - s3://docs.gauge.org/latest
+                      - --recursive
                 - exec:
                     command: aws
                     arguments:
-                      - s3 rm s3://docs.gauge.org/master --recursive
+                      - s3
+                      - rm
+                      - s3://docs.gauge.org/master
+                      - --recursive
                 - fetch:
                     stage: build
                     job: build
@@ -200,12 +206,22 @@ pipelines:
                     working_directory: deploy
                     command: aws
                     arguments:
-                      - s3 sync . s3://docs.getgauge.io --cache-control max-age=604800,s-maxage=1800
+                      - s3
+                      - sync
+                      - .
+                      - s3://docs.getgauge.io
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
                 - exec:
                     working_directory: deploy
                     command: aws
                     arguments:
-                      - s3 sync . s3://docs.gauge.org --cache-control max-age=604800,s-maxage=1800
+                      - s3
+                      - sync
+                      - .
+                      - s3://docs.gauge.org
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
   insights.gauge.org:
     group: Websites
     label_template: ${COUNT}
