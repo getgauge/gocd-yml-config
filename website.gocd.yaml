@@ -331,11 +331,17 @@ pipelines:
                 - exec:
                     command: aws
                     arguments:
-                      - s3 rm s3://manpage.getgauge.io --recursive
+                      - s3
+                      - rm
+                      - s3://manpage.getgauge.io
+                      - --recursive
                 - exec:
                     command: aws
                     arguments:
-                      - s3 rm s3://manpage.gauge.org --recursive
+                      - s3
+                      - rm
+                      - s3://manpage.gauge.org
+                      - --recursive
                 - exec:
                     command: /bin/sh
                     arguments:
