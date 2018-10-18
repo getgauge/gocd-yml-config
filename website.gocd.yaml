@@ -282,7 +282,7 @@ pipelines:
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt
-  manpage.getgauge.org:
+  manpage.gauge.org:
     group: Websites
     label_template: ${COUNT}
     materials:
