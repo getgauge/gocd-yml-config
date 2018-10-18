@@ -78,8 +78,8 @@ pipelines:
                   source: src/github.com/getgauge/gauge/deploy/*
                   destination: deploy
                - build:
-                  source: src/github.com/getgauge/gauge/build/npm/*
-                  destination: npm
+                  source: src/github.com/getgauge/gauge/build/*
+                  destination: build
       - deb:
           jobs:
             create_deb:
@@ -460,7 +460,7 @@ pipelines:
                     pipeline: Gauge-Build/Gauge-Deploy
                     stage: package
                     job: darwin_linux
-                    source: npm
+                    source: build
                 - fetch:
                     pipeline: Gauge-Deploy
                     stage: github-release
@@ -468,13 +468,13 @@ pipelines:
                     source: version
                     is_file: yes
                 - exec:
-                    working_directory: npm
+                    working_directory: build/npm
                     command: /bin/sh
                     arguments:
                       - -c
                       - npm version `cat ../version`
                 - exec:
-                    working_directory: npm
+                    working_directory: build/npm
                     command: /bin/sh
                     arguments:
                       - -c
@@ -498,8 +498,13 @@ pipelines:
                     pipeline: Gauge-Build/Gauge-Deploy
                     stage: package
                     job: darwin_linux
-                    source: deploy
-                    destination: deploy
+                    source: build
+                - fetch:
+                    pipeline: Gauge-Deploy
+                    stage: github-release
+                    job: draft
+                    source: version
+                    is_file: yes
                 - exec:
                     command: pip
                     arguments:
@@ -507,11 +512,11 @@ pipelines:
                       - requests
                       - --user
                 - exec:
-                    working_directory: src/github.com/getgauge/gauge/build/pip
+                    working_directory: build/pip
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(ls deploy/gauge* | head -1 | sed "s/[a-z]*-//" | sed "s/-[a-z]*.*//") python build.py --dist
+                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(cat ../version) python build.py --dist
                 - exec:
                     command: pip
                     arguments:
