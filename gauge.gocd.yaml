@@ -362,12 +362,12 @@ pipelines:
                     source: version
                     is_file: yes
                 - exec:
-                    working_directory: chocolatey-packages\gauge
+                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - .\package.ps1
                 - exec:
-                    working_directory: chocolatey-packages\gauge
+                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - gc ..\..\version | %{ choco push "gauge.$_.nupkg" -k $env:apiKey }
