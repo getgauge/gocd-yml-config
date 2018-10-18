@@ -473,7 +473,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm version `cat ../version`
+                      - npm version `cat ../../version`
                 - exec:
                     working_directory: build/npm
                     command: /bin/sh
@@ -517,7 +517,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(cat ../version) python build.py --dist
+                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(cat ../../version) python build.py --dist
                 - exec:
                     command: pip
                     arguments:
