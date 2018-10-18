@@ -491,15 +491,11 @@ pipelines:
       PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
     stages:
       - pypi_deploy:
+          clean_workspace: true
           jobs:
             package:
               elastic_profile_id: centos-all
               tasks:
-                - fetch:
-                    pipeline: Gauge-Build/Gauge-Deploy
-                    stage: package
-                    job: darwin_linux
-                    source: build
                 - fetch:
                     pipeline: Gauge-Deploy
                     stage: github-release
@@ -507,17 +503,22 @@ pipelines:
                     source: version
                     is_file: yes
                 - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - git clone https://github.com/getgauge/gauge.git
+                - exec:
                     command: pip
                     arguments:
                       - install
                       - requests
                       - --user
                 - exec:
-                    working_directory: build/pip
+                    working_directory: gauge/build/pip
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(cat ../../version) python build.py --dist
+                      - GAUGE_PACKAGE_NAME=getgauge-cli GAUGE_VERSION=$(cat ../../../version) python3 build.py --dist
                 - exec:
                     command: pip
                     arguments:
@@ -525,8 +526,8 @@ pipelines:
                       - twine
                       - --user
                 - exec:
-                    working_directory: src/github.com/getgauge/gauge/build/pip
+                    working_directory: gauge/build/pip
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (file=$(ls dist/getgauge-cli-*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
+                      - (file=$(ls dist/*gauge-cli-*.tar.gz); python3 -m twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
