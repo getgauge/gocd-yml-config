@@ -105,6 +105,7 @@ pipelines:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="html-report"
                 - exec:
+                    run_if: any
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt

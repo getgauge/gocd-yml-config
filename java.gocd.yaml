@@ -20,6 +20,7 @@ pipelines:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && go run make.go --all-platforms
                 - exec:
+                    run_if: any
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt
@@ -191,6 +192,7 @@ pipelines:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use 1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="java"
                 - exec:
+                    run_if: any
                     command: touch
                     arguments:
                       - /vagrant/rollback.txt
