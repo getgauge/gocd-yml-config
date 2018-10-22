@@ -1,6 +1,6 @@
 pipelines:
   HTML-Report-FT:
-    group: HTML-Report
+    group: Other_Plugins
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
