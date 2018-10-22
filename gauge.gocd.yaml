@@ -152,9 +152,6 @@ pipelines:
       Gauge:
         pipeline: Gauge-Build
         stage: windows
-      chocolatey-packages:
-        git: https://github.com/getgauge/chocolatey-packages
-        shallow_clone: true
     secure_variables:
       GITHUB_TOKEN: AES:At7ff8Eq1+fj7MCq6YSI9w==:m6WHp7Ef6WHQwvXNexkmmsIMrHmHGdZZCfF+AqcgwtotEO1GhOsVLSbtzpNrL6Us
       PASSPHRASE: AES:7Yv6yeN5X2copnD7vapDFQ==:ICXtuACHip+7aTRcEoBi+Q==
@@ -366,7 +363,7 @@ pipelines:
                     working_directory: gauge
                     command: powershell.exe
                     arguments:
-                      - .\package.ps1
+                      - gc ..\version | %{ .\package.ps1 $_ }
                 - exec:
                     working_directory: gauge
                     command: powershell.exe
