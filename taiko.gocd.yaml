@@ -94,7 +94,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c                      
-                      - npm test -- -v --tags=\!(knownIssue|knownIssue-windows)
+                      - npm test -- -v --tags=\!knownIssue
               artifacts:
                 - build:
                     source: js-taiko/reports/html-report
