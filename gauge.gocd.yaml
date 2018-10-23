@@ -109,6 +109,7 @@ pipelines:
                   source: src/github.com/getgauge/gauge/deploy/*.rpm
                   destination: deploy
       - windows:
+          clean_workspace: true
           jobs:
             sign:
               resources:
