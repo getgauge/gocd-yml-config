@@ -40,6 +40,11 @@ pipelines:
                     arguments:
                       - -c
                       - npm test -- -v --tags=\!knownIssue
+              artifacts:
+                - build:
+                    source: reports/html-report
+                    destination: reports
+
             osx-specs:
               resources:
                 - darwin
@@ -66,6 +71,10 @@ pipelines:
                     command: touch
                     arguments:
                     - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: reports/html-report
+                    destination: reports
             windows-specs:
               resources:
                 - windows
@@ -86,6 +95,10 @@ pipelines:
                     arguments:
                       - /c                      
                       - npm test -- -v --tags=\!knownIssue
+              artifacts:
+                - build:
+                    source: reports/html-report
+                    destination: reports
       - publish:
           approval: manual
           jobs:
