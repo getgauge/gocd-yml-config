@@ -42,7 +42,7 @@ pipelines:
                       - npm test -- -v --tags=\!knownIssue
               artifacts:
                 - build:
-                    source: reports/html-report
+                    source: js-taiko/reports/html-report
                     destination: reports
 
             osx-specs:
@@ -73,7 +73,7 @@ pipelines:
                     - /vagrant/rollback.txt
               artifacts:
                 - build:
-                    source: reports/html-report
+                    source: js-taiko/reports/html-report
                     destination: reports
             windows-specs:
               resources:
@@ -97,7 +97,7 @@ pipelines:
                       - npm test -- -v --tags=\!knownIssue
               artifacts:
                 - build:
-                    source: reports/html-report
+                    source: js-taiko/reports/html-report
                     destination: reports
       - publish:
           approval: manual
