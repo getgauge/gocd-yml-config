@@ -119,6 +119,7 @@ pipelines:
             github:
               elastic_profile_id: centos-all
               environment_variables:
+                GOPATH: /tmp
                 repoName: taiko
                 uploadArtifact: no
               secure_variables:
@@ -146,6 +147,7 @@ pipelines:
             github:
               elastic_profile_id: centos-all
               environment_variables:
+                GOPATH: /tmp
                 repoName: taiko
                 uploadArtifact: no
               secure_variables:
