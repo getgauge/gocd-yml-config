@@ -125,10 +125,6 @@ pipelines:
                 GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
               tasks:
                 - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
                     command: /bin/sh
                     argumanets:
                       - -c
@@ -155,10 +151,6 @@ pipelines:
               secure_variables:
                 GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
                 - exec:
                     command: /bin/sh
                     argumanets:
