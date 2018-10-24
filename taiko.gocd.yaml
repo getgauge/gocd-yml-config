@@ -127,7 +127,7 @@ pipelines:
               tasks:
                 - exec:
                     command: /bin/sh
-                    argumanets:
+                    arguments:
                       - -c
                       - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
                 - exec:
@@ -155,7 +155,7 @@ pipelines:
               tasks:
                 - exec:
                     command: /bin/sh
-                    argumanets:
+                    arguments:
                       - -c
                       - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
                 - exec:
