@@ -39,3 +39,4 @@ environments:
       - insights.gauge.org
       - manpage.gauge.org
       - HTML-Report-FT
+      - check-all-readme-files

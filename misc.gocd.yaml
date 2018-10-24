@@ -1,0 +1,47 @@
+pipelines:
+  check-all-readme-files:
+    group: Misc
+    materials:
+      gauge_docs:
+        pipeline: docs.gauge.org
+        stage: deploy
+      gauge_website:
+        pipeline: gauge.org
+        stage: deploy-live
+    stages:
+      - getgauge_repo:
+          jobs:
+            check:
+              elastic_profile_id: centos-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                      - -g
+                      - markdown-link-check
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -s https://api.github.com/orgs/getgauge/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -s https://api.github.com/orgs/getgauge-examples/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - curl -s https://api.github.com/orgs/getgauge-contrib/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - cat repos.txt | xargs -L1  -I '{}' /bin/sh -c "curl -s https://api.github.com/repos/{}/readme?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.download_url' >> readmes.txt"
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - cat readmes.txt | xargs -L1  -I '{}' /bin/sh -c "echo \"\n\nChecking {}\" && curl -s {} -o readme.md | markdown-link-check readme.md"
