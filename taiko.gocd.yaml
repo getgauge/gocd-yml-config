@@ -117,7 +117,7 @@ pipelines:
                       - -c
                       - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc && npm publish
             github:
-              elastic_profile_id: ubuntu-node
+              elastic_profile_id: centos-all
               environment_variables:
                 repoName: taiko
                 uploadArtifact: no
@@ -132,7 +132,7 @@ pipelines:
                     command: /bin/sh
                     argumanets:
                       - -c
-                      - export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] )
+                      - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -148,7 +148,7 @@ pipelines:
           approval: manual
           jobs:
             github:
-              elastic_profile_id: ubuntu-node
+              elastic_profile_id: centos-all
               environment_variables:
                 repoName: taiko
                 uploadArtifact: no
@@ -163,7 +163,7 @@ pipelines:
                     command: /bin/sh
                     argumanets:
                       - -c
-                      - export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] )
+                      - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
                 - exec:
                     command: /bin/sh
                     arguments:
