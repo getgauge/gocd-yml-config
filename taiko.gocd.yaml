@@ -129,7 +129,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
+                      - (export version=$(grep '"version"' package.json | sed 's/"version":[[:space:]]*"//' | sed 's/",//' | tr -d [:space:]))
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -157,7 +157,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ( export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] ) )
+                      - (export version=$(grep '"version"' package.json | sed 's/"version":[[:space:]]*"//' | sed 's/",//' | tr -d [:space:]))
                 - exec:
                     command: /bin/sh
                     arguments:
