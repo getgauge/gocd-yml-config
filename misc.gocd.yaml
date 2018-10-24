@@ -10,9 +10,12 @@ pipelines:
         stage: deploy-live
     stages:
       - getgauge_repo:
+          clean_workspace: true
           jobs:
             check:
-              elastic_profile_id: ubuntu-node
+              resources:
+                - darwin
+                - UT
               tasks:
                 - exec:
                     command: npm
@@ -47,3 +50,8 @@ pipelines:
                     arguments:
                       - -c
                       - cat readmes.txt | xargs -L1  -I '{}' /bin/sh -c "echo \"\n\nChecking {}\" && curl -s {} -o readme.md | /tmp/bin/markdown-link-check readme.md"
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
