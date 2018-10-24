@@ -138,3 +138,34 @@ pipelines:
                     arguments:
                       - -c
                       - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
+  Taiko-test-github-release:
+    group: Gauge-JS
+    materials:
+      taiko:
+        git: https://github.com/getgauge/taiko.git
+    stages:
+      - publish:
+          approval: manual
+          jobs:
+            github:
+              elastic_profile_id: ubuntu-node
+              environment_variables:
+                repoName: taiko
+                uploadArtifact: no
+              secure_variables:
+                GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: /bin/sh
+                    argumanets:
+                      - -c
+                      - export version=$(grep \"version\" package.json | sed "s/\"version\": \"//" | sed "s/\",//" | tr -d [:space:] )
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
