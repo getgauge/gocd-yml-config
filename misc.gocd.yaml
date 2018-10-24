@@ -19,6 +19,8 @@ pipelines:
                     arguments:
                       - install
                       - -g
+                      - --prefix
+                      - /tmp
                       - markdown-link-check
                 - exec:
                     command: /bin/sh
@@ -44,4 +46,4 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - cat readmes.txt | xargs -L1  -I '{}' /bin/sh -c "echo \"\n\nChecking {}\" && curl -s {} -o readme.md | markdown-link-check readme.md"
+                      - cat readmes.txt | xargs -L1  -I '{}' /bin/sh -c "echo \"\n\nChecking {}\" && curl -s {} -o readme.md | /tmp/bin/markdown-link-check readme.md"
