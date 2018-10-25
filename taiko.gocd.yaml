@@ -127,23 +127,3 @@ pipelines:
               tasks:
                 - exec:
                     command: build/github_release.sh
-  Taiko-test-github-release:
-    group: Gauge-JS
-    materials:
-      taiko:
-        git: https://github.com/getgauge/taiko.git
-    stages:
-      - publish:
-          approval: manual
-          jobs:
-            github:
-              elastic_profile_id: centos-all
-              environment_variables:
-                GOPATH: /tmp
-                repoName: taiko
-                uploadArtifact: no
-              secure_variables:
-                GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
-              tasks:
-                - exec:
-                    command: build/github_release.sh
