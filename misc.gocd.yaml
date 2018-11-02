@@ -8,6 +8,8 @@ pipelines:
       gauge_website:
         pipeline: gauge.org
         stage: deploy-live
+    timer:
+      spec: "0 0 12 ? * SUN *"
     stages:
       - getgauge_repo:
           clean_workspace: true
@@ -29,27 +31,22 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                      - curl -s https://api.github.com/orgs/getgauge/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge-examples/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                      - curl -s https://api.github.com/orgs/getgauge-examples/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge-contrib/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].full_name' >> repos.txt
+                      - curl -s https://api.github.com/orgs/getgauge-contrib/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - cat repos.txt | xargs -L1  -I '{}' /bin/sh -c "curl -s https://api.github.com/repos/{}/readme?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.download_url' >> readmes.txt"
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - cat readmes.txt | xargs -L1  -I '{}' /bin/sh -c "echo \"\n\nChecking {}\" && curl -s {} -o readme.md | /tmp/bin/markdown-link-check readme.md"
+                      - find . -name \*.md -maxdepth 2 -mindepth 2 -exec markdown-link-check {} \;
                 - exec:
                     run_if: any
                     command: touch
