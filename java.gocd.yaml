@@ -31,8 +31,9 @@ pipelines:
       - sign:
           jobs:
             sign-exe:
-              resoureces:
+              resources:
                 - sign
+                - windows
               secure_variables:
                 CERT_FILE_PWD: AES:MILtFjuHyfI6BxnJ0sfpBw==:ISHc2G7mWhCqYMiAEK+BpQ==
                 CERT_FILE_PATH: AES:vCtTQWq4i9ezmW9dY97Vrw==:svbrqDqTU4xsJSHiDULxCsaTQEzw5D8yw6FaGxu3OD+Xfw+F01tz/N2wb/vlskEG
