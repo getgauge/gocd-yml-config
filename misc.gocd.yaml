@@ -46,7 +46,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - find . -iname \*.md -maxdepth 2 -mindepth 2 | xargs -L1 /tmp/bin/markdown-link-check
+                      - echo "{\"ignorePatterns\":[{\"patterns\":\"http://localhost\"}]}" > config.json
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - find . -iname \*.md -maxdepth 2 -mindepth 2 | xargs -L1 /tmp/bin/markdown-link-check -c config.json
                 - exec:
                     run_if: any
                     command: touch
