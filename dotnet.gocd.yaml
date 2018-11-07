@@ -28,6 +28,7 @@ pipelines:
             installer:
               resources:
                - darwin
+               - FT
               tasks:
                - exec:
                    command: /bin/sh
