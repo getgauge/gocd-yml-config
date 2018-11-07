@@ -46,7 +46,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - find . -name \*.md -maxdepth 2 -mindepth 2 -exec markdown-link-check {} \;
+                      - find . -name \*.md -maxdepth 2 -mindepth 2 -exec /tmp/bin/markdown-link-check {} \;
                 - exec:
                     run_if: any
                     command: touch
