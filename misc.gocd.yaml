@@ -46,7 +46,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - echo "{\"ignorePatterns\":[{\"pattern\":\"^http://localhost\"}, {\"pattern\":\"^mailto\"}]}" > config.json
+                      - echo "{\"ignorePatterns\":[{\"pattern\":\"^http://localhost\"}, {\"pattern\":\"^mailto\"}, {\"pattern\":\"https://maven-badges.herokuapp.com/maven-central/com.thoughtworks.gauge/gauge-java\"}]}" > config.json
                 - exec:
                     command: /bin/sh
                     arguments:
