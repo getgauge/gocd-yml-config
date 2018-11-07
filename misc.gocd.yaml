@@ -46,7 +46,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - echo "{\"ignorePatterns\":[{\"patterns\":\"http://localhost\"}]}" > config.json
+                      - echo "{\"ignorePatterns\":[{\"pattern\":\"^http://localhost\"}, {\"pattern\":\"^mailto\"}]}" > config.json
                 - exec:
                     command: /bin/sh
                     arguments:
