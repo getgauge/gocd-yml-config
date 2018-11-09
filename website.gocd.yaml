@@ -138,7 +138,6 @@ pipelines:
                       - max-age=604800,s-maxage=1800
   docs.gauge.org:
     group: Websites
-    label_template: ${COUNT}
     materials:
       website:
         git: https://github.com/getgauge/docs.gauge.org.git
@@ -224,7 +223,6 @@ pipelines:
                       - max-age=604800,s-maxage=1800
   insights.gauge.org:
     group: Websites
-    label_template: ${COUNT}
     materials:
       website:
         git: https://github.com/getgauge/insights.getgauge.io
@@ -296,7 +294,6 @@ pipelines:
                       - (cd $GOPATH/src/github.com/getgauge/insights.getgauge.io/_insights && aws s3 sync . s3://insights.gauge.org --cache-control max-age=604800,s-maxage=1800)
   manpage.gauge.org:
     group: Websites
-    label_template: ${COUNT}
     materials:
       Gauge:
         pipeline: Gauge-Deploy
