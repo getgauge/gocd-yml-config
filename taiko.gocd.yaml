@@ -76,8 +76,7 @@ pipelines:
                     source: js-taiko/reports/html-report
                     destination: reports
             windows-specs:
-              resources:
-                - windows
+              elastic_profile_id: windows-all
               tasks:
                 - exec:
                     command: git
