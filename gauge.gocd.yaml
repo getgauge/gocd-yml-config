@@ -482,7 +482,8 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
+        # pipeline: Gauge-Deploy
+        pipeline: Gauge-Build
         stage: docs
     secure_variables:
       PYPI_USER: +A8MwngWBLI=
@@ -501,7 +502,8 @@ pipelines:
                 #     source: version
                 #     is_file: yes
                 - fetch:
-                    pipeline: Gauge-Build/Gauge-Deploy
+                    # pipeline: Gauge-Build/Gauge-Deploy
+                    pipeline: Gauge-Build
                     stage: package
                     job: darwin_linux
                     source: build
