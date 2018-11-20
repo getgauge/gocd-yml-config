@@ -494,12 +494,12 @@ pipelines:
             package:
               elastic_profile_id: centos-all
               tasks:
-                - fetch:
-                    pipeline: Gauge-Deploy
-                    stage: github-release
-                    job: draft
-                    source: version
-                    is_file: yes
+                # - fetch:
+                #     pipeline: Gauge-Deploy
+                #     stage: github-release
+                #     job: draft
+                #     source: version
+                #     is_file: yes
                 - fetch:
                     pipeline: Gauge-Build/Gauge-Deploy
                     stage: package
