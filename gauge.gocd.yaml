@@ -500,11 +500,16 @@ pipelines:
                     job: draft
                     source: version
                     is_file: yes
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - git clone https://github.com/getgauge/gauge.git
+                - fetch:
+                    pipeline: Gauge-Build/Gauge-Deploy
+                    stage: package
+                    job: darwin_linux
+                    source: build
+                # - exec:
+                #     command: /bin/sh
+                #     arguments:
+                #       - -c
+                #       - git clone https://github.com/getgauge/gauge.git
                 - exec:
                     command: pip
                     arguments:
@@ -512,7 +517,7 @@ pipelines:
                       - requests
                       - --user
                 - exec:
-                    working_directory: gauge/build/pip
+                    working_directory: build/pip
                     command: /bin/sh
                     arguments:
                       - -c
@@ -523,9 +528,9 @@ pipelines:
                       - install
                       - twine
                       - --user
-                - exec:
-                    working_directory: gauge/build/pip
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (file=$(ls dist/*gauge-cli-*.tar.gz); python3 -m twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
+                # - exec:
+                #     working_directory: gauge/build/pip
+                #     command: /bin/sh
+                #     arguments:
+                #       - -c
+                #       - (file=$(ls dist/*gauge-cli-*.tar.gz); python3 -m twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
