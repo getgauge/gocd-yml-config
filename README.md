@@ -1,1 +1,0 @@
-# gocd-yml-config-test
