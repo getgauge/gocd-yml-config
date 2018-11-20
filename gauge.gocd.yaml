@@ -482,8 +482,10 @@ pipelines:
     group: Gauge
     materials:
       Gauge:
-        pipeline: Gauge-Deploy
-        stage: docs
+        # pipeline: Gauge-Deploy
+        # stage: docs
+        pipeline: Gauge-Build
+        stage: package
     secure_variables:
       PYPI_USER: +A8MwngWBLI=
       PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
@@ -494,22 +496,23 @@ pipelines:
             package:
               elastic_profile_id: centos-all
               tasks:
+                # - fetch:
+                #     pipeline: Gauge-Deploy
+                #     stage: github-release
+                #     job: draft
+                #     source: version
+                #     is_file: yes
                 - fetch:
-                    pipeline: Gauge-Deploy
-                    stage: github-release
-                    job: draft
-                    source: version
-                    is_file: yes
-                - fetch:
-                    pipeline: Gauge-Build/Gauge-Deploy
+                    # pipeline: Gauge-Build/Gauge-Deploy
+                    pipeline: Gauge-Build
                     stage: package
                     job: darwin_linux
                     source: build
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - git clone https://github.com/getgauge/gauge.git
+                # - exec:
+                #     command: /bin/sh
+                #     arguments:
+                #       - -c
+                #       - git clone https://github.com/getgauge/gauge.git
                 - exec:
                     command: pip
                     arguments:
