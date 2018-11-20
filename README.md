@@ -1,3 +1,1 @@
-# gocd-yml-config
-
-This repo hold the gocd pipeline comfigurations.
+# gocd-yml-config-test
