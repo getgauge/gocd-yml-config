@@ -483,8 +483,9 @@ pipelines:
     materials:
       Gauge:
         # pipeline: Gauge-Deploy
+        # stage: docs
         pipeline: Gauge-Build
-        stage: docs
+        stage: package
     secure_variables:
       PYPI_USER: +A8MwngWBLI=
       PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
