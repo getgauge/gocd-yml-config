@@ -420,3 +420,362 @@ pipelines:
                     arguments:
                       - -c
                       - (mvn clean deploy -Dgpg.passphrase=$passphrase)
+  Java-LSP-Tests:
+    group: Gauge-Java
+    materials:
+      gauge-lsp-tests:
+        git: https://github.com/getgauge/gauge-lsp-tests
+        shallow_clone: true
+      gauge-package:
+        pipeline: Gauge-Build
+        stage: windows
+      Java-Package:
+        pipeline: Java-Build
+        stage: package
+    stages:
+      - wd:
+          clean_workspace: true
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall js)
+                - fetch:
+                    pipeline:  Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run specs --tags=!knownIssue --env=java-wd)
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            linux:
+              elastic_profile_id: centos-node
+              environment_variables:
+                GAUGE_ROOT: /tmp/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline:  Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run specs --tags=!knownIssue --env=java-wd
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            windows:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline: Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      -  /c
+                      - "for %f in (gauge-java-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install java -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - npm install
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge run specs run specs --env=java-wd --tags=!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+      - no-wd:
+          clean_workspace: true
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall js)
+                - fetch:
+                    pipeline:  Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run specs --tags=!knownIssue --env=java-no-wd)
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            linux:
+              elastic_profile_id: centos-node
+              environment_variables:
+                GAUGE_ROOT: /tmp/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline:  Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run specs --tags=!knownIssue --env=java-no-wd
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            windows:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline: Java-Build
+                    stage: package
+                    job: distro
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      -  /c
+                      - "for %f in (gauge-java-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install java -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - npm install
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge run specs run specs --env=java-no-wd --tags=!knownIssue
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
