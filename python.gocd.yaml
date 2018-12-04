@@ -1095,7 +1095,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (file=$(ls dist/getgauge-*.dev.*.tar.gz); twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
+                      - (file=$(ls dist/getgauge-*.dev.*.tar.gz);python -m twine upload -u $PYPI_USER -p $PYPI_PASSWORD $file)
             bintray_upload:
               elastic_profile_id: centos-all
               environment_variables:
