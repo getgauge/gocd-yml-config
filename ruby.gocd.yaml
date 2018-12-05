@@ -120,6 +120,12 @@ pipelines:
                       - -c
                       - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
                 - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm reports-ruby/html-report/html-report
+                - exec:
                     run_if: any
                     command: touch
                     arguments:
