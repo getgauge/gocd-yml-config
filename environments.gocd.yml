@@ -29,6 +29,7 @@ environments:
       - Taiko
       - Java-Build
       - Java-FT
+      - Java-LSP-Tests
       - Gauge-Java-Nightly
       - Java-Deploy
       - VSCode-Build
