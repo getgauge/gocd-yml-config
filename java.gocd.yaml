@@ -465,7 +465,7 @@ pipelines:
                       - -c
                       - ($GAUGE_ROOT/bin/gauge uninstall js)
                 - fetch:
-                    pipeline:  Java-Build
+                    pipeline: Java-Build
                     stage: package
                     job: distro
                     source: deploy
@@ -473,8 +473,8 @@ pipelines:
                     working_directory: deploy
                     command: /bin/sh
                     arguments:
-                      - -c
-                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                    - -c
+                    - (version=$(ls gauge-java-*-darwin.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-darwin.x86_64.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -530,7 +530,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -647,7 +647,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -703,7 +703,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+                      - (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
                 - exec:
                     command: /bin/sh
                     arguments:
