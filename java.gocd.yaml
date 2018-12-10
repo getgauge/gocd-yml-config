@@ -582,10 +582,10 @@ pipelines:
                       - /c
                       - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
                 - exec:
-                    command: /bin/sh
+                    command: cmd
                     arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall java)
+                      - /c
+                      - (%GAUGE_ROOT%/bin/gauge uninstall java)
                 - fetch:
                     pipeline: Java-Build
                     stage: package
