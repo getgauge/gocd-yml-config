@@ -585,7 +585,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - (%GAUGE_ROOT%/bin/gauge uninstall java)
+                      - (%GAUGE_ROOT%/gauge uninstall java)
                 - fetch:
                     pipeline: Java-Build
                     stage: package
