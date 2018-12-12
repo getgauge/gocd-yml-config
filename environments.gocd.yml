@@ -41,3 +41,4 @@ environments:
       - manpage.gauge.org
       - HTML-Report-FT
       - check-all-readme-files
+      - Taiko-Benchmark
