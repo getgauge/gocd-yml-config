@@ -1,0 +1,45 @@
+pipelines:
+  Taiko-Benchmark:
+    group: Gauge-JS
+    materials:
+      taiko:
+        git: https://github.com/getgauge/taiko-benchmark.git
+    stages:
+      - benchmark:
+          clean_workspace: true
+          jobs:
+            linux-benchmark:
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - test
+            osx-benchmark:
+              resources:
+                - darwin
+                - FT
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - test
+            windows-benchmark:
+              elastic_profile_id: windows-all
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - test
