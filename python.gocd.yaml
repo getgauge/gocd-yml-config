@@ -552,7 +552,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run specs --env=python-wd --tags=!knownIssue
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags=!knownIssue
                 - exec:
                    run_if: any
                    command: touch
@@ -648,7 +648,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run specs --env=python-wd --tags=!knownIssue
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags=!knownIssue
               artifacts:
                 - build:
                     source: logs
@@ -736,7 +736,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run specs --tags=!knownIssue --env=python-wd
+                      - path %GAUGE_ROOT%;%PATH% & gauge run --tags=!knownIssue --env=python-wd
                 - exec:
                     run_if: any
                     command: cmd
@@ -839,7 +839,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run specs --env=python-no-wd --tags=!knownIssue
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags=!knownIssue
                 - exec:
                    run_if: any
                    command: touch
@@ -931,7 +931,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run specs --env=python-no-wd --tags=!knownIssue
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags=!knownIssue
               artifacts:
                 - build:
                     source: logs
@@ -1014,7 +1014,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run specs --tags=!knownIssue --env=python-no-wd
+                      - path %GAUGE_ROOT%;%PATH% & gauge run --tags=!knownIssue --env=python-no-wd
                 - exec:
                     run_if: any
                     command: cmd
