@@ -510,7 +510,7 @@ pipelines:
                     source: logs
                     destination: logs
             linux:
-              elastic_profile_id: centos-node
+              elastic_profile_id: centos-jdk-mvn-node
               environment_variables:
                 GAUGE_ROOT: /tmp/gauge_root
               tasks:
