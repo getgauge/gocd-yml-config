@@ -256,8 +256,7 @@ pipelines:
                     - /c
                     - npm
                     - install
-                - exec:
-                   working_directory: gauge
+               - exec:
                    command: powershell.exe
                    arguments:
                     - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=dotnet-wd }
@@ -405,7 +404,6 @@ pipelines:
                     - npm
                     - install
                - exec:
-                   working_directory: gauge
                    command: powershell.exe
                    arguments:
                     - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=dotnet-no-wd }
@@ -553,16 +551,15 @@ pipelines:
                     - npm
                     - install
                - exec:
-                   working_directory: gauge
                    command: powershell.exe
                    arguments:
                     - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=dotnet-wd }
                - exec:
-                    run_if: any
-                    command: cmd
-                    arguments:
-                    - /c
-                    - del %GAUGE_ROOT%\gauge
+                   run_if: any
+                   command: cmd
+                   arguments:
+                   - /c
+                   - del %GAUGE_ROOT%\gauge
               artifacts:
                 - build:
                     source: logs
@@ -701,7 +698,6 @@ pipelines:
                     - npm
                     - install
                - exec:
-                   working_directory: gauge
                    command: powershell.exe
                    arguments:
                     - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=dotnet-no-wd }

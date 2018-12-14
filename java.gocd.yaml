@@ -613,7 +613,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=java-wd }
@@ -801,7 +800,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=java-no-wd }

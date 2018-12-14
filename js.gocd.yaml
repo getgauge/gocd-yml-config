@@ -445,7 +445,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=js-wd }
@@ -618,7 +617,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=js-no-wd }
@@ -791,7 +789,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=js-wd }
@@ -964,7 +961,6 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    working_directory: gauge
                     command: powershell.exe
                     arguments:
                       - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=js-no-wd }
