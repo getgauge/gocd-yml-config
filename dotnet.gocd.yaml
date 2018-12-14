@@ -256,11 +256,11 @@ pipelines:
                     - /c
                     - npm
                     - install
-               - exec:
-                    command: cmd
-                    arguments:
-                    - /c
-                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=dotnet-wd
+                - exec:
+                   working_directory: gauge
+                   command: powershell.exe
+                   arguments:
+                    - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=dotnet-wd }
                - exec:
                     run_if: any
                     command: cmd
@@ -405,10 +405,10 @@ pipelines:
                     - npm
                     - install
                - exec:
-                    command: cmd
-                    arguments:
-                    - /c
-                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env dotnet-no-wd
+                   working_directory: gauge
+                   command: powershell.exe
+                   arguments:
+                    - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=dotnet-no-wd }
                - exec:
                     run_if: any
                     command: cmd
@@ -553,10 +553,10 @@ pipelines:
                     - npm
                     - install
                - exec:
-                    command: cmd
-                    arguments:
-                    - /c
-                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=dotnet-wd
+                   working_directory: gauge
+                   command: powershell.exe
+                   arguments:
+                    - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=dotnet-wd }
                - exec:
                     run_if: any
                     command: cmd
@@ -701,10 +701,10 @@ pipelines:
                     - npm
                     - install
                - exec:
-                    command: cmd
-                    arguments:
-                    - /c
-                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=dotnet-no-wd
+                   working_directory: gauge
+                   command: powershell.exe
+                   arguments:
+                    - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=dotnet-no-wd }
                - exec:
                     run_if: any
                     command: cmd

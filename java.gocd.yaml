@@ -612,11 +612,11 @@ pipelines:
                     arguments:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
-                - exec:
-                    command: cmd
+               - exec:
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=java-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=java-wd }
               artifacts:
                 - build:
                     source: logs
@@ -800,11 +800,11 @@ pipelines:
                     arguments:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
-                - exec:
-                    command: cmd
+               - exec:
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=java-no-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=java-no-wd }
               artifacts:
                 - build:
                     source: logs

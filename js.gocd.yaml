@@ -445,10 +445,10 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: cmd
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=js-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=js-wd }
               artifacts:
                 - build:
                     source: logs
@@ -618,10 +618,10 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: cmd
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=js-no-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_load.ps1 -env=js-no-wd }
               artifacts:
                 - build:
                     source: logs
@@ -791,10 +791,10 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: cmd
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=js-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=js-wd }
               artifacts:
                 - build:
                     source: logs
@@ -964,10 +964,10 @@ pipelines:
                       - /c
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
-                    command: cmd
+                    working_directory: gauge
+                    command: powershell.exe
                     arguments:
-                      - /c
-                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=js-no-wd
+                      - path %GAUGE_ROOT%;%PATH% & %{ .\exec_windows_edit.ps1 -env=js-no-wd }
               artifacts:
                 - build:
                     source: logs
