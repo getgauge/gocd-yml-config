@@ -448,7 +448,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --env=js-wd --tags='!knownIssue & actions_on_project_load'
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=js-wd
               artifacts:
                 - build:
                     source: logs
@@ -621,7 +621,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --env=js-no-wd --tags='!knownIssue & actions_on_project_load'
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=js-no-wd
               artifacts:
                 - build:
                     source: logs
@@ -794,7 +794,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --env=js-wd --tags='!knownIssue & actions_on_file_edit'
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=js-wd
               artifacts:
                 - build:
                     source: logs
@@ -967,7 +967,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --env=js-no-wd --tags='!knownIssue & actions_on_file_edit'
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=js-no-wd
               artifacts:
                 - build:
                     source: logs

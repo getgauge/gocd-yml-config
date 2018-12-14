@@ -616,7 +616,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --env=java-wd --tags=!knownIssue
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=java-wd
               artifacts:
                 - build:
                     source: logs
@@ -804,7 +804,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run specs run specs --env=java-no-wd --tags=!knownIssue
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=java-no-wd
               artifacts:
                 - build:
                     source: logs

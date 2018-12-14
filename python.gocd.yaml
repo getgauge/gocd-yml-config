@@ -736,7 +736,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --tags=!knownIssue --env=python-wd
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=python-wd
                 - exec:
                     run_if: any
                     command: cmd
@@ -1014,7 +1014,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge run --tags=!knownIssue --env=python-no-wd
+                      - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=python-no-wd
                 - exec:
                     run_if: any
                     command: cmd

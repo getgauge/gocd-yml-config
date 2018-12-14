@@ -260,10 +260,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - "%GAUGE_ROOT%/gauge"
-                    - run 
-                    - --env=dotnet-wd 
-                    - --tags="!knownIssue & actions_on_project_load"
+                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env=dotnet-wd
                - exec:
                     run_if: any
                     command: cmd
@@ -411,7 +408,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_project_load'
+                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_load.ps1 -env dotnet-no-wd
                - exec:
                     run_if: any
                     command: cmd
@@ -559,7 +556,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_file_edit'
+                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=dotnet-wd
                - exec:
                     run_if: any
                     command: cmd
@@ -707,7 +704,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_file_edit'
+                    - path %GAUGE_ROOT%;%PATH% & .\exec_windows_edit.ps1 -env=dotnet-no-wd
                - exec:
                     run_if: any
                     command: cmd
