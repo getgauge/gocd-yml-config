@@ -260,7 +260,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags="!knownIssue & actions_on_project_load"
+                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_project_load'
                - exec:
                     run_if: any
                     command: cmd
@@ -329,7 +329,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-wd --tags="!knownIssue & actions_on_project_load"
+                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_project_load'
               artifacts:
                 - build:
                     source: logs
@@ -408,7 +408,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags="!knownIssue & actions_on_project_load"
+                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_project_load'
                - exec:
                     run_if: any
                     command: cmd
@@ -477,7 +477,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-no-wd --tags="!knownIssue & actions_on_project_load"
+                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_project_load'
               artifacts:
                 - build:
                     source: logs
@@ -556,7 +556,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags="!knownIssue & actions_on_file_edit"
+                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_file_edit'
                - exec:
                     run_if: any
                     command: cmd
@@ -625,7 +625,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-wd --tags="!knownIssue & actions_on_file_edit"
+                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_file_edit'
               artifacts:
                 - build:
                     source: logs
@@ -704,7 +704,7 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags="!knownIssue & actions_on_file_edit"
+                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_file_edit'
                - exec:
                     run_if: any
                     command: cmd
@@ -773,7 +773,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-no-wd --tags="!knownIssue & actions_on_file_edit"
+                      - PATH=$PATH:/tmp/bin gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_file_edit'
               artifacts:
                 - build:
                     source: logs
