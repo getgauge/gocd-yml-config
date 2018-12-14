@@ -260,7 +260,10 @@ pipelines:
                     command: cmd
                     arguments:
                     - /c
-                    - path %GAUGE_ROOT%;%PATH% & gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_project_load'
+                    - %GAUGE_ROOT%\gauge 
+                    - run 
+                    - --env=dotnet-wd 
+                    - --tags="!knownIssue & actions_on_project_load"
                - exec:
                     run_if: any
                     command: cmd
