@@ -552,7 +552,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load'
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load' -v
                 - exec:
                    run_if: any
                    command: touch
@@ -648,7 +648,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load' -v
               artifacts:
                 - build:
                     source: logs
@@ -838,7 +838,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load'
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load' -v
                 - exec:
                    run_if: any
                    command: touch
@@ -930,7 +930,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load' -v
               artifacts:
                 - build:
                     source: logs
@@ -1125,7 +1125,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_file_edit'
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_file_edit' -v
                 - exec:
                    run_if: any
                    command: touch
@@ -1221,7 +1221,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_file_edit'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_file_edit' -v
               artifacts:
                 - build:
                     source: logs
@@ -1411,7 +1411,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_file_edit'
+                      - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_file_edit' -v
                 - exec:
                    run_if: any
                    command: touch
@@ -1503,7 +1503,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_file_edit'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_file_edit' -v
               artifacts:
                 - build:
                     source: logs
