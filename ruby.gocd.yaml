@@ -321,7 +321,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags=!knownIssue --env=ruby-wd -v)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-wd -v)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-wd -v)
                 - exec:
                     run_if: any
                     command: touch
@@ -394,7 +399,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags=!knownIssue --env=ruby-wd -v
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-wd -v
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-wd -v
               artifacts:
                 - build:
                     source: logs
@@ -473,7 +483,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags=!knownIssue --env=ruby-no-wd -v)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-no-wd -v)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-no-wd -v)
                 - exec:
                     run_if: any
                     command: touch
@@ -546,7 +561,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags=!knownIssue --env=ruby-no-wd -v
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-no-wd -v
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-no-wd -v
               artifacts:
                 - build:
                     source: logs
