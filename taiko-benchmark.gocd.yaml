@@ -25,21 +25,10 @@ pipelines:
                     command: npm
                     arguments:
                       - test
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git add ./reports)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git commit --author="$GITHUB_EMAIL" -m "Adding benchmark result for linux platform")
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - ; git push origin master)
+              artifacts:
+               - build:
+                  source: ./*-linux.json
+                  destination: benchmark-result
             osx-benchmark:
               resources:
                 - darwin
@@ -53,21 +42,10 @@ pipelines:
                     command: npm
                     arguments:
                       - test
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git add ./reports)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git commit --author="$GITHUB_EMAIL" -m "Adding benchmark result for darwin platform")
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - ; git push origin master)
+              artifacts:
+                - build:
+                    source: ./*-darwin.json
+                    destination: benchmark-result
             windows-benchmark:
               elastic_profile_id: windows-all
               tasks:
@@ -79,18 +57,7 @@ pipelines:
                     command: npm
                     arguments:
                       - test
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git add ./reports)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (git commit --author="$GITHUB_EMAIL"  -m "Adding benchmark result for windows platform")
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - ; git push origin master)
+              artifacts:
+                - build:
+                    source: ./*-win32.json
+                    destination: benchmark-result
