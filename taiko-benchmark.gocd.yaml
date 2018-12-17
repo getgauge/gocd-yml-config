@@ -61,3 +61,52 @@ pipelines:
                 - build:
                     source: "*-win32.json"
                     destination: benchmark-result
+      - publish:
+        jobs:
+          publish:
+            elastic_profile_id: centos-all
+            tasks:
+              - exec:
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git clone git@github.com:getgauge/taiko-benchmark.git
+              - fetch:
+                  pipeline: Taiko-Benchmark
+                  stage: benchmark
+                  job: linux-benchmark
+                  source: benchmark-result/*-linux.json
+                  is_file: yes
+                  destination: taiko-benchmark/reports
+              - fetch:
+                  pipeline: Taiko-Benchmark
+                  stage: benchmark
+                  job: osx-benchmark
+                  source: benchmark-result/*-darwin.json
+                  is_file: yes
+                  destination: taiko-benchmark/reports
+              - fetch:
+                  pipeline: Taiko-Benchmark
+                  stage: benchmark
+                  job: windows-benchmark
+                  source: benchmark-result/*-win32.json
+                  is_file: yes
+                  destination: taiko-benchmark/reports
+              - exec:
+                  working_directory: taiko-benchmark
+                  command: git
+                  arguments:
+                    - add
+                    - ./reports
+              - exec:
+                  working_directory: taiko-benchmark
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - (git commit -m "Adding benchmark results.")
+              - exec:
+                  working_directory: taiko-benchmark
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - && git push origin master
