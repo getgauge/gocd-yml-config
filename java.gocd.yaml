@@ -501,11 +501,6 @@ pipelines:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=java-wd -v)
                 - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=java-wd -v)
-                - exec:
                     run_if: any
                     command: touch
                     arguments:
@@ -566,11 +561,6 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=java-wd -v
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=java-wd -v
               artifacts:
                 - build:
                     source: logs
@@ -698,11 +688,6 @@ pipelines:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=java-no-wd -v)
                 - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=java-no-wd -v)
-                - exec:
                     run_if: any
                     command: touch
                     arguments:
@@ -763,11 +748,6 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=java-no-wd -v
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=java-no-wd -v
               artifacts:
                 - build:
                     source: logs

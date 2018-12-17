@@ -341,7 +341,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd -v)
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd)
                 - exec:
                     command: /bin/sh
                     arguments:
@@ -403,11 +403,6 @@ pipelines:
                     arguments:
                       - -c
                       - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd -v)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd -v)
               artifacts:
                 - build:
                     source: logs
@@ -523,12 +518,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd -v)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd -v)
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -584,7 +574,346 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd -v)
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd)
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            windows:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - npm install
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: powershell.exe
+                    arguments:
+                      - "./exec_windows_load.ps1 -env=java-no-wd"
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+      - wd-edit:
+          clean_workspace: true
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall js)
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd -v)
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            linux:
+              elastic_profile_id: centos-node
+              environment_variables:
+                GAUGE_ROOT: /tmp/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd -v)
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            windows:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - npm install
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
+                - exec:
+                    command: powershell.exe
+                    arguments:
+                      - "./exec_windows_load.ps1 -env=js-wd"
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+      - no-wd-edit:
+          clean_workspace: true
+          jobs:
+            darwin:
+              resources:
+                - FT
+                - darwin
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-darwin.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge uninstall js)
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd)
+                - exec:
+                    run_if: any
+                    command: touch
+                    arguments:
+                    - /vagrant/rollback.txt
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
+            linux:
+              elastic_profile_id: centos-node
+              environment_variables:
+                GAUGE_ROOT: /tmp/gauge_root
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source:  test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline: JS-Build
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-*.zip | sed "s/^gauge-js-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-$version.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - npm install
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
                 - exec:
                     command: /bin/sh
                     arguments:
