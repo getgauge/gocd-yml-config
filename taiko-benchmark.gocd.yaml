@@ -5,7 +5,7 @@ pipelines:
       Taiko:
         pipeline: Taiko
         stage: publish
-      taiko:
+      taiko-benchmark:
         git: https://github.com/getgauge/taiko-benchmark.git
     secure_variables:
       GITHUB_EMAIL: AES:+LFTS7BtnVEFaBRMNOGOJw==:gP17lhYFS8vZRBN+BnE0rxH2onIm/XAzAPmgY9OKNAw=
