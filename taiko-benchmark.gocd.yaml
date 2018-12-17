@@ -27,7 +27,7 @@ pipelines:
                       - test
               artifacts:
                - build:
-                  source: ./*-linux.json
+                  source: "*-linux.json"
                   destination: benchmark-result
             osx-benchmark:
               resources:
@@ -44,7 +44,7 @@ pipelines:
                       - test
               artifacts:
                 - build:
-                    source: ./*-darwin.json
+                    source: "*-darwin.json"
                     destination: benchmark-result
             windows-benchmark:
               elastic_profile_id: windows-all
@@ -59,5 +59,5 @@ pipelines:
                       - test
               artifacts:
                 - build:
-                    source: ./*-win32.json
+                    source: "*-win32.json"
                     destination: benchmark-result
