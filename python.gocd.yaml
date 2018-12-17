@@ -1325,7 +1325,7 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
-      - no-wd-load:
+      - no-wd-edit:
           cleanWorkingDir: true
           jobs:
             osx:
