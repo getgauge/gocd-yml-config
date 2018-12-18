@@ -280,7 +280,7 @@ pipelines:
         pipeline: JS-Build
         stage: package
     stages:
-      - wd:
+      - wd-load:
           clean_workspace: true
           jobs:
             darwin:
@@ -457,7 +457,7 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
-      - no-wd:
+      - no-wd-load:
           clean_workspace: true
           jobs:
             darwin:

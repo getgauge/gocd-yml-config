@@ -247,7 +247,7 @@ pipelines:
         pipeline: Ruby-Package
         stage: package
     stages:
-      - wd:
+      - wd-load:
           clean_workspace: true
           environment_variables:
             language: ruby
@@ -399,7 +399,7 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
-      - no-wd:
+      - no-wd-load:
           clean_workspace: true
           environment_variables:
             language: ruby

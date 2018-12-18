@@ -186,7 +186,7 @@ pipelines:
         pipeline: Gauge-Build
         stage: windows
     stages:
-      - wd:
+      - wd-load:
           clean_workspace: true
           jobs:
             windows:
@@ -333,7 +333,7 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
-      - no-wd:
+      - no-wd-load:
           clean_workspace: true
           jobs:
             windows:
