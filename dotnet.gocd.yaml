@@ -328,7 +328,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_project_load'
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_project_load' -p
               artifacts:
                 - build:
                     source: logs
@@ -475,7 +475,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_project_load' -v
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_project_load' -p
               artifacts:
                 - build:
                     source: logs
@@ -622,7 +622,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_file_edit'
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-wd --tags='!knownIssue & actions_on_file_edit' -p
               artifacts:
                 - build:
                     source: logs
@@ -765,7 +765,7 @@ pipelines:
                     arguments:
                       - -c
                       - npm install
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_file_edit' -v
+                      - PATH=$GAUGE_ROOT/bin:$PATH gauge run --env=dotnet-no-wd --tags='!knownIssue & actions_on_file_edit' -p
               artifacts:
                 - build:
                     source: logs
