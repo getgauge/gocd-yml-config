@@ -76,23 +76,38 @@ pipelines:
                     pipeline: Taiko-Benchmark
                     stage: benchmark
                     job: linux-benchmark
-                    source: benchmark-result/*-linux.json
-                    is_file: yes
-                    destination: taiko-benchmark/reports
+                    source: benchmark-result
+                    destination: taiko-benchmark
+                - exec:
+                    working_directory: taiko-benchmark
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (mv benchmark-result/*.json reports/)
                 - fetch:
                     pipeline: Taiko-Benchmark
                     stage: benchmark
                     job: osx-benchmark
-                    source: benchmark-result/*-darwin.json
-                    is_file: yes
-                    destination: taiko-benchmark/reports
+                    source: benchmark-result
+                    destination: taiko-benchmark
+                - exec:
+                    working_directory: taiko-benchmark
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (mv benchmark-result/*.json reports/)
                 - fetch:
                     pipeline: Taiko-Benchmark
                     stage: benchmark
                     job: windows-benchmark
-                    source: benchmark-result/*-win32.json
-                    is_file: yes
-                    destination: taiko-benchmark/reports
+                    source: benchmark-result
+                    destination: taiko-benchmark
+                - exec:
+                    working_directory: taiko-benchmark
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (mv benchmark-result/*.json reports/)
                 - exec:
                     working_directory: taiko-benchmark
                     command: git
