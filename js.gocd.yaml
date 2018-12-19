@@ -447,7 +447,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path += ";%GAUGE_ROOT%/"
+                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                       - "./exec_windows_load.ps1 -env=js-wd"
               artifacts:
                 - build:
@@ -620,7 +620,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path += ";%GAUGE_ROOT%/"
+                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                       - "./exec_windows_load.ps1 -env=js-no-wd"
               artifacts:
                 - build:
@@ -793,7 +793,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path += ";%GAUGE_ROOT%/"
+                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                       - "./exec_windows_edit.ps1 -env=js-wd"
               artifacts:
                 - build:
@@ -966,7 +966,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path += ";%GAUGE_ROOT%/"
+                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                       - "./exec_windows_edit.ps1 -env=js-no-wd"
               artifacts:
                 - build:

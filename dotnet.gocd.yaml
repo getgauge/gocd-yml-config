@@ -259,7 +259,7 @@ pipelines:
                - exec:
                    command: powershell.exe
                    arguments:
-                    - $env:Path += ";%GAUGE_ROOT%/"
+                    - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                     - "./exec_windows_load.ps1 -env=dotnet-wd"
                - exec:
                     run_if: any
@@ -407,7 +407,7 @@ pipelines:
                - exec:
                    command: powershell.exe
                    arguments:
-                    - $env:Path += ";%GAUGE_ROOT%/"
+                    - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                     - "./exec_windows_load.ps1 -env=dotnet-no-wd"
                - exec:
                     run_if: any
@@ -555,7 +555,7 @@ pipelines:
                - exec:
                    command: powershell.exe
                    arguments:
-                    - $env:Path += ";%GAUGE_ROOT%/"
+                    - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                     - "./exec_windows_edit.ps1 -env=dotnet-wd"
                - exec:
                    run_if: any
@@ -703,7 +703,7 @@ pipelines:
                - exec:
                    command: powershell.exe
                    arguments:
-                    - $env:Path += ";%GAUGE_ROOT%/"
+                    - $env:Path = "$env:Path;%GAUGE_ROOT%/"
                     - "./exec_windows_edit.ps1 -env=dotnet-no-wd"
                - exec:
                     run_if: any
