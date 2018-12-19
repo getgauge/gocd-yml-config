@@ -791,7 +791,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - PATH=$GAUGE_ROOT/bin:$PATH "& {./exec_windows_edit.ps1 -env=js-wd}"
+                      - ./exec_windows_edit.ps1 -env=js-wd"
               artifacts:
                 - build:
                     source: logs
@@ -963,7 +963,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - PATH=$GAUGE_ROOT/bin:$PATH "& {./exec_windows_edit.ps1 -env=js-no-wd}"
+                      - "./exec_windows_edit.ps1 -env=js-no-wd"
               artifacts:
                 - build:
                     source: logs
