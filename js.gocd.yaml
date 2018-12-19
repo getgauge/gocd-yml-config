@@ -619,7 +619,7 @@ pipelines:
                       - "%GAUGE_ROOT%/gauge install & %GAUGE_ROOT%/gauge version"
                 - exec:
                     command: powershell.exe
-                   arguments:
+                    arguments:
                       - $env:Path += ";%GAUGE_ROOT%/"
                       - "./exec_windows_load.ps1 -env=js-no-wd"
               artifacts:
