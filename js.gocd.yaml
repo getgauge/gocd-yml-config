@@ -341,7 +341,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -397,7 +397,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-wd)
               artifacts:
                 - build:
                     source: logs
@@ -513,7 +513,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -569,7 +569,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=js-no-wd)
               artifacts:
                 - build:
                     source: logs
@@ -685,7 +685,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -741,7 +741,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-wd)
               artifacts:
                 - build:
                     source: logs
@@ -857,7 +857,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -913,7 +913,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd -p)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=js-no-wd)
               artifacts:
                 - build:
                     source: logs
