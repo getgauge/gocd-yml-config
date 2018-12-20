@@ -615,8 +615,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                    - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                    - "./exec_windows_load.ps1 -env=java-wd"
+                    - "./exec_windows_load.ps1 -gauge_env java-wd"
               artifacts:
                 - build:
                     source: logs
@@ -803,8 +802,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_load.ps1 -env=java-no-wd"
+                      - "./exec_windows_load.ps1 -gauge_env java-no-wd"
               artifacts:
                 - build:
                     source: logs
@@ -991,8 +989,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_edit.ps1 -env=java-wd"
+                      - "./exec_windows_edit.ps1 -gauge_env java-wd"
               artifacts:
                 - build:
                     source: logs
@@ -1179,8 +1176,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_edit.ps1 -env=java-no-wd"
+                      - "./exec_windows_edit.ps1 -gauge_env java-no-wd"
               artifacts:
                 - build:
                     source: logs

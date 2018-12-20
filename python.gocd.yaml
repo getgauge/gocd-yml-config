@@ -735,8 +735,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_load.ps1 -env=python-wd"
+                      - "./exec_windows_load.ps1 -gauge_env python-wd"
                 - exec:
                     run_if: any
                     command: cmd
@@ -1013,8 +1012,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_load.ps1 -env=python-no-wd"
+                      - "./exec_windows_load.ps1 -gauge_env python-no-wd"
                 - exec:
                     run_if: any
                     command: cmd
@@ -1310,8 +1308,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_edit.ps1 -env=python-wd"
+                      - "./exec_windows_edit.ps1 -gauge_env python-wd"
                 - exec:
                     run_if: any
                     command: cmd
@@ -1588,8 +1585,7 @@ pipelines:
                 - exec:
                     command: powershell.exe
                     arguments:
-                      - $env:Path = "$env:Path;%GAUGE_ROOT%/"
-                      - "./exec_windows_edit.ps1 -env=python-no-wd"
+                      - "./exec_windows_edit.ps1 -gauge_env python-no-wd"
                 - exec:
                     run_if: any
                     command: cmd
