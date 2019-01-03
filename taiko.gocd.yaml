@@ -18,12 +18,17 @@ pipelines:
                     command: npm
                     arguments:
                       - test
-      - tests:
+      - functional-tests:
           clean_workspace: true
           jobs:
             linux-specs:
               elastic_profile_id: ubuntu-node
               tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge/taiko.git
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
@@ -45,6 +50,11 @@ pipelines:
                 - darwin
                 - FT
               tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge/taiko.git
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
@@ -68,6 +78,11 @@ pipelines:
             windows-specs:
               elastic_profile_id: windows-all
               tasks:
+                - exec:
+                    command: git
+                    arguments:
+                      - clone
+                      - https://github.com/getgauge/taiko.git
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
