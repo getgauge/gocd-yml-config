@@ -5,7 +5,7 @@ pipelines:
       taiko:
         git: https://github.com/getgauge/taiko.git
     stages:
-      - test:
+      - unit-test:
           jobs:
             test:
               elastic_profile_id: ubuntu-node
@@ -25,24 +25,19 @@ pipelines:
               elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
-                    command: git
-                    arguments:
-                      - clone
-                      - https://github.com/getgauge-examples/js-taiko
-                - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: /bin/sh
                     arguments:
                       - -c
                       - npm test -- -v --tags=\!knownIssue -p
               artifacts:
                 - build:
-                    source: js-taiko/reports/html-report
+                    source: test/functional-tests/reports/html-report
                     destination: reports
 
             osx-specs:
@@ -51,17 +46,12 @@ pipelines:
                 - FT
               tasks:
                 - exec:
-                    command: git
-                    arguments:
-                      - clone
-                      - https://github.com/getgauge-examples/js-taiko
-                - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: /bin/sh
                     arguments:
                       - -c
@@ -73,30 +63,25 @@ pipelines:
                     - /vagrant/rollback.txt
               artifacts:
                 - build:
-                    source: js-taiko/reports/html-report
+                    source: test/functional-tests/reports/html-report
                     destination: reports
             windows-specs:
               elastic_profile_id: windows-all
               tasks:
                 - exec:
-                    command: git
-                    arguments:
-                      - clone
-                      - https://github.com/getgauge-examples/js-taiko
-                - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    working_directory: js-taiko
+                    working_directory: test/functional-tests
                     command: cmd
                     arguments:
                       - /c                      
                       - npm test -- -v --tags=\!knownIssue -p
               artifacts:
                 - build:
-                    source: js-taiko/reports/html-report
+                    source: test/functional-tests/reports/html-report
                     destination: reports
       - publish:
           approval: manual
