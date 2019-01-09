@@ -39,7 +39,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm test -- -v --tags=\!knownIssue -p
+                      - npm test -- -v --tags=\!knownIssue
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -65,7 +65,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - npm test -- -v --tags=\!knownIssue
+                      - npm test -- -v --tags=\!knownIssues
                 - exec:
                     run_if: any
                     command: touch
@@ -93,7 +93,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c                      
-                      - npm test -- -v --tags=\!knownIssue -p
+                      - npm test -- -v --tags=\!knownIssue
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
