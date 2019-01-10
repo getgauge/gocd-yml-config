@@ -247,7 +247,7 @@ pipelines:
         pipeline: Ruby-Package
         stage: package
     stages:
-      - wd-load:
+      - wd:
           clean_workspace: true
           environment_variables:
             language: ruby
@@ -321,7 +321,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-wd)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=ruby-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -394,12 +394,12 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-wd
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load & actions_on_file_edit' --env=ruby-wd
               artifacts:
                 - build:
                     source: logs
                     destination: logs
-      - no-wd-load:
+      - no-wd:
           clean_workspace: true
           environment_variables:
             language: ruby
@@ -473,7 +473,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-no-wd)
+                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=ruby-no-wd)
                 - exec:
                     run_if: any
                     command: touch
@@ -546,311 +546,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load' --env=ruby-no-wd
-              artifacts:
-                - build:
-                    source: logs
-                    destination: logs
-      - wd-edit:
-          clean_workspace: true
-          environment_variables:
-            language: ruby
-          jobs:
-            darwin:
-              resources:
-                - FT
-                - darwin
-              environment_variables:
-                GAUGE_ROOT: /tmp
-              tasks:
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    source: test_installers/gauge-darwin.x86_64.zip
-                    is_file: yes
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js)
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: deploy
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: build
-                - exec:
-                    working_directory: build
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rbenv local 2.3.0 && gem install bundler
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls gauge-ruby-*-darwin.x86_64.zip | sed "s/^gauge-ruby-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install ruby -f gauge-ruby-$version-darwin.x86_64.zip)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm install
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
-              artifacts:
-                - build:
-                    source: logs
-                    destination: logs
-            linux:
-              elastic_profile_id: centos-node-ruby
-              environment_variables:
-                GEM_HOME: /tmp
-                GAUGE_ROOT: /tmp/gauge_root
-              tasks:
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    source:  test_installers/gauge-linux.x86_64.zip
-                    is_file: yes
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js)
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: deploy
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: build
-                - exec:
-                    working_directory: build
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rbenv local 2.4.0 && gem install bundler
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls gauge-ruby-*-linux.x86_64.zip | sed "s/^gauge-ruby-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install ruby -f gauge-ruby-$version-linux.x86_64.zip)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm install
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-wd
-              artifacts:
-                - build:
-                    source: logs
-                    destination: logs
-      - no-wd-edit:
-          clean_workspace: true
-          environment_variables:
-            language: ruby
-          jobs:
-            darwin:
-              resources:
-                - FT
-                - darwin
-              environment_variables:
-                GAUGE_ROOT: /tmp
-              tasks:
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (echo $PATH && rm -rf $GOPATH/src $GOPATH/pkg)
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    source: test_installers/gauge-darwin.x86_64.zip
-                    is_file: yes
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js)
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: deploy
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: build
-                - exec:
-                    working_directory: build
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rbenv local 2.3.0 && gem install bundler
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls gauge-ruby-*-darwin.x86_64.zip | sed "s/^gauge-ruby-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install ruby -f gauge-ruby-$version-darwin.x86_64.zip)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm install
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-no-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
-              artifacts:
-                - build:
-                    source: logs
-                    destination: logs
-            linux:
-              elastic_profile_id: centos-node-ruby
-              environment_variables:
-                GEM_HOME: /tmp
-                GAUGE_ROOT: /tmp/gauge_root
-              tasks:
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    source:  test_installers/gauge-linux.x86_64.zip
-                    is_file: yes
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge uninstall ruby && $GAUGE_ROOT/bin/gauge uninstall js)
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: deploy
-                - fetch:
-                    pipeline: Ruby-Package
-                    stage: package
-                    job: package
-                    source: build
-                - exec:
-                    working_directory: build
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rbenv local 2.4.0 && gem install bundler
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls gauge-ruby-*-linux.x86_64.zip | sed "s/^gauge-ruby-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install ruby -f gauge-ruby-$version-linux.x86_64.zip)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm install
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_file_edit' --env=ruby-no-wd
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load & actions_on_file_edit' --env=ruby-no-wd
               artifacts:
                 - build:
                     source: logs
