@@ -648,7 +648,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load & actions_on_file_edit'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & (actions_on_project_load | actions_on_file_edit)'
               artifacts:
                 - build:
                     source: logs
@@ -930,7 +930,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load & actions_on_file_edit'
+                      - PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & (actions_on_project_load | actions_on_file_edit)'
               artifacts:
                 - build:
                     source: logs

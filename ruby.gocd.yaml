@@ -394,7 +394,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load & actions_on_file_edit' --env=ruby-wd
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & (actions_on_project_load | actions_on_file_edit)' --env=ruby-wd
               artifacts:
                 - build:
                     source: logs
@@ -546,7 +546,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & actions_on_project_load & actions_on_file_edit' --env=ruby-no-wd
+                      - PATH=$PATH:$GAUGE_ROOT/bin gauge run --tags='!knownIssue & (actions_on_project_load | actions_on_file_edit)' --env=ruby-no-wd
               artifacts:
                 - build:
                     source: logs
