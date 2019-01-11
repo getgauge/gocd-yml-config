@@ -31,17 +31,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
+                      - curl -s https://api.github.com/orgs/getgauge/repos?access_token=$GITHUB_ACCESS_TOKEN | jq '.[] | select(.["archived"] == false) | .clone_url' | xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge-examples/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
+                      - curl -s https://api.github.com/orgs/getgauge-examples/repos?access_token=$GITHUB_ACCESS_TOKEN | jq '.[] | select(.["archived"] == false) | .clone_url'| xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - curl -s https://api.github.com/orgs/getgauge-contrib/repos?access_token=$GITHUB_ACCESS_TOKEN | jq -r '.[].clone_url' | xargs -L1 git clone --depth=1
+                      - curl -s https://api.github.com/orgs/getgauge-contrib/repos?access_token=$GITHUB_ACCESS_TOKEN | jq '.[] | select(.["archived"] == false) | .clone_url' | xargs -L1 git clone --depth=1
                 - exec:
                     command: /bin/sh
                     arguments:
