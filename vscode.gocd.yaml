@@ -161,6 +161,11 @@ pipelines:
                     arguments:
                       - /c
                       - "%GAUGE_ROOT%\\gauge install js && %GAUGE_ROOT%\\gauge install html-report && %GAUGE_ROOT%\\gauge version"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "guage -v"
                 - fetch:
                     pipeline: VSCode-Build
                     stage: build
