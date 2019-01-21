@@ -165,7 +165,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "guage -v"
+                      - "%GAUGE_ROOT%\\gauge -v"
                 - fetch:
                     pipeline: VSCode-Build
                     stage: build
