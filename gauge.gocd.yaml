@@ -330,7 +330,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - brew bump-formula-pr --url=https://github.com/getgauge/gauge/archive/v`cat version`.tar.gz --sha256=`cat sha` --message="Created by a bot. Please cc getgauge/core on issues"  gauge
+                      - brew bump-formula-pr --force --url=https://github.com/getgauge/gauge/archive/v`cat version`.tar.gz --sha256=`cat sha` --message="Created by a bot. Please cc getgauge/core on issues"  gauge
   Gauge-Deploy-Choco:
     group: Gauge
     materials:
