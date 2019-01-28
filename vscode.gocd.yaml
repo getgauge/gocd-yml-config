@@ -155,7 +155,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - "%GAUGE_ROOT%\\gauge install screenshot
+                      - "%GAUGE_ROOT%\\gauge install screenshot"
                 - exec:
                     command: cmd
                     arguments:
