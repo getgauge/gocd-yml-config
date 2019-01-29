@@ -187,6 +187,27 @@ pipelines:
               artifacts:
                 - build:
                     source: version
+      - github-publish:
+          approval: manual
+          jobs:
+            publish:
+              elastic_profile_id: centos-all
+              environment_variables:
+                GOPATH: /tmp
+                repoName: gauge
+                releaseType: publish
+              tasks:
+               - fetch:
+                  pipeline: Gauge-Build
+                  stage: windows
+                  job: sign
+                  source: deploy
+               - exec:
+                  working_directory: deploy
+                  command: /bin/sh
+                  arguments:
+                   - -c
+                   - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
       - website-update:
           jobs:
             update:
