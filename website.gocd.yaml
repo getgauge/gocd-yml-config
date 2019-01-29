@@ -142,7 +142,7 @@ pipelines:
       website:
         git: https://github.com/getgauge/docs.gauge.org.git
       Gauge:
-        pipeline: gauge-deploy
+        pipeline: Gauge-Deploy
         stage: docs
     environment_variables:
       LC_ALL: en_US.utf-8
