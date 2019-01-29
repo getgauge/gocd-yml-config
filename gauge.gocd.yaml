@@ -244,11 +244,6 @@ pipelines:
                       - (git commit -m "Updating gauge version number")
                 - exec:
                     working_directory: gauge.org
-                    command: bundle
-                    arguments:
-                      - install
-                - exec:
-                    working_directory: gauge.org
                     command: /bin/sh
                     arguments:
                       - -c
