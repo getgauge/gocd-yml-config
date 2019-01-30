@@ -70,6 +70,12 @@ pipelines:
                   arguments:
                    - -c
                    - src/github.com/getgauge/gauge/build/package.sh
+               - exec:
+                  working_directory: src/github.com/getgauge/gauge
+                  command: /bin/bash
+                  arguments:
+                    - -c
+                    - (git log -n 1 | grep -e "commit \w*" | awk '{print $2}' > build-revision.txt)
               artifacts:
                - build:
                   source: src/github.com/getgauge/gauge/bin/*
@@ -80,6 +86,9 @@ pipelines:
                - build:
                   source: src/github.com/getgauge/gauge/build/*
                   destination: build
+               - build:
+                  source: src/github.com/getgauge/gauge/build-revision.txt
+                  destination: revision
       - deb:
           jobs:
             create_deb:
