@@ -19,7 +19,6 @@ pipelines:
                     arguments:
                       - test
       - functional-tests:
-          clean_workspace: true
           jobs:
             linux-specs:
               elastic_profile_id: ubuntu-node
