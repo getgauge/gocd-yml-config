@@ -75,7 +75,7 @@ pipelines:
                   command: /bin/bash
                   arguments:
                     - -c
-                    - (git log -n 1 | grep -e "commit \w*" | awk '{print $2}' > build-revision.txt)
+                    - (git log -n 1 | grep -e "commit \w*" | awk '{print $2}' > build-revision)
               artifacts:
                - build:
                   source: src/github.com/getgauge/gauge/bin/*
@@ -87,8 +87,7 @@ pipelines:
                   source: src/github.com/getgauge/gauge/build/*
                   destination: build
                - build:
-                  source: src/github.com/getgauge/gauge/build-revision.txt
-                  destination: revision
+                  source: src/github.com/getgauge/gauge/build-revision
       - deb:
           jobs:
             create_deb:
@@ -525,11 +524,23 @@ pipelines:
                     job: draft
                     source: version
                     is_file: yes
+                - fetch:
+                    pipeline: Gauge-Build/Gauge-Deploy
+                    stage: package
+                    job: darwin_linux
+                    source: build-revision
+                    is_file: yes
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
                       - git clone https://github.com/getgauge/gauge.git
+                - exec:
+                    working_directory: gauge
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (git checkout $(cat build-revision))
                 - exec:
                     command: pip
                     arguments:
