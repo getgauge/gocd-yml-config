@@ -25,6 +25,10 @@ pipelines:
               elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
                     working_directory: test/functional-tests
                     command: npm
                     arguments:
@@ -45,6 +49,10 @@ pipelines:
                 - darwin
                 - FT
               tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
@@ -68,6 +76,10 @@ pipelines:
             windows-specs:
               elastic_profile_id: windows-all
               tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
