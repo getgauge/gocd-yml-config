@@ -49,9 +49,31 @@ pipelines:
                 - FT
               tasks:
                 - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf node_modules/
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf .local-chromium/      
+                - exec:
                     command: npm
                     arguments:
                       - install
+                - exec:
+                    working_directory: test/functional-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf .local-chromium/
+                - exec:
+                    working_directory: test/functional-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf node_modules/      
                 - exec:
                     working_directory: test/functional-tests
                     command: npm
