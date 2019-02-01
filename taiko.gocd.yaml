@@ -23,21 +23,14 @@ pipelines:
             linux-specs:
               elastic_profile_id: ubuntu-node
               tasks:
-                - exec:
+                 - exec:
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    working_directory: test/functional-tests
                     command: npm
                     arguments:
-                      - install
-                - exec:
-                    working_directory: test/functional-tests
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm test -- -v --tags=\!knownIssue
+                      - run test-functional
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -47,44 +40,15 @@ pipelines:
               resources:
                 - darwin
                 - FT
-              tasks:
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rm -rf node_modules/
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rm -rf .local-chromium/      
+              tasks:    
                 - exec:
                     command: npm
                     arguments:
-                      - install
+                      - install   
                 - exec:
-                    working_directory: test/functional-tests
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rm -rf .local-chromium/
-                - exec:
-                    working_directory: test/functional-tests
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - rm -rf node_modules/      
-                - exec:
-                    working_directory: test/functional-tests
                     command: npm
                     arguments:
-                      - install
-                - exec:
-                    working_directory: test/functional-tests
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - npm test -- -v --tags=\!knownIssue
+                      - run test-functional
                 - exec:
                     run_if: any
                     command: touch
@@ -102,16 +66,9 @@ pipelines:
                     arguments:
                       - install
                 - exec:
-                    working_directory: test/functional-tests
                     command: npm
                     arguments:
-                      - install
-                - exec:
-                    working_directory: test/functional-tests
-                    command: cmd
-                    arguments:
-                      - /c                      
-                      - npm test -- -v --tags=\!knownIssue
+                      - run test-functional
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
