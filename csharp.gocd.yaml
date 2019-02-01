@@ -46,7 +46,7 @@ pipelines:
                 - windows
                 - nuget
               secure_variables:
-                NUGET_API_KEY: D0OsIi/XZlaf90sCRr+1lGR8USfMBzShprxi/Wdcb1m7Xpb1cEuq9A==
+                NUGET_API_KEY: AES:sZ5UTd8/iCt9LoAEScY3eQ==:Qzs5TGUpgZu+9lotC32PD4/hzCqyalHaLuym5A9h2lGT6OFtNYE9m8H83A4wi3rc
               tasks:
                 - fetch:
                     pipeline: CSharp-Lib
@@ -91,7 +91,7 @@ pipelines:
                 - windows
                 - nuget
               secure_variables:
-                NUGET_API_KEY: D0OsIi/XZlaf90sCRr+1lGR8USfMBzShprxi/Wdcb1m7Xpb1cEuq9A==
+                NUGET_API_KEY: AES:sZ5UTd8/iCt9LoAEScY3eQ==:Qzs5TGUpgZu+9lotC32PD4/hzCqyalHaLuym5A9h2lGT6OFtNYE9m8H83A4wi3rc
               tasks:
                 - fetch:
                     pipeline: CSharp-Core
