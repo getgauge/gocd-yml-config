@@ -509,8 +509,8 @@ pipelines:
         pipeline: Gauge-Deploy
         stage: docs
     secure_variables:
-      PYPI_USER: +A8MwngWBLI=
-      PYPI_PASSWORD: Yxi7Rn1SMoD82r6ME7LaiKVwkAZcS0+j
+      PYPI_USER: AES:LARhFRJy0ctn3K3OUae0OQ==:VO+QaZe34UTgs7gaQatN1w==
+      PYPI_PASSWORD: AES:ZEf+/roxrD0DR6pA42VI6Q==:8T8oQb3xcNN+yBQiwgbxWIMEJ6EsU33VoE0s9S2IDWE=
     stages:
       - pypi_deploy:
           clean_workspace: true
