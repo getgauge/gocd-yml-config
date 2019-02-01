@@ -23,7 +23,7 @@ pipelines:
             linux-specs:
               elastic_profile_id: ubuntu-node
               tasks:
-                 - exec:
+                - exec:
                     command: npm
                     arguments:
                       - install
