@@ -9,7 +9,7 @@ pipelines:
           jobs:
             maven:
               secure_variables:
-                username: AES:Uro52plMarLvuTlgb03WXg==:c/lwyvglQGKEiq91e4tqMA=="
+                username: "AES:Uro52plMarLvuTlgb03WXg==:c/lwyvglQGKEiq91e4tqMA=="
                 password: "AES:I5tvfZsldpIYBPP0SS9rkQ==:j6HeXXuZ2K6mJbuJLbdk9Q=="
                 passphrase: S4qPtLuwLbWcaR912w9hgg==
                 gpgkey: eLtK78YGWqpyiVXJJamxiA==
