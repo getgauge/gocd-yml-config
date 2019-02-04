@@ -30,7 +30,8 @@ pipelines:
                 - exec:
                     command: npm
                     arguments:
-                      - run test-functional
+                      - run 
+                      - test-functional
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -48,7 +49,8 @@ pipelines:
                 - exec:
                     command: npm
                     arguments:
-                      - run test-functional
+                      - run 
+                      - test-functional
                 - exec:
                     run_if: any
                     command: touch
@@ -68,7 +70,8 @@ pipelines:
                 - exec:
                     command: npm
                     arguments:
-                      - run test-functional
+                      - run 
+                      - test-functional
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
