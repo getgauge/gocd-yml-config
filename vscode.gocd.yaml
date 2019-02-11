@@ -235,14 +235,15 @@ pipelines:
                     pipeline: VSCode-Build
                     stage: build
                     job: build
-                    source: artifacts
+                    source: gauge-vscode
                 - fetch:
                     pipeline: VSCode-Build
                     stage: build
                     job: build
-                    source: gauge-vscode/publish.sh
-                    is_file: true
+                    source: artifacts
+                    destination : gauge-vscode
                 - exec:
+                    working_directory: gauge-vscode
                     command: /bin/sh
                     arguments:
                       - publish.sh
