@@ -243,6 +243,12 @@ pipelines:
                     source: artifacts
                     destination : gauge-vscode
                 - exec:
+                  working_directory: gauge-vscode
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - rm -rf node_modules
+                - exec:
                     working_directory: gauge-vscode
                     command: /bin/sh
                     arguments:
