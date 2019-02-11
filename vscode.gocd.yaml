@@ -197,6 +197,7 @@ pipelines:
     stages:
       - github-release:
           approval: manual
+          clean_workspace: true
           jobs:
             release:
               elastic_profile_id: centos-all
@@ -219,6 +220,7 @@ pipelines:
                       - -c
                       - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
       - release:
+          clean_workspace: true
           jobs:
             publish:
               elastic_profile_id: centos-all
