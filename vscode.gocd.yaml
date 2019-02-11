@@ -229,7 +229,7 @@ pipelines:
             publish:
               elastic_profile_id: centos-all
               secure_variables:
-                VS_PAT: AES:ifCI6OQNqdDhSy9+z87xpA==:OFkx/alt+INXuIPLT7XEDALy+ibltOHF/5/W7pds3QNdt5k91BUyvv+nlCk+81a3KTwneRy7YdMYpU1brHU30w==
+                VS_PAT: AES:afTslyrTtMobsqouePK+dw==:o0S1gGCHaDvOngqOFXE8Oa2LRcU0IJIvqB8Y96d+0/wxO5Rr1AeQ0dSttv6tOaR/zeFZpTzD51l4EFR2YWZTDQ==
               tasks:
                 - fetch:
                     pipeline: VSCode-Build
