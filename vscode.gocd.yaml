@@ -194,6 +194,8 @@ pipelines:
       vscode-build:
         pipeline: VSCode-Build
         stage: build
+    environment_variables:
+      GOPATH: /tmp
     stages:
       - github-release:
           approval: manual
