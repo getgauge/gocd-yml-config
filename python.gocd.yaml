@@ -22,11 +22,6 @@ pipelines:
                    arguments:
                     - -c
                     - PATH=$HOME/Library/Python/3.7/bin:$PATH python3 build.py --test
-                - exec:
-                   run_if: any
-                   command: touch
-                   arguments:
-                    - /vagrant/rollback.txt
             linux:
               elastic_profile_id: centos-jdk-mvn-python
               tasks:
@@ -329,11 +324,6 @@ pipelines:
                     arguments:
                       - -c
                       - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                      - /vagrant/rollback.txt
               artifiacts:
                 - build:
                     source: testLogs
@@ -553,11 +543,6 @@ pipelines:
                     arguments:
                       - -c
                       - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-wd --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit'
-                - exec:
-                   run_if: any
-                   command: touch
-                   arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs
@@ -839,11 +824,6 @@ pipelines:
                     arguments:
                       - -c
                       - GAUGE_PYTHON_COMMAND=python3 PATH=/tmp/bin:$PATH gauge run --env=python-no-wd --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit'
-                - exec:
-                   run_if: any
-                   command: touch
-                   arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs

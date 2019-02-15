@@ -19,11 +19,6 @@ pipelines:
                     arguments:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && go run make.go --all-platforms
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                      - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: "*"
@@ -192,11 +187,6 @@ pipelines:
                     arguments:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="java"
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                      - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: gauge-tests/reports-java/html-report/*
@@ -500,11 +490,6 @@ pipelines:
                     arguments:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=java-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs
@@ -687,11 +672,6 @@ pipelines:
                     arguments:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=java-no-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs

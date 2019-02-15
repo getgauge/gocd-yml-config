@@ -99,11 +99,6 @@ pipelines:
                     arguments:
                       - -c
                       - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: gauge-tests/reports-js/html-report/*
@@ -342,11 +337,6 @@ pipelines:
                     arguments:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=js-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs
@@ -514,11 +504,6 @@ pipelines:
                     arguments:
                       - -c
                       - (PATH=$GAUGE_ROOT/bin:$PATH gauge run --tags='!knownIssue & actions_on_project_load & !actions_on_file_edit' --env=js-no-wd)
-                - exec:
-                    run_if: any
-                    command: touch
-                    arguments:
-                    - /vagrant/rollback.txt
               artifacts:
                 - build:
                     source: logs
