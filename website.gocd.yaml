@@ -221,6 +221,91 @@ pipelines:
                       - s3://docs.gauge.org
                       - --cache-control
                       - max-age=604800,s-maxage=1800
+  Gauge-Docs:
+    group: Websites
+    materials:
+      website:
+        git: https://github.com/getgauge/docs.gauge.org.git
+      Gauge:
+        pipeline: Gauge-Deploy
+        stage: docs
+    environment_variables:
+      LC_ALL: en_US.utf-8
+      LANG: en_US.utf-8
+    stages:
+      - build:
+          jobs:
+            build:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command:  git
+                    arguments:
+                      - version
+                - exec:
+                    command: virtualenv
+                    arguments:
+                      - docs
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - source ./docs/bin/activate && pip install -r requirements.txt && make zip && deactivate
+              artifacts:
+               - build:
+                    source: _build/html/*
+                    destination: deploy
+      - deploy:
+          jobs:
+            aws:
+              elastic_profile_id: centos-all
+              secure_variables:
+                aws_access_key_id: AES:D/vE19/LyZwDImNV1DSBWg==:8eWsaqPbvcZT/ccRbvOqC/Z1y1CzVLDskVRuvNT/I/0=
+                aws_secret_access_key: AES:6wNPU9BVo6Qk+rknRmOR+w==:ZWWg9x0OsjrgIA1b9NTS0Vf3ee7N+7U8chv4BspSV5vc3lgiUQjjPjpeDGqf4vFN
+              tasks:
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://docs.gauge.org/latest
+                      - --recursive
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://docs.gauge.org/master
+                      - --recursive
+                - fetch:
+                    stage: build
+                    job: build
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: aws
+                    arguments:
+                      - s3
+                      - sync
+                      - .
+                      - s3://docs.getgauge.io
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
+                - exec:
+                    working_directory: deploy
+                    command: aws
+                    arguments:
+                      - s3
+                      - sync
+                      - .
+                      - s3://docs.gauge.org
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800  
   insights.gauge.org:
     group: Websites
     materials:
