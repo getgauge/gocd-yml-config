@@ -208,16 +208,6 @@ pipelines:
                       - s3
                       - sync
                       - .
-                      - s3://docs.getgauge.io
-                      - --cache-control
-                      - max-age=604800,s-maxage=1800
-                - exec:
-                    working_directory: deploy
-                    command: aws
-                    arguments:
-                      - s3
-                      - sync
-                      - .
                       - s3://docs.gauge.org
                       - --cache-control
                       - max-age=604800,s-maxage=1800
@@ -286,16 +276,6 @@ pipelines:
                     stage: build
                     job: build
                     source: deploy
-                - exec:
-                    working_directory: deploy
-                    command: aws
-                    arguments:
-                      - s3
-                      - sync
-                      - .
-                      - s3://docs.getgauge.io
-                      - --cache-control
-                      - max-age=604800,s-maxage=1800
                 - exec:
                     working_directory: deploy
                     command: aws
