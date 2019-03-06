@@ -2,9 +2,6 @@ pipelines:
   check-all-readme-files:
     group: Misc
     materials:
-      gauge_docs:
-        pipeline: docs.gauge.org
-        stage: deploy
       gauge_website:
         pipeline: gauge.org
         stage: deploy-live
