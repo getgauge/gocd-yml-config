@@ -118,8 +118,7 @@ pipelines:
               resources:
                - sign
               secure_variables:
-                CERT_FILE_PWD: AES:6QvH8KFyuZu8rmmPs9YgmQ==:F8qSDGXyuJFeMFsIqed9ig==
-                CERT_FILE: AES:ciq0hCGH4CCFjkQqnuhLiQ==:aJ9Ap2srncy1/VA97EDMnYHYcmBdgikjmL1vuuCfoW8lc+o5mjUzGXHE9LAQ3tc9
+                CERT_FILE: AES:EgNhsVGGzZ9LSeSKJRR3mA==:5qJbmjp62Jk8aMIwiXg0BpbpemG6BtxcTOxHM+prOBRZrBc+0xsKj/BgYKoeGWXF
               tasks:
                - fetch:
                   pipeline: Gauge-Build
