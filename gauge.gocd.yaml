@@ -272,6 +272,12 @@ pipelines:
                     arguments:
                       - -c
                       - (version=$(cat ../version); git checkout -b $version)
+                - exec:
+                    working_directory: docs.getgauge.io
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (eval $(ssh-agent) && echo -e "$GITHUB_SSH_PRIVATE_KEY" | ssh-add - &&version=$(cat ../version); git push -u origin $version)
   Gauge-Deploy-Brew:
     group: Gauge
     materials:
