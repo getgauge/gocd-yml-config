@@ -36,6 +36,7 @@ environments:
       - VSCode-Tests
       - VSCode-Nightly
       - gauge.org
+      - docs_gauge_org
       - insights.gauge.org
       - manpage.gauge.org
       - HTML-Report-FT
