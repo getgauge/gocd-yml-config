@@ -30,8 +30,7 @@ pipelines:
                 - sign
                 - windows
               secure_variables:
-                CERT_FILE_PWD: AES:MILtFjuHyfI6BxnJ0sfpBw==:ISHc2G7mWhCqYMiAEK+BpQ==
-                CERT_FILE_PATH: AES:vCtTQWq4i9ezmW9dY97Vrw==:svbrqDqTU4xsJSHiDULxCsaTQEzw5D8yw6FaGxu3OD+Xfw+F01tz/N2wb/vlskEG
+                CERT_FILE_PATH: AES:EgNhsVGGzZ9LSeSKJRR3mA==:5qJbmjp62Jk8aMIwiXg0BpbpemG6BtxcTOxHM+prOBRZrBc+0xsKj/BgYKoeGWXF
               tasks:
                 - fetch:
                     pipeline: Java-Build
@@ -43,13 +42,13 @@ pipelines:
                     command: powershell.exe
                     arguments:
                       - /c
-                      - signtool.exe sign /f "$env:CERT_FILE_PATH" /p "$env:CERT_FILE_PWD" bin\windows_386\gauge-java.exe
+                      - signtool sign /debug /v /tr http://timestamp.digicert.com /a /fd sha256 /td sha256 /f $env:CERT_FILE_PATH /as bin\windows_386\gauge-java.exe
                 - exec:
                     working_directory: gauge-java
                     command: powershell.exe
                     arguments:
                       - /c
-                      - signtool.exe sign /f "$env:CERT_FILE_PATH" /p "$env:CERT_FILE_PWD" bin\windows_amd64\gauge-java.exe
+                      - signtool sign /debug /v /tr http://timestamp.digicert.com /a /fd sha256 /td sha256 /f $env:CERT_FILE_PATH /as bin\windows_amd64\gauge-java.exe
               artifacts:
                 - build:
                     source: gauge-java/*
