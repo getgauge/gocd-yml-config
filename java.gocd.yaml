@@ -152,7 +152,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - (sudo $GAUGE_ROOT/bin/gauge uninstall html-report)
+                      - ($GAUGE_ROOT/bin/gauge uninstall html-report)
                 - fetch:
                     pipeline: HTML_Report
                     stage: package
