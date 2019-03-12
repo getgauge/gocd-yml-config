@@ -124,7 +124,6 @@ pipelines:
     environment_variables:
       enable_multithreading: true
       plugin_kill_timeout: 60000
-      GAUGE_LOG_LEVEL: debug
     stages:
       - specs:
           environment_variables:
