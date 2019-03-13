@@ -52,8 +52,9 @@ pipelines:
                     command: export
                     arguments:
                       - GAUGE_ROOT="`pwd`/gauge_bin" 
-                      - &&
-                      - export
+                - exec:
+                    command: export
+                    arguments:
                       - GAUGE_HOME="`pwd`/gauge_home"
                 - exec:
                     command: /bin/bash
