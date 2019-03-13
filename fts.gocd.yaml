@@ -9,27 +9,29 @@ common:
     - build:
         source: gauge-tests/testLogs
         destination: test-logs
+  common_materials: &common_materials
+    gauge-tests:
+      git: https://github.com/getgauge/gauge-tests.git
+      destination: gauge-tests
+    gauge:
+      pipeline: Gauge-Build
+      stage: windows
+    html-report:
+      pipeline: HTML_Report
+      stage: package
+    xml-report:
+      pipeline: XML_Report
+      stage: package
 pipelines:
   temp_java_ft:
     group: Gauge-Java
     parameters:
       language: java
     materials:
-      gauge-tests:
-        git: https://github.com/getgauge/gauge-tests.git
-        destination: gauge-tests
       package:
         pipeline: Java-Build
         stage: package
-      gauge:
-        pipeline: Gauge-Build
-        stage: windows
-      html-report:
-        pipeline: HTML_Report
-        stage: package
-      xml-report:
-        pipeline: XML_Report
-        stage: package
+      *common_materials
     environment_variables:
       enable_multithreading: true
       language: java
@@ -39,8 +41,8 @@ pipelines:
           jobs:
             darwin:
               environment_variables:
-                GAUGE_ROOT: ./gauge_bin
-                GAUGE_HOME: ./gauge_bin
+                GAUGE_ROOT: gauge_bin
+                GAUGE_HOME: gauge_bin
               resources:
                 - FT
                 - darwin
