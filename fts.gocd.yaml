@@ -114,20 +114,20 @@ pipelines:
                 - FT
                 - darwin
               tasks:
-                *install_gauge_binary_darwin
-                *install_html_plugin_darwin
-                *install_xml_plugin_darwin
+                - *install_gauge_binary_darwin
+                - *install_html_plugin_darwin
+                - *install_xml_plugin_darwin
                 - fetch:
                     pipeline: #{upstream_pipeline}
                     stage: #{upstream_pipeline_stage}
                     job: distro
                     source: deploy
-                *install_language_plugin_darwin
+                - *install_language_plugin_darwin
                 - exec:
                     working_directory: gauge-tests
                     command: /bin/sh
                     arguments:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && export PATH=$PATH:$GAUGE_ROOT/bin
-                *execute_fts
+                - *execute_fts
               artifacts: *build_artifacts                
