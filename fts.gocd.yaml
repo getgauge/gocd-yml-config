@@ -28,10 +28,10 @@ pipelines:
     parameters:
       language: java
     materials:
+      *common_materials
       package:
         pipeline: Java-Build
         stage: package
-      *common_materials
     environment_variables:
       enable_multithreading: true
       language: java
