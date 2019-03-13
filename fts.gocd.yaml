@@ -1,6 +1,19 @@
+common:
+  build_artifacts: &build_artifacts
+    - build:
+        source: gauge-tests/reports-#{language}/html-report/*
+        destination: html-report
+    - build:
+        source: gauge-tests/reports-#{language}/xml-report/*
+        destination: xml-report
+    - build:
+        source: gauge-tests/testLogs
+        destination: test-logs
 pipelines:
   temp_java_ft:
     group: Gauge-Java
+    parameters:
+      language: java
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
@@ -97,13 +110,4 @@ pipelines:
                     arguments:
                       - -c
                       - source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-java -Dtags="java"
-              artifacts:
-                - build:
-                    source: gauge-tests/reports-java/html-report/*
-                    destination: html-report
-                - build:
-                    source: gauge-tests/reports-java/xml-report/*
-                    destination: xml-report
-                - build:
-                    source: gauge-tests/testLogs
-                    destination: test-logs
+              artifacts: *build_artifacts
