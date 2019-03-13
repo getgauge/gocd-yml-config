@@ -49,10 +49,12 @@ pipelines:
                     source: test_installers/gauge-darwin.x86_64.zip
                     is_file: yes
                 - exec:
-                    command: /bin/bash
+                    command: export
                     arguments:
-                      - -c
-                      - export GAUGE_ROOT="`pwd`/gauge_bin" && export GAUGE_HOME="`pwd`/gauge_home"
+                      - GAUGE_ROOT="`pwd`/gauge_bin" 
+                      - &&
+                      - export
+                      - GAUGE_HOME="`pwd`/gauge_home"
                 - exec:
                     command: /bin/bash
                     arguments:
