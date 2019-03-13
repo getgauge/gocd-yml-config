@@ -17,10 +17,10 @@ common:
       stage: package
   build_artifacts: &build_artifacts
     - build:
-        source: gauge-tests/reports-#{language}/html-report/*
+        source: gauge-tests/reports-java/html-report/*
         destination: html-report
     - build:
-        source: gauge-tests/reports-#{language}/xml-report/*
+        source: gauge-tests/reports-java/xml-report/*
         destination: xml-report
     - build:
         source: gauge-tests/testLogs
@@ -76,20 +76,20 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/bin/gauge uninstall #{language})
+          - ($GAUGE_ROOT/bin/gauge uninstall java)
     - exec:
         working_directory: deploy
         command: /bin/sh
         arguments:
         - -c
-        - (version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed "s/^gauge-#{language}-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)
+        - (version=$(ls gauge-java-*-darwin.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install java -f gauge-java-$version-darwin.x86_64.zip)
   execute_fts: &execute_fts
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - mvn -q clean install -Denv=ci-#{language} -Dtags="#{language}"
+          - mvn -q clean install -Denv=ci-java -Dtags="java"
 
 pipelines:
   temp_java_ft:
