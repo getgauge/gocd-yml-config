@@ -85,6 +85,9 @@ pipelines:
           clean_workspace: true
           jobs:
             darwin:
+              environment_variables:
+                GAUGE_ROOT: /tmp
+                GAUGE_HOME: /tmp
               resources:
                 - FT
                 - darwin
