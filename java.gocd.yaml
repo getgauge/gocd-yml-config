@@ -106,7 +106,7 @@ pipelines:
       - specs:
           clean_workspace: true
           jobs:
-           linux:
+            linux:
               environment_variables:
                 GOPATH: /tmp
                 GOBIN: /tmp/bin
