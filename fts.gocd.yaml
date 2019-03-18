@@ -100,7 +100,7 @@ pipelines:
     materials:
       package:
         pipeline: "#{upstream_pipeline}"
-        stage: "#{package}"
+        stage: "#{upstream_pipeline_stage}"
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
         destination: gauge-tests
