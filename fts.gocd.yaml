@@ -1,4 +1,6 @@
 common:
+  gauge_root: &gauge_root /tmp
+  gauge_home: &gauge_home /tmp
   build_artifacts: &build_artifacts
     - build:
         source: gauge-tests/reports-#{language}/html-report/*
@@ -79,6 +81,12 @@ common:
       arguments:
         - -c
         - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+  clean_gauge_directories: &clean_gauge_directories
+    - exec:
+      command: /bin/sh
+      arguments:
+        - -c
+        - "rm -rf $GAUGE_ROOT"
 
 pipelines:
   temp_java_ft:
@@ -114,12 +122,13 @@ pipelines:
           jobs:
             darwin:
               environment_variables:
-                GAUGE_ROOT: /tmp
-                GAUGE_HOME: /tmp
+                GAUGE_ROOT: *gauge_root
+                GAUGE_HOME: *gauge_home
               resources:
                 - FT
                 - darwin
               tasks:
+                - *clean_gauge_directories
                 - *install_gauge
                 - *install_langauge_runner
                 - *install_html_report
