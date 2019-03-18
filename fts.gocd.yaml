@@ -76,17 +76,17 @@ common:
         - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\\([^;]*\\)-darwin.x86_64.zip/\\1/\"); $GAUGE_ROOT/bin/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
   run_fts: &run_fts
     - exec:
-      working_directory: gauge-tests
-      command: /bin/sh
-      arguments:
-        - -c
-        - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+        working_directory: gauge-tests
+        command: /bin/sh
+        arguments:
+          - -c
+          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
   clean_gauge_directories: &clean_gauge_directories
     - exec:
-      command: /bin/sh
-      arguments:
-        - -c
-        - "rm -rf $GAUGE_ROOT"
+        command: /bin/sh
+        arguments:
+          - -c
+          - "rm -rf $GAUGE_ROOT"
 
 pipelines:
   temp_java_ft:
