@@ -73,7 +73,7 @@ common:
         command: /bin/sh
         arguments:
         - -c
-        - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\([^;]*\)-darwin.x86_64.zip/\1/\"); $GAUGE_ROOT/bin/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
+        - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\\([^;]*\\)-darwin.x86_64.zip/\\1/\"); $GAUGE_ROOT/bin/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
   run_fts: &run_fts
     - exec:
       working_directory: gauge-tests
