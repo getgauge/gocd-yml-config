@@ -160,7 +160,7 @@ pipelines:
         git: https://github.com/getgauge/gauge-tests.git
         destination: gauge-tests
         autoUpdate: false
-      js-nightly:
+      python-nightly:
         pipeline: gauge-python-nightly
         stage:  upload
     stages:
@@ -172,6 +172,7 @@ pipelines:
               environment_variables:
                 GAUGE_ROOT: *gauge_root
                 GAUGE_HOME: *gauge_home
+                GAUGE_PYTHON_COMMAND: python3
               resources:
                 - FT
                 - darwin
@@ -194,7 +195,7 @@ pipelines:
         git: https://github.com/getgauge/gauge-tests.git
         destination: PushToBintray
         autoUpdate: false
-      js-nightly:
+      dotnet-nightly:
         pipeline: gauge-dotnet-nightly
         stage:  upload
     stages:
@@ -206,7 +207,6 @@ pipelines:
               environment_variables:
                 GAUGE_ROOT: *gauge_root
                 GAUGE_HOME: *gauge_home
-                GAUGE_PYTHON_COMMAND: python3
               resources:
                 - FT
                 - darwin
