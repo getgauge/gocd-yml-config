@@ -206,6 +206,7 @@ pipelines:
               environment_variables:
                 GAUGE_ROOT: *gauge_root
                 GAUGE_HOME: *gauge_home
+                GAUGE_PYTHON_COMMAND: python3
               resources:
                 - FT
                 - darwin
