@@ -1,6 +1,6 @@
 common:
-  gauge_root: &gauge_root $HOME/gauge-root
-  gauge_home: &gauge_home $HOME/gauge-home
+  gauge_root: &gauge_root ~/gauge-root
+  gauge_home: &gauge_home ~/gauge-home
   timer_spec: &timer_spec "0 30 17 ? * MON-FRI"
   build_artifacts: &build_artifacts
     - build:
