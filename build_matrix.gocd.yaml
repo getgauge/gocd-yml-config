@@ -43,7 +43,7 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - "rm -rf $GAUGE_ROOT $GAUGE_HOME | ls && mkdir $GAUGE_ROOT $GAUGE_HOME"
+          - "rm -rf $GAUGE_ROOT $GAUGE_HOME && mkdir $GAUGE_ROOT $GAUGE_HOME && ls $GAUGE_ROOT $GAUGE_HOME"
 
 pipelines:
   Gauge_Released_Java_Nightly:
