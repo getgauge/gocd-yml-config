@@ -1,6 +1,6 @@
 common:
-  gauge_root: &gauge_root /tmp/gauge-root
-  gauge_home: &gauge_home /tmp/gauge-home
+  gauge_root: &gauge_root $HOME/gauge-root
+  gauge_home: &gauge_home $HOME/gauge-home
   timer_spec: &timer_spec "0 30 17 ? * MON-FRI"
   build_artifacts: &build_artifacts
     - build:
@@ -23,32 +23,32 @@ common:
         command: /bin/bash
         arguments:
           - -c
-          - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+          - mkdir -p $GAUGE_ROOT && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT
   install_gauge_released: &install_gauge_released
     - exec:
         command: /bin/bash
         arguments:
           - -c
-          - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$GAUGE_ROOT/bin
+          - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$GAUGE_ROOT
   set_nightly_repository: &set_nightly_repository
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/)
+          - ($GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/)
   gauge_install_command: &gauge_install_command
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+          - ($GAUGE_ROOT/gauge install && $GAUGE_ROOT/gauge version)
   install_html_report: &install_html_report
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/bin/gauge uninstall html-report)
+          - ($GAUGE_ROOT/gauge uninstall html-report)
     - fetch:
         pipeline: HTML_Report
         stage: package
@@ -59,13 +59,13 @@ common:
         command: /bin/sh
         arguments:
         - -c
-        - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
+        - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
   install_xml_report: &install_xml_report
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/bin/gauge uninstall xml-report)
+          - ($GAUGE_ROOT/gauge uninstall xml-report)
     - fetch:
         pipeline: XML_Report
         stage: package
@@ -76,13 +76,13 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
+          - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
   install_langauge_runner: &install_langauge_runner
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - "($GAUGE_ROOT/bin/gauge uninstall #{language})"
+          - "($GAUGE_ROOT/gauge uninstall #{language})"
     - fetch:
         pipeline: "#{upstream_pipeline}"
         stage: "#{upstream_pipeline_stage}"
@@ -93,20 +93,20 @@ common:
         command: /bin/sh
         arguments:
         - -c
-        - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\\([^;]*\\)-darwin.x86_64.zip/\\1/\"); $GAUGE_ROOT/bin/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
+        - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\\([^;]*\\)-darwin.x86_64.zip/\\1/\"); $GAUGE_ROOT/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
   run_fts: &run_fts
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
   clean_gauge_directories: &clean_gauge_directories
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - "rm -rf $GAUGE_ROOT $GAUGE_HOME | ls"
+          - "rm -rf $GAUGE_ROOT $GAUGE_HOME | ls && mkdir $GAUGE_ROOT $GAUGE_HOME"
 
 pipelines:
   Gauge_Released_Java_Nightly:
