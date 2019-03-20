@@ -130,6 +130,7 @@ pipelines:
     stages:
       - specs:
           clean_workspace: true
+          approval: manual
           jobs:
             darwin:
               environment_variables:
