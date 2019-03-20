@@ -12,18 +12,6 @@ common:
     - build:
         source: gauge-tests/testLogs
         destination: test-logs
-  install_gauge: &install_gauge
-    - fetch:
-        pipeline: Gauge-Build
-        stage: windows
-        job: sign
-        source: test_installers/gauge-darwin.x86_64.zip
-        is_file: yes
-    - exec:
-        command: /bin/bash
-        arguments:
-          - -c
-          - mkdir -p $GAUGE_ROOT && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT
   install_gauge_released: &install_gauge_released
     - exec:
         command: /bin/bash
@@ -43,64 +31,13 @@ common:
         arguments:
           - -c
           - "($GAUGE_ROOT/gauge config gauge_repository_url https://downloads.gauge.org/plugin && $GAUGE_ROOT/gauge install && $GAUGE_ROOT/gauge version)"
-  install_html_report: &install_html_report
-    - exec:
-        command: /bin/sh
-        arguments:
-          - -c
-          - ($GAUGE_ROOT/gauge uninstall html-report)
-    - fetch:
-        pipeline: HTML_Report
-        stage: package
-        job: package
-        source: deploy
-    - exec:
-        working_directory: deploy
-        command: /bin/sh
-        arguments:
-        - -c
-        - (version=$(ls html-report-*-darwin.x86_64.zip | sed "s/^html-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/gauge install html-report -f html-report-$version-darwin.x86_64.zip)
-  install_xml_report: &install_xml_report
-    - exec:
-        command: /bin/sh
-        arguments:
-          - -c
-          - ($GAUGE_ROOT/gauge uninstall xml-report)
-    - fetch:
-        pipeline: XML_Report
-        stage: package
-        job: package
-        source: deploy
-    - exec:
-        working_directory: deploy
-        command: /bin/sh
-        arguments:
-          - -c
-          - (version=$(ls xml-report-*-darwin.x86_64.zip | sed "s/^xml-report-\([^;]*\)-darwin.x86_64.zip/\1/"); $GAUGE_ROOT/gauge install xml-report -f xml-report-$version-darwin.x86_64.zip)
-  install_langauge_runner: &install_langauge_runner
-    - exec:
-        command: /bin/sh
-        arguments:
-          - -c
-          - "($GAUGE_ROOT/gauge uninstall #{language})"
-    - fetch:
-        pipeline: "#{upstream_pipeline}"
-        stage: "#{upstream_pipeline_stage}"
-        job: "#{upstream_pipeline_job}"
-        source: "#{upstream_pipeline_source}"
-    - exec:
-        working_directory: deploy
-        command: /bin/sh
-        arguments:
-        - -c
-        - "(version=$(ls gauge-#{language}-*-darwin.x86_64.zip | sed \"s/^gauge-#{language}-\\([^;]*\\)-darwin.x86_64.zip/\\1/\"); $GAUGE_ROOT/gauge install #{language} -f gauge-#{language}-$version-darwin.x86_64.zip)"
   run_fts: &run_fts
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+          - "PATH=$PATH:$GAUGE_ROOT mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
   clean_gauge_directories: &clean_gauge_directories
     - exec:
         command: /bin/sh
@@ -124,9 +61,6 @@ pipelines:
       java-nightly:
         pipeline: Gauge-Java-Nightly
         stage: PushToBintray
-    environment_variables:
-      enable_multithreading: true
-      language: java
     stages:
       - specs:
           clean_workspace: true
