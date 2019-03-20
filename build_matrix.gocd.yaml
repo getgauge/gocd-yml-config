@@ -182,3 +182,37 @@ pipelines:
                 - *gauge_install_released_plugins
                 - *run_fts
               artifacts: *build_artifacts
+  Gauge_Released_Dotnet_Nightly:
+    group: Build_Matrix
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
+    parameters:
+      language: dotnet
+    materials:
+      gauge-tests:
+        git: https://github.com/getgauge/gauge-tests.git
+        destination: PushToBintray
+        autoUpdate: false
+      js-nightly:
+        pipeline: gauge-dotnet-nightly
+        stage:  upload
+    stages:
+      - specs:
+          clean_workspace: true
+          approval: manual
+          jobs:
+            darwin:
+              environment_variables:
+                GAUGE_ROOT: *gauge_root
+                GAUGE_HOME: *gauge_home
+              resources:
+                - FT
+                - darwin
+              tasks:
+                - *clean_gauge_directories
+                - *install_gauge_released
+                - *gauge_install_runner_nightly
+                - *gauge_install_released_plugins
+                - *run_fts
+              artifacts: *build_artifacts

@@ -46,3 +46,4 @@ environments:
       - Gauge_Released_Ruby_Nightly
       - Gauge_Released_JS_Nightly
       - Gauge_Released_Python_Nightly
+      - Gauge_Released_Dotnet_Nightly
