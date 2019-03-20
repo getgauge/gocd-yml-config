@@ -30,19 +30,19 @@ common:
         arguments:
           - -c
           - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$GAUGE_ROOT
-  set_nightly_repository: &set_nightly_repository
+  gauge_install_runner_nightly: &gauge_install_runner_nightly
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/)
-  gauge_install_command: &gauge_install_command
+          - "($GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/ && $GAUGE_ROOT/gauge install #{language} && $GAUGE_ROOT/gauge version)"
+  gauge_install_released_plugins: &gauge_install_released_plugins
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - ($GAUGE_ROOT/gauge install && $GAUGE_ROOT/gauge version)
+          - "($GAUGE_ROOT/gauge config gauge_repository_url https://downloads.gauge.org/plugin && $GAUGE_ROOT/gauge install && $GAUGE_ROOT/gauge version)"
   install_html_report: &install_html_report
     - exec:
         command: /bin/sh
@@ -142,7 +142,7 @@ pipelines:
               tasks:
                 - *clean_gauge_directories
                 - *install_gauge_released
-                - *set_nightly_repository
-                - *gauge_install_command
+                - *gauge_install_runner_nightly
+                - *gauge_install_released_plugins
                 - *run_fts
               artifacts: *build_artifacts
