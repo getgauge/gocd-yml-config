@@ -261,7 +261,6 @@ pipelines:
                 GAUGE_HOME: *gauge_home
               elastic_profile_id: centos-all
               tasks:
-                - *clean_gauge_directories
                 - *install_gauge_released
                 - *gauge_install_runner_nightly
                 - *gauge_install_released_plugins
