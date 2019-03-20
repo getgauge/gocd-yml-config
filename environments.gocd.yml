@@ -42,4 +42,4 @@ environments:
       - HTML-Report-FT
       - check-all-readme-files
       - Taiko-Benchmark
-      - temp_java_ft
+      - Gauge_Released_Java_Nightly
