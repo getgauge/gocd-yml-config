@@ -193,11 +193,11 @@ pipelines:
     materials:
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
-        destination: PushToBintray
+        destination: gauge-tests
         autoUpdate: false
       dotnet-nightly:
         pipeline: gauge-dotnet-nightly
-        stage:  upload
+        stage: PushToBintray
     stages:
       - specs:
           clean_workspace: true
