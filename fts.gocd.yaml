@@ -1,6 +1,7 @@
 common:
   gauge_root: &gauge_root /tmp
   gauge_home: &gauge_home /tmp
+  timer_spec: &timer_spec "0 30 17 ? * MON-FRI"
   build_artifacts: &build_artifacts
     - build:
         source: gauge-tests/reports-#{language}/html-report/*
@@ -23,6 +24,25 @@ common:
         arguments:
           - -c
           - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-darwin.x86_64.zip -d $GAUGE_ROOT/bin
+  install_gauge_released: &install_gauge_released
+    - exec:
+        command: /bin/bash
+        arguments:
+          - -c
+          - curl -SsL https://downloads.gauge.org/stable | sh -s -- --location=$GAUGE_ROOT/bin
+  set_nightly_repository: &set_nightly_repository
+    - exec:
+        command: /bin/sh
+        arguments:
+          - -c
+          - ($GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/)
+  gauge_install_command: &gauge_install_command
+    - exec:
+        working_directory: gauge-tests
+        command: /bin/sh
+        arguments:
+          - -c
+          - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
   install_html_report: &install_html_report
     - exec:
         command: /bin/sh
@@ -80,39 +100,30 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+          - "PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
   clean_gauge_directories: &clean_gauge_directories
     - exec:
         command: /bin/sh
         arguments:
           - -c
-          - "rm -rf $GAUGE_ROOT"
+          - "rm -rf $GAUGE_ROOT $GAUGE_HOME | ls"
 
 pipelines:
-  temp_java_ft:
-    group: Gauge-Java
+  Gauge_Released_Java_Nightly:
+    group: Build_Matrix
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
     parameters:
       language: java
-      upstream_pipeline: Java-Build
-      upstream_pipeline_stage: package
-      upstream_pipeline_job: distro
-      upstream_pipeline_source: deploy
     materials:
-      package:
-        pipeline: "#{upstream_pipeline}"
-        stage: "#{upstream_pipeline_stage}"
       gauge-tests:
         git: https://github.com/getgauge/gauge-tests.git
         destination: gauge-tests
-      gauge:
-        pipeline: Gauge-Build
-        stage: windows
-      html-report:
-        pipeline: HTML_Report
-        stage: package
-      xml-report:
-        pipeline: XML_Report
-        stage: package
+        autoUpdate: false
+      java-nightly:
+        pipeline: Gauge-Java-Nightly
+        stage: PushToBintray
     environment_variables:
       enable_multithreading: true
       language: java
@@ -129,9 +140,8 @@ pipelines:
                 - darwin
               tasks:
                 - *clean_gauge_directories
-                - *install_gauge
-                - *install_langauge_runner
-                - *install_html_report
-                - *install_xml_report
+                - *install_gauge_released
+                - *set_nightly_repository
+                - *gauge_install_command
                 - *run_fts
               artifacts: *build_artifacts
