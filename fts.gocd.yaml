@@ -1,6 +1,6 @@
 common:
-  gauge_root: &gauge_root /tmp
-  gauge_home: &gauge_home /tmp
+  gauge_root: &gauge_root /tmp/gauge-root
+  gauge_home: &gauge_home /tmp/gauge-home
   timer_spec: &timer_spec "0 30 17 ? * MON-FRI"
   build_artifacts: &build_artifacts
     - build:
@@ -100,7 +100,7 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - "PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
+          - "source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && PATH=$PATH:$GAUGE_ROOT/bin mvn -q clean install -Denv=ci-#{language} -Dtags=\"#{language}\""
   clean_gauge_directories: &clean_gauge_directories
     - exec:
         command: /bin/sh
