@@ -238,9 +238,7 @@ pipelines:
               secure_variables:
                 aws_access_key_id: AES:D/vE19/LyZwDImNV1DSBWg==:8eWsaqPbvcZT/ccRbvOqC/Z1y1CzVLDskVRuvNT/I/0=
                 aws_secret_access_key: AES:6wNPU9BVo6Qk+rknRmOR+w==:ZWWg9x0OsjrgIA1b9NTS0Vf3ee7N+7U8chv4BspSV5vc3lgiUQjjPjpeDGqf4vFN
-              resources:
-                - codesign
-                - darwin
+                elastic_profile_id: centos-all
               tasks:
                 - exec:
                     command: /bin/sh
