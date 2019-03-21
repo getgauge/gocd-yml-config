@@ -37,24 +37,6 @@ pipelines:
                     source: test/functional-tests/reports/html-report
                     destination: reports
 
-            osx-specs:
-              resources:
-                - darwin
-                - FT
-              tasks:    
-                - exec:
-                    command: npm
-                    arguments:
-                      - install   
-                - exec:
-                    command: npm
-                    arguments:
-                      - run 
-                      - test-functional
-              artifacts:
-                - build:
-                    source: test/functional-tests/reports/html-report
-                    destination: reports
             windows-specs:
               elastic_profile_id: windows-all
               tasks:
