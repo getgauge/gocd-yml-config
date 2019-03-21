@@ -30,23 +30,6 @@ pipelines:
                - build:
                   source: "*-linux.json"
                   destination: benchmark-result
-            osx-benchmark:
-              resources:
-                - darwin
-                - FT
-              tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - test
-              artifacts:
-                - build:
-                    source: "*-darwin.json"
-                    destination: benchmark-result
             windows-benchmark:
               elastic_profile_id: windows-all
               tasks:
