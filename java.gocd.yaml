@@ -7,18 +7,16 @@ pipelines:
     secure_variables:
       GITHUB_TOKEN: AES:IbbG426Rwxu7cYruH+E0DQ==:Uzc18Gf7R3fNx0dvDq0ckCz0Osfeb+z5MhoYvg8yIws9Kpxjp/x37DDpXd+75Nsx
     stages:
-      - build:
+      - build:elastic_profile_id: centos-all
           jobs:
             compile_and_unit_test:
-              resources:
-                - UT
-                - darwin
+              elastic_profile_id: centos-all
               tasks:
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - source $HOME/.jabba/jabba.sh && jabba use openjdk@1.10.0 && go run make.go --all-platforms
+                      - go run make.go --all-platforms
               artifacts:
                 - build:
                     source: "*"
