@@ -7,21 +7,6 @@ pipelines:
     stages:
       - test:
           jobs:
-            osx:
-              resources:
-                - darwin
-                - UT
-              tasks:
-                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - pip3 install -r requirements.txt --user
-                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - PATH=$HOME/Library/Python/3.7/bin:$PATH python3 build.py --test
             linux:
               elastic_profile_id: centos-jdk-mvn-python
               tasks:
