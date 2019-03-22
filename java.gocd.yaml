@@ -37,9 +37,6 @@ pipelines:
                     job: compile_and_unit_test
                     source: gauge-java
                 - exec:
-                    working_directory: gauge-java/libs
-                    command: ls
-                - exec:
                     working_directory: gauge-java
                     command: powershell.exe
                     arguments:
