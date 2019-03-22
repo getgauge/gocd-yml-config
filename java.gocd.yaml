@@ -31,11 +31,17 @@ pipelines:
               secure_variables:
                 CERT_FILE_PATH: AES:EgNhsVGGzZ9LSeSKJRR3mA==:5qJbmjp62Jk8aMIwiXg0BpbpemG6BtxcTOxHM+prOBRZrBc+0xsKj/BgYKoeGWXF
               tasks:
+                - exec:
+                    working_directory: gauge-java
+                    command: ls
                 - fetch:
                     pipeline: Java-Build
                     stage: build
                     job: compile_and_unit_test
                     source: gauge-java
+                - exec:
+                    working_directory: gauge-java/libs
+                    command: ls
                 - exec:
                     working_directory: gauge-java
                     command: powershell.exe
