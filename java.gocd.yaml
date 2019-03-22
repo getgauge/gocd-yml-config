@@ -7,7 +7,7 @@ pipelines:
     secure_variables:
       GITHUB_TOKEN: AES:IbbG426Rwxu7cYruH+E0DQ==:Uzc18Gf7R3fNx0dvDq0ckCz0Osfeb+z5MhoYvg8yIws9Kpxjp/x37DDpXd+75Nsx
     stages:
-      - build:elastic_profile_id: centos-all
+      - build:
           jobs:
             compile_and_unit_test:
               elastic_profile_id: centos-all
