@@ -1,6 +1,6 @@
 pipelines:
   Gradle-Build:
-    group: gragle-plugin
+    group: gradle-plugin
     materials:
       gradle-plugin:
         git: https://github.com/getgauge/gauge-gradle-plugin.git

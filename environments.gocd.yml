@@ -48,3 +48,4 @@ environments:
       - Gauge_Released_Python_Nightly
       - Gauge_Released_Dotnet_Nightly
       - Gradle-Build
+      - Gradle-Plugin-Nightly
