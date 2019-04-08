@@ -109,7 +109,7 @@ pipelines:
       stage: build
       job: build
       source: artifacts
-      plugin: gradle
+      plugin: plugin
       rename: 1
       update_install_json: 0
       noplatform: 1
