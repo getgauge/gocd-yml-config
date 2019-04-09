@@ -1,6 +1,6 @@
 pipelines:
   Gradle-Build:
-    group: gradle-plugin
+    group: Gauge-java-plugin
     materials:
       gradle-plugin:
         git: https://github.com/getgauge/gauge-gradle-plugin.git
@@ -9,7 +9,7 @@ pipelines:
       - build:
           jobs:
             build:
-              elastic_profile_id: debian-gocd-jdk-maven
+              elastic_profile_id: centos-all
               tasks:
                 - exec:
                     command: /bin/sh
