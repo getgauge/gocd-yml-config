@@ -18,5 +18,5 @@ pipelines:
                       - ./gradlew clean build
               artifacts:
                 - build:
-                    source: plugin/build/libs/plugin-*.jar
+                    source: build/libs/gauge-gradle-plugin-*.jar
                     destination: artifacts
