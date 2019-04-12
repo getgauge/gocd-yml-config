@@ -89,7 +89,7 @@ pipelines:
       job: distro
       source: deploy
       language: java
-      reoprt_pipeline: HTML_Report
+      report_pipeline: HTML_Report
       report_plugin: html-report
     materials: *materials
     environment_variables: *environment_variables
