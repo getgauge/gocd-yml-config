@@ -41,8 +41,8 @@ common:
       git: https://github.com/getgauge/gauge-tests.git
       destination: gauge-tests
     package:
-      pipeline: "#{pipeline}"
-      stage: "#{stage}"
+      pipeline: Java-Build
+      stage: package
     gauge:
       pipeline: Gauge-Build
       stage: windows
@@ -81,7 +81,7 @@ pipelines:
   HTML-Report-New:
     group: Other_Plugins
     parameters:
-      pipeline: java-build
+      pipeline: Java-Build
       stage: package
       job: distro
       source: deploy
