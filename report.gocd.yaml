@@ -75,7 +75,7 @@ common:
         source: "#{source}"
   fetch_report_plugin_artifact: &fetch_report_plugin_artifact
     - fetch:
-        pipeline: "#{report_plugin}"
+        pipeline: "#{report_pipeline}"
         stage: package
         job: package
         source: deploy
@@ -89,7 +89,8 @@ pipelines:
       job: distro
       source: deploy
       language: java
-      report_plugin: HTML_Report
+      reoprt_pipeline: HTML_Report
+      report_plugin: html-report
     materials: *materials
     environment_variables: *environment_variables
     stages:
