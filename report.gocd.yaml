@@ -41,8 +41,8 @@ common:
       git: https://github.com/getgauge/gauge-tests.git
       destination: gauge-tests
     package:
-      pipeline: Java-Build
-      stage: package
+      pipeline: "#{pipeline}"
+      stage: "#{stage}"
     gauge:
       pipeline: Gauge-Build
       stage: windows
@@ -97,9 +97,4 @@ pipelines:
               environment_variables: *gauge_environment_variables
               elastic_profile_id: centos-all
               tasks:
-                - fetch:
-                    pipeline: Gauge-Build
-                    stage: windows
-                    job: sign
-                    source: test_installers/gauge-windows.x86_64.zip
-                    is_file: yes
+                - *fetch_gauge_artifact
