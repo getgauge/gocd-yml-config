@@ -49,3 +49,4 @@ environments:
       - Gauge_Released_Dotnet_Nightly
       - Gradle-Build
       - Gradle-Plugin-Nightly
+      - HTML-Report-New

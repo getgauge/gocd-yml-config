@@ -1,0 +1,109 @@
+common:
+  materials: &materials
+    gauge-tests:
+      git: https://github.com/getgauge/gauge-tests.git
+      destination: gauge-tests
+    package:
+      pipeline: "#{pipeline}"
+      stage: "#{stage}"
+    gauge:
+      pipeline: Gauge-Build
+      stage: windows
+    html-report:
+      pipeline: HTML_Report
+      stage: package
+    xml-report:
+      pipeline: XML_Report
+      stage: package
+  environment_variables: &environment_variables
+    enable_multithreading: true
+    language: java
+  report-FT: &report-FT
+    - specs:
+        clean_workspace: true
+        jobs:
+          linux:
+            environment_variables:
+              GOPATH: /tmp
+              GOBIN: /tmp/bin
+              GAUGE_ROOT: /tmp
+              GAUGE_PREFIX: /tmp
+            elastic_profile_id: centos-all
+            tasks:
+              - fetch:
+                  pipeline: Gauge-Build
+                  stage: windows
+                  job: sign
+                  source: test_installers/gauge-linux.x86_64.zip
+                  is_file: yes
+              - exec:
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+              - fetch:
+                  pipeline:  "#{pipeline}"
+                  stage: "#{stage}"
+                  job: "#{job}"
+                  source: "#{source}"
+              - exec:
+                  working_directory: deploy
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - "#{install_language_runner}"
+              - fetch:
+                  pipeline: XML_Report
+                  stage: package
+                  job: package
+                  source: deploy
+              - exec:
+                  working_directory: deploy
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
+              - fetch:
+                  pipeline: HTML_Report
+                  stage: package
+                  job: package
+                  source: deploy
+              - exec:
+                  working_directory: deploy
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
+              - exec:
+                  working_directory: gauge-tests
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - PATH=/tmp/bin:$PATH mvn -q clean install -Denv="#{ci}" -Dtags="#{tag-name}" -DinParallel=true -Dnodes=2
+            artifacts:
+              - build:
+                  source: gauge-tests/reports-java/html-report/*
+                  destination: html-report
+              - build:
+                  source: gauge-tests/reports-java/xml-report/*
+                  destination: xml-report
+              - build:
+                  source: gauge-tests/testLogs
+                  destination: test-logs
+pipeline:
+  HTML-Report-New:
+    group: Other_Plugins
+    parameters:
+      pipeline: java-build
+      stage: package
+      job: disto
+      source: deploy
+      install_language_runner: (version=$(ls gauge-java-*-linux.x86_64.zip | sed "s/^gauge-java-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install java -f gauge-java-$version-linux.x86_64.zip)
+      ci: ci-java
+      tag-name: html-report
+    materials:
+      - *materials
+    environment_variables:
+      - *environment_variables
+    stages:
+      - *report-FT
