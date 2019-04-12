@@ -12,7 +12,7 @@ common:
         arguments:
           - -c
           - (version=$(ls gauge-#{language}-*-linux.x86_64.zip | sed "s/^gauge-#{language}-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version-linux.x86_64.zip)
-  install_report_lugin: &install_report_plugin
+  install_report_plugin: &install_report_plugin
     - exec:
         working_directory: deploy
         command: /bin/sh
@@ -61,21 +61,24 @@ common:
     enable_multithreading: true
     language: java
   fetch_gauge_artifact: &fetch_gauge_artifact
-    pipeline: Gauge-Build
-    stage: windows
-    job: sign
-    source: test_installers/gauge-linux.x86_64.zip
-    is_file: yes
+    - fetch:
+        pipeline: Gauge-Build
+        stage: windows
+        job: sign
+        source: test_installers/gauge-linux.x86_64.zip
+        is_file: yes
   fetch_language_artifact: &fetch_language_artifact
-    pipeline:  "#{pipeline}"
-    stage: "#{stage}"
-    job: "#{job}"
-    source: "#{source}"
+    - fetch:
+        pipeline:  "#{pipeline}"
+        stage: "#{stage}"
+        job: "#{job}"
+        source: "#{source}"
   fetch_report_plugin_artifact: &fetch_report_plugin_artifact
-    pipeline: "#{report_plugin}"
-    stage: package
-    job: package
-    source: deploy
+    - fetch:
+        pipeline: "#{report_plugin}"
+        stage: package
+        job: package
+        source: deploy
 
 pipelines:
   HTML-Report-New:
@@ -98,3 +101,10 @@ pipelines:
               elastic_profile_id: centos-all
               tasks:
                 - *fetch_gauge_artifact
+                - *install_gauge_linux
+                - *fetch_language_artifact
+                - *install_language_runner_linux
+                - *fetch_report_plugin_artifact
+                - *install_report_plugin
+                - *run_fts_command
+              artifacts: *build_artifacts
