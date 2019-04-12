@@ -95,12 +95,11 @@ pipelines:
           jobs:
             linux:
               environment_variables: *gauge_environment_variables
+              elastic_profile_id: centos-all
               tasks:
-                - *fetch_gauge_artifact
-                - *install_gauge_linux
-                - *fetch_language_artifact
-                - *install_language_runner_linux
-                - *fetch_report_plugin_artifact
-                - *install_report_plugin
-                - *run_fts_command
-              artifacts: *build_artifacts
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
