@@ -39,13 +39,20 @@ common:
         arguments:
           - /c
           - "for %f in (#{report_plugin}-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install #{report_plugin} -f %f"
-  run_fts_command: &run_fts_command
+  run_fts_command_linux: &run_fts_command_linux
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - "#{gauge_path} mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2"
+          - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
+  run_fts_command_windows: &run_fts_command_windows
+    - exec:
+        working_directory: gauge-tests
+        command: cmd
+        arguments:
+          - /c
+          - path %GAUGE_ROOT%;%PATH% & gauge version & mvn clean install -q -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
   build_artifacts: &build_artifacts
     - build:
         source: gauge-tests/reports-#{language}/html-report/*
@@ -85,12 +92,19 @@ common:
   environment_variables: &environment_variables
     enable_multithreading: true
     language: java
-  fetch_gauge_artifact: &fetch_gauge_artifact
+  fetch_gauge_artifact_linux: &fetch_gauge_artifact_linux
     - fetch:
         pipeline: Gauge-Build
         stage: windows
         job: sign
-        source: test_installers/gauge-#{environment}.x86_64.zip
+        source: test_installers/gauge-linux.x86_64.zip
+        is_file: yes
+  fetch_gauge_artifact_windows: &fetch_gauge_artifact_windows
+    - fetch:
+        pipeline: Gauge-Build
+        stage: windows
+        job: sign
+        source: test_installers/gauge-windows.x86_64.zip
         is_file: yes
   fetch_language_artifact: &fetch_language_artifact
     - fetch:
@@ -105,33 +119,27 @@ common:
         job: package
         source: deploy
   linux_job: &linux_job
-    parameters:
-      environment: linux
-      gauge_path: PATH=/tmp/bin:$PATH
     environment_variables: *environment_variables_linux
     elastic_profile_id: centos-all
     tasks:
-      - *fetch_gauge_artifact
+      - *fetch_gauge_artifact_linux
       - *install_gauge_linux
       - *fetch_language_artifact
       - *install_language_runner_linux
       - *fetch_report_plugin_artifact
       - *install_report_plugin
-      - *run_fts_command
+      - *run_fts_command_linux
     artifacts: *build_artifacts
   windows_job: &windows_job
-    parameters:
-      environment: windows
-      gauge_path: path %GAUGE_ROOT%;%PATH% &
     elastic_profile_id: windows-all
     tasks:
-      - *fetch_gauge_artifact
+      - *fetch_gauge_artifact_windows
       - *install_gauge_windows
       - *fetch_language_artifact
       - *install_language_runner_windows
       - *fetch_report_plugin_artifact
       - *install_report_plugin_windows
-      - *run_fts_command
+      - *run_fts_command_windows
 
 pipelines:
   HTML-Report-New:
@@ -144,8 +152,6 @@ pipelines:
       language: java
       report_pipeline: HTML_Report
       report_plugin: html-report
-      environment: linux
-      gauge_path: PATH=/tmp/bin:$PATH
     materials: *materials
     environment_variables: *environment_variables
     stages:
