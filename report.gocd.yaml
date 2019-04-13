@@ -144,6 +144,8 @@ pipelines:
       language: java
       report_pipeline: HTML_Report
       report_plugin: html-report
+      environment: linux
+      gauge_path: PATH=/tmp/bin:$PATH
     materials: *materials
     environment_variables: *environment_variables
     stages:
