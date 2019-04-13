@@ -45,7 +45,7 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - "#{gauge_path}" mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
+          - "#{gauge_path} mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2"
   build_artifacts: &build_artifacts
     - build:
         source: gauge-tests/reports-#{language}/html-report/*
