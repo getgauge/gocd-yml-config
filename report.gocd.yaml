@@ -25,7 +25,7 @@ common:
         arguments:
           -  /c
           - "for %f in (gauge-#{language}-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
-  install_report_plugin: &install_report_plugin
+  install_report_plugin_linux: &install_report_plugin_linux
     - exec:
         working_directory: deploy
         command: /bin/sh
@@ -127,10 +127,11 @@ common:
       - *fetch_language_artifact
       - *install_language_runner_linux
       - *fetch_report_plugin_artifact
-      - *install_report_plugin
+      - *install_report_plugin_linux
       - *run_fts_command_linux
     artifacts: *build_artifacts
   windows_job: &windows_job
+    environment_variables: *environment_variables_windows
     elastic_profile_id: windows-all
     tasks:
       - *fetch_gauge_artifact_windows
