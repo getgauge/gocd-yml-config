@@ -5,6 +5,12 @@ common:
         arguments:
           - -c
           - mkdir -p $GAUGE_ROOT/bin && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+  install_gauge_windows: &install_gauge_windows
+    - exec:
+        command: cmd
+        arguments:
+          - /c
+          - "unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%"
   install_language_runner_linux: &install_language_runner_linux
     - exec:
         working_directory: deploy
@@ -12,6 +18,13 @@ common:
         arguments:
           - -c
           - (version=$(ls gauge-#{language}-*-linux.x86_64.zip | sed "s/^gauge-#{language}-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version-linux.x86_64.zip)
+  install_language_runner_windows: &install_language_runner_windows
+    - exec:
+        working_directory: deploy
+        command: cmd
+        arguments:
+          -  /c
+          - "for %f in (gauge-#{language}-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
   install_report_plugin: &install_report_plugin
     - exec:
         working_directory: deploy
@@ -19,13 +32,20 @@ common:
         arguments:
           - -c
           - (version=$(ls "#{report_plugin}"-*-linux.x86_64.zip | sed "s/^#{report_plugin}-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{report_plugin}" -f "#{report_plugin}"-$version-linux.x86_64.zip)
+  install_report_plugin_windows: &install_report_plugin_windows
+    - exec:
+        working_directory: deploy
+        command: cmd
+        arguments:
+          - /c
+          - "for %f in (#{report_plugin}-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install #{report_plugin} -f %f"
   run_fts_command: &run_fts_command
     - exec:
         working_directory: gauge-tests
         command: /bin/sh
         arguments:
           - -c
-          - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
+          - "#{gauge_path}" mvn -q clean install -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
   build_artifacts: &build_artifacts
     - build:
         source: gauge-tests/reports-#{language}/html-report/*
@@ -52,11 +72,16 @@ common:
     xml-report:
       pipeline: XML_Report
       stage: package
-  gauge_environment_variables: &gauge_environment_variables
+  environment_variables_linux: &environment_variables_linux
     GOPATH: /tmp
     GOBIN: /tmp/bin
     GAUGE_ROOT: /tmp
     GAUGE_PREFIX: /tmp
+  environment_variables_windows: &environment_variables_windows
+    GOPATH: C:/gauge/
+    GOBIN: C:/gauge/bin
+    GAUGE_ROOT: C:/gauge_root
+    GAUGE_HOME: C:/gauge-plugins
   environment_variables: &environment_variables
     enable_multithreading: true
     language: java
@@ -65,7 +90,7 @@ common:
         pipeline: Gauge-Build
         stage: windows
         job: sign
-        source: test_installers/gauge-linux.x86_64.zip
+        source: test_installers/gauge-#{environment}.x86_64.zip
         is_file: yes
   fetch_language_artifact: &fetch_language_artifact
     - fetch:
@@ -79,6 +104,34 @@ common:
         stage: package
         job: package
         source: deploy
+  linux_job: &linux_job
+    parameters:
+      environment: linux
+      gauge_path: PATH=/tmp/bin:$PATH
+    environment_variables: *environment_variables_linux
+    elastic_profile_id: centos-all
+    tasks:
+      - *fetch_gauge_artifact
+      - *install_gauge_linux
+      - *fetch_language_artifact
+      - *install_language_runner_linux
+      - *fetch_report_plugin_artifact
+      - *install_report_plugin
+      - *run_fts_command
+    artifacts: *build_artifacts
+  windows_job: &windows_job
+    parameters:
+      environment: windows
+      gauge_path: path %GAUGE_ROOT%;%PATH% &
+    elastic_profile_id: windows-all
+    tasks:
+      - *fetch_gauge_artifact
+      - *install_gauge_windows
+      - *fetch_language_artifact
+      - *install_language_runner_windows
+      - *fetch_report_plugin_artifact
+      - *install_report_plugin_windows
+      - *run_fts_command
 
 pipelines:
   HTML-Report-New:
@@ -97,15 +150,5 @@ pipelines:
       - specs:
           clean_workspace: true
           jobs:
-            linux:
-              environment_variables: *gauge_environment_variables
-              elastic_profile_id: centos-all
-              tasks:
-                - *fetch_gauge_artifact
-                - *install_gauge_linux
-                - *fetch_language_artifact
-                - *install_language_runner_linux
-                - *fetch_report_plugin_artifact
-                - *install_report_plugin
-                - *run_fts_command
-              artifacts: *build_artifacts
+            linux: *linux_job
+            windows: *windows_job
