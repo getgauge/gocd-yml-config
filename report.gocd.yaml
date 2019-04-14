@@ -1,6 +1,4 @@
 common:
-  linux_env: &linux_env ""
-  windows_env: &windows_env ""
   install_gauge_linux: &install_gauge_linux
     - exec:
         command: /bin/sh
@@ -169,6 +167,8 @@ pipelines:
       language: java
       report_pipeline: HTML_Report
       report_plugin: html-report
+      linux_env: ""
+      windows_env: ""
     materials: *materials
     environment_variables: *environment_variables
     stages:
@@ -187,6 +187,8 @@ pipelines:
       language: java
       report_pipeline: XML_Report
       report_plugin: xml-report
+      linux_env: linux.x86_64
+      windows_env: windows.x86_64
     materials: *materials
     environment_variables: *environment_variables
     stages:
