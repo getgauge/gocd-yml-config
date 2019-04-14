@@ -137,10 +137,10 @@ common:
       - *run_fts_command_windows
   specs_stage: &specs_stage
     - specs:
-      clean_workspace: true
-      jobs:
-        linux: *linux_job
-        windows: *windows_job
+        clean_workspace: true
+        jobs:
+          linux: *linux_job
+          windows: *windows_job
 
 pipelines:
   HTML-Report-Java:

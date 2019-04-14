@@ -50,4 +50,6 @@ environments:
       - Gradle-Build
       - Gradle-Plugin-Nightly
       - HTML-Report-Java
+      - HTML-Report-Csharp
+      - HTML-Report-Dotnet
       - XML-Report-Java
