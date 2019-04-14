@@ -1,4 +1,6 @@
 common:
+  linux_env: &linux_env ""
+  windows_env: &windows_env ""
   install_gauge_linux: &install_gauge_linux
     - exec:
         command: /bin/sh
@@ -17,14 +19,14 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - (version=$(ls gauge-#{language}-*-linux.x86_64.zip | sed "s/^gauge-#{language}-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version-linux.x86_64.zip)
+          - (version=$(ls gauge-#{language}-*-#{linux_env}.zip | sed "s/^gauge-#{language}-\([^;]*\)-#{linux_env}.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version-#{linux_env}.zip)
   install_language_runner_windows: &install_language_runner_windows
     - exec:
         working_directory: deploy
         command: cmd
         arguments:
           -  /c
-          - "for %f in (gauge-#{language}-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
+          - "for %f in (gauge-#{language}-*-#{windows_env}.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
   install_report_plugin_linux: &install_report_plugin_linux
     - exec:
         working_directory: deploy
@@ -55,11 +57,8 @@ common:
           - path %GAUGE_ROOT%;%PATH% & gauge version & mvn clean install -q -Denv=ci-#{language} -Dtags=#{report_plugin} -DinParallel=true -Dnodes=2
   build_artifacts: &build_artifacts
     - build:
-        source: gauge-tests/reports-#{language}/html-report/*
-        destination: html-report
-    - build:
-        source: gauge-tests/reports-#{language}/xml-report/*
-        destination: xml-report
+        source: gauge-tests/reports-#{language}/#{report_plugin}/*
+        destination: "#{report_plugin}"
     - build:
         source: gauge-tests/testLogs
         destination: test-logs
@@ -73,11 +72,8 @@ common:
     gauge:
       pipeline: Gauge-Build
       stage: windows
-    html-report:
-      pipeline: HTML_Report
-      stage: package
-    xml-report:
-      pipeline: XML_Report
+    report:
+      pipeline: "#{report_pipeline}"
       stage: package
   environment_variables_linux: &environment_variables_linux
     GOPATH: /tmp
@@ -149,6 +145,26 @@ pipelines:
       pipeline: Java-Build
       stage: package
       job: distro
+      source: deploy
+      language: java
+      report_pipeline: HTML_Report
+      report_plugin: html-report
+      linux_env: linux.x86_64
+      windows_env: windows.x86_64
+    materials: *materials
+    environment_variables: *environment_variables
+    stages:
+      - specs:
+          clean_workspace: true
+          jobs:
+            linux: *linux_job
+            windows: *windows_job
+  HTML-Report-Csharp:
+    group: Report_Plugins
+    parameters:
+      pipeline: Csharp-Package
+      stage: package
+      job: package
       source: deploy
       language: java
       report_pipeline: HTML_Report
