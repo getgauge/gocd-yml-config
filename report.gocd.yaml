@@ -17,14 +17,14 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - (version=$(ls gauge-#{language}-*-#{linux_env}.zip | sed "s/^gauge-#{language}-\([^;]*\)-#{linux_env}.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version-#{linux_env}.zip)
+          - (version=$(ls gauge-#{language}-*#{linux_env}.zip | sed "s/^gauge-#{language}-\([^;]*\)#{linux_env}.zip/\1/"); $GAUGE_PREFIX/bin/gauge install "#{language}" -f gauge-#{language}-$version#{linux_env}.zip)
   install_language_runner_windows: &install_language_runner_windows
     - exec:
         working_directory: deploy
         command: cmd
         arguments:
           -  /c
-          - "for %f in (gauge-#{language}-*-#{windows_env}.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
+          - "for %f in (gauge-#{language}-*#{windows_env}.zip) do %GAUGE_ROOT%/gauge install #{language} -f %f"
   install_report_plugin_linux: &install_report_plugin_linux
     - exec:
         working_directory: deploy
@@ -147,8 +147,8 @@ pipelines:
       language: java
       report_pipeline: HTML_Report
       report_plugin: html-report
-      linux_env: linux.x86_64
-      windows_env: windows.x86_64
+      linux_env: -linux.x86_64
+      windows_env: -windows.x86_64
     materials: *materials
     environment_variables: *environment_variables
     stages:
@@ -187,8 +187,8 @@ pipelines:
       language: java
       report_pipeline: XML_Report
       report_plugin: xml-report
-      linux_env: linux.x86_64
-      windows_env: windows.x86_64
+      linux_env: -linux.x86_64
+      windows_env: -windows.x86_64
     materials: *materials
     environment_variables: *environment_variables
     stages:
