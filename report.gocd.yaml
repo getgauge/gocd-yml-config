@@ -164,7 +164,7 @@ pipelines:
       stage: package
       job: package
       source: deploy
-      language: java
+      language: csharp
       report_pipeline: HTML_Report
       report_plugin: html-report
       linux_env: ""
