@@ -143,8 +143,8 @@ common:
       - *run_fts_command_windows
 
 pipelines:
-  HTML-Report-New:
-    group: Other_Plugins
+  HTML-Report-Java:
+    group: Report_Plugins
     parameters:
       pipeline: Java-Build
       stage: package
@@ -153,6 +153,24 @@ pipelines:
       language: java
       report_pipeline: HTML_Report
       report_plugin: html-report
+    materials: *materials
+    environment_variables: *environment_variables
+    stages:
+      - specs:
+          clean_workspace: true
+          jobs:
+            linux: *linux_job
+            windows: *windows_job
+  XML-Report-Java:
+    group: Report_Plugins
+    parameters:
+      pipeline: Java-Build
+      stage: package
+      job: distro
+      source: deploy
+      language: java
+      report_pipeline: XML_Report
+      report_plugin: xml-report
     materials: *materials
     environment_variables: *environment_variables
     stages:
