@@ -39,7 +39,6 @@ environments:
       - docs_gauge_org
       - insights.gauge.org
       - manpage.gauge.org
-      - HTML-Report-FT
       - check-all-readme-files
       - Taiko-Benchmark
       - Gauge_Released_Java_Nightly
