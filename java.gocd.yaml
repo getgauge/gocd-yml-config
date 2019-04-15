@@ -220,6 +220,7 @@ pipelines:
                     job: package
                     source: deploy
                 - exec:
+                    working_directory: deploy
                     command: cmd
                     arguments:
                       - /c
