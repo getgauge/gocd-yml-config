@@ -24,8 +24,9 @@ pipelines:
           jobs:
             publish:
               elastic_profile_id: centos-all
-              - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - ./gradlew publishPlugins -Pgradle.publish.key=AES:AJdgmUP4CuisU4NdxDIf3w==:VDEJi1LAUW16OnfhfOD9T0/M6IHUZPDBRX7RPOuYPLqpoa4WpWbGdIlUJDPKGgrk -Pgradle.publish.secret=AES:TOTMvIqfUNSOi5PUmorXFg==:ylj/BY3fQaDZuJiv1entFwf6SJn0U/S9DcvlWLyMxSah/iISOFYr1XaNyjLgpg1Y
+              tasks:
+                - exec:
+                      command: /bin/sh
+                      arguments:
+                        - -c
+                        - ./gradlew publishPlugins -Pgradle.publish.key=AES:AJdgmUP4CuisU4NdxDIf3w==:VDEJi1LAUW16OnfhfOD9T0/M6IHUZPDBRX7RPOuYPLqpoa4WpWbGdIlUJDPKGgrk -Pgradle.publish.secret=AES:TOTMvIqfUNSOi5PUmorXFg==:ylj/BY3fQaDZuJiv1entFwf6SJn0U/S9DcvlWLyMxSah/iISOFYr1XaNyjLgpg1Y
