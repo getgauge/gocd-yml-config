@@ -41,10 +41,13 @@ pipelines:
       - nightly:
           jobs:
             push_to_bintray:
+              secure_variables:
+                BINTRAY_USER: AES:GOTStxPbxIUg/PxeFromGA==:BY4Yojl5yquqN6gBcQxT0g==
+                BINTRAY_APIKEY: AES:CBkGJMhbMe8BUtuQt0bNTw==:VmelxChocGpnz3Avk+kp48DsYS62nS/Wb5pZrd5brI9fX+0/2L5agZDGiEESBtms
               elastic_profile_id: centos-all
               tasks:
                 - exec:
                       command: /bin/sh
                       arguments:
                         - -c
-                        - ./gradlew clean bintrayUpload -Dbintray.user=AES:GOTStxPbxIUg/PxeFromGA==:BY4Yojl5yquqN6gBcQxT0g== -Dbintray.apikey=AES:CBkGJMhbMe8BUtuQt0bNTw==:VmelxChocGpnz3Avk+kp48DsYS62nS/Wb5pZrd5brI9fX+0/2L5agZDGiEESBtms
+                        - ./gradlew clean bintrayUpload -Dbintray.user=$BINTRAY_USER -Dbintray.apikey=$BINTRAY_APIKEY
