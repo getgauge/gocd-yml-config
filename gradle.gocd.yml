@@ -24,13 +24,16 @@ pipelines:
           approval: manual
           jobs:
             publish:
+              secure_variables:
+                GRADLE_PUBLISHKEY: AES:AJdgmUP4CuisU4NdxDIf3w==:VDEJi1LAUW16OnfhfOD9T0/M6IHUZPDBRX7RPOuYPLqpoa4WpWbGdIlUJDPKGgrk
+                GRADLE_SECRET: AES:TOTMvIqfUNSOi5PUmorXFg==:ylj/BY3fQaDZuJiv1entFwf6SJn0U/S9DcvlWLyMxSah/iISOFYr1XaNyjLgpg1Y
               elastic_profile_id: centos-all
               tasks:
                 - exec:
                       command: /bin/sh
                       arguments:
                         - -c
-                        - ./gradlew publishPlugins -Pgradle.publish.key=AES:AJdgmUP4CuisU4NdxDIf3w==:VDEJi1LAUW16OnfhfOD9T0/M6IHUZPDBRX7RPOuYPLqpoa4WpWbGdIlUJDPKGgrk -Pgradle.publish.secret=AES:TOTMvIqfUNSOi5PUmorXFg==:ylj/BY3fQaDZuJiv1entFwf6SJn0U/S9DcvlWLyMxSah/iISOFYr1XaNyjLgpg1Y
+                        - ./gradlew publishPlugins -Pgradle.publish.key=$GRADLE_PUBLISHKEY -Pgradle.publish.secret=$GRADLE_SECRET
   Gradle-Plugin-Nightly:
     group: Nightly
     materials:
