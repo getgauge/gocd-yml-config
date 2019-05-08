@@ -102,25 +102,3 @@ pipelines:
       only_on_changes: yes
     stages:
       - *publish_nightly_bintray_publish_stage
-  Gradle-Plugin-Nightly:
-    group: Nightly
-    parameters:
-      pipeline: Gradle-Build
-      stage: build
-      job: build
-      source: artifacts
-      plugin: gauge-gradle-plugin
-      rename: 1
-      update_install_json: 0
-      noplatform: 1
-    environment_variables:
-      BINTRAY_REPO: gauge-gradle-plugin
-    materials:
-      package:
-        pipeline: "#{pipeline}"
-        stage: "#{stage}"
-    timer:
-      spec: *timer_spec
-      only_on_changes: yes
-    stages:
-      - *publish_nightly_bintray_publish_stage
