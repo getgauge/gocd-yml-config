@@ -40,10 +40,14 @@ pipelines:
       gradle-plugin:
         git: https://github.com/getgauge/gauge-gradle-plugin.git
         shallow_clone: true
+    timer:
+      spec: "0 30 7 ? * MON-FRI"
+      only_on_changes: yes
     stages:
-      - nightly:
+      - pushToBintray:
+          approval: manual
           jobs:
-            push_to_bintray:
+            publish:
               secure_variables:
                 BINTRAY_USER: AES:GOTStxPbxIUg/PxeFromGA==:BY4Yojl5yquqN6gBcQxT0g==
                 BINTRAY_APIKEY: AES:CBkGJMhbMe8BUtuQt0bNTw==:VmelxChocGpnz3Avk+kp48DsYS62nS/Wb5pZrd5brI9fX+0/2L5agZDGiEESBtms
