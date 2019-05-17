@@ -20,8 +20,14 @@ pipelines:
                 - exec:
                     command: go
                     arguments:
-                      - get -d -u -t github.com/getgauge/common
+                      - get
+                      - -d
+                      - -u
+                      - -t
+                      - github.com/getgauge/common
                 - exec:
                     command: go
                     arguments:
-                      - test -v github.com/getgauge/common
+                      - test
+                      - -v
+                      - github.com/getgauge/common
