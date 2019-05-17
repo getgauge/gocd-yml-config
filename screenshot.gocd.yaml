@@ -1,0 +1,65 @@
+pipelines:
+  Screenshot-Build:
+    group: Screenshot
+    materials:
+      gauge_screenshot:
+        git: https://github.com/getgauge/gauge_screenshot.git
+        destination: src/github.com/getgauge/gauge_screenshot
+        shallow_clone: true
+    environment_variables:
+      GOPATH: /tmp
+    stages:
+      - build:
+          jobs:
+            build:
+              elastic_profile_id: centos-all
+              environment_variables:
+                GOPATH: /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; go get -t ./...
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; rm -rf deploy/ &amp;&amp; go run build/make.go --all-platforms
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; go run build/make.go --all-platforms --distro
+              artifacts:
+                - build:
+                    source: src/github.com/getgauge/gauge_screenshot/deploy/*
+                    destination: deploy
+  Screenshot-Release:
+    group: Screenshot
+    materials:
+      Screenshot_Build:
+        pipeline: Screenshot-Build
+        stage: build
+    stages:
+      - release:
+          approval: manual
+          jobs:
+            release:
+              elastic_profile_id: centos-all
+              environment_variables:
+                repoName: gauge_screenshot
+              secure_variables:
+                GITHUB_TOKEN: AES:Sw4JWhmxvfSGE1w9AHS5Bg==:TDXM/BfhF7UTW1vN/iSNmdrSFUBdqx72twn8+DV78QPZJR0zb/Sr/OBssV+kuFX0
+              tasks:
+                - fetch:
+                    pipeline: Screenshot-Build
+                    stage: build
+                    job: build
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (curl -sSfL https://github.com/getgauge/gauge/raw/master/build/github_release.sh | sh)
