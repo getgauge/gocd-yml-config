@@ -18,12 +18,10 @@ pipelines:
                       - -c
                       - rm -rf $GOPATH/src
                 - exec:
-                    command: /bin/sh
+                    command: go
                     arguments:
-                      - go
                       - get -d -u -t github.com/getgauge/common
                 - exec:
-                    command: /bin/sh
+                    command: go
                     arguments:
-                      - go
                       - test -v github.com/getgauge/common
