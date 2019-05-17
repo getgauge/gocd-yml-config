@@ -1,0 +1,29 @@
+pipelines:
+  Common-New:
+    group: Misc
+    materials:
+      common:
+        git: https://github.com/getgauge/common.git
+    stages:
+      - test:
+          jobs:
+            linux:
+              elastic_profile_id: centos-all
+              environment_variables:
+                GOPATH : /tmp
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - rm -rf $GOPATH/src
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - go
+                      - get -d -u -t github.com/getgauge/common
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - go
+                      - test -v github.com/getgauge/common
