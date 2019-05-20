@@ -1,6 +1,6 @@
 pipelines:
-  Screenshot-Build:
-    group: Screenshot
+  Screenshot:
+    group: Misc
     materials:
       gauge_screenshot:
         git: https://github.com/getgauge/gauge_screenshot.git
@@ -35,13 +35,6 @@ pipelines:
                 - build:
                     source: src/github.com/getgauge/gauge_screenshot/deploy/*
                     destination: deploy
-  Screenshot-Release:
-    group: Screenshot
-    materials:
-      Screenshot_Build:
-        pipeline: Screenshot-Build
-        stage: build
-    stages:
       - release:
           approval: manual
           jobs:
@@ -53,7 +46,7 @@ pipelines:
                 GITHUB_TOKEN: AES:Sw4JWhmxvfSGE1w9AHS5Bg==:TDXM/BfhF7UTW1vN/iSNmdrSFUBdqx72twn8+DV78QPZJR0zb/Sr/OBssV+kuFX0
               tasks:
                 - fetch:
-                    pipeline: Screenshot-Build
+                    pipeline: Screenshot
                     stage: build
                     job: build
                     source: deploy
