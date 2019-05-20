@@ -48,5 +48,4 @@ environments:
       - Gradle-Build
       - Gradle-Plugin-Nightly
       - Common
-      - Screenshot-Build
-      - Screenshot-Release
+      - Screenshot
