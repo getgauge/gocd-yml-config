@@ -51,7 +51,7 @@ pipelines:
                     arguments:
                       - -c
                       - find . -iname \*.md -maxdepth 2 -mindepth 2 | xargs -L1 /tmp/bin/markdown-link-check -q -c config.json
-  Common-New:
+  Common:
     group: Misc
     materials:
       common:

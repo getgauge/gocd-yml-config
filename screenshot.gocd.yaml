@@ -20,17 +20,17 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; go get -t ./...
+                      - GOPATH=$(pwd) && cd src/github.com/getgauge/gauge_screenshot && go get -t ./...
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; rm -rf deploy/ &amp;&amp; go run build/make.go --all-platforms
+                      - GOPATH=$(pwd) && cd src/github.com/getgauge/gauge_screenshot && rm -rf deploy/ && go run build/make.go --all-platforms
                 - exec:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - GOPATH=$(pwd) &amp;&amp; cd src/github.com/getgauge/gauge_screenshot &amp;&amp; go run build/make.go --all-platforms --distro
+                      - GOPATH=$(pwd) && cd src/github.com/getgauge/gauge_screenshot && go run build/make.go --all-platforms --distro
               artifacts:
                 - build:
                     source: src/github.com/getgauge/gauge_screenshot/deploy/*

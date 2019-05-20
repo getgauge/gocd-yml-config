@@ -47,6 +47,6 @@ environments:
       - Gauge_Released_Dotnet_Nightly
       - Gradle-Build
       - Gradle-Plugin-Nightly
-      - Common-New
+      - Common
       - Screenshot-Build
       - Screenshot-Release
