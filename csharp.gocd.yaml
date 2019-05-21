@@ -232,7 +232,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean -e test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
+                      - path %GAUGE_ROOT%;%PATH% & gradlew.bat clean csharpFT
               artifacts:
                 - build:
                     source: reports-csharp/html-report/*
@@ -321,7 +321,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-csharp -Dtags="csharp"
+                      - PATH=/tmp/bin:$PATH ./gradlew clean csharpFT
               artifacts:
                 - build:
                     source: reports-csharp/html-report/*

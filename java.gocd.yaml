@@ -162,7 +162,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-java -Dtags="java" -DinParallel=true -Dnodes=2
+                      - PATH=/tmp/bin:$PATH ./gradlew clean javaFT
               artifacts:
                 - build:
                     source: gauge-tests/reports-java/html-report/*
@@ -230,7 +230,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge version & mvn clean install -q -Denv=ci-java -Dtags="java" -DinParallel=true -Dnodes=2
+                      - path %GAUGE_ROOT%;%PATH% & gauge version & gradlew.bat clean javaFT
               artifacts:
                 - build:
                     source: gauge-tests/reports-java/html-report/*

@@ -91,7 +91,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_ROOT/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
+                      - PATH=$GAUGE_ROOT/bin:$PATH ./gradlew clean jsFT
               artifacts:
                 - build:
                     source: gauge-tests/reports-js/html-report/*
@@ -168,7 +168,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean test-compile gauge:execute -Denv=ci-js -Dtags="js" -DinParallel=true
+                      - path %GAUGE_ROOT%;%PATH% & gradlew.bat clean jsFT
               artifacts:
                 - build:
                     source: gauge-tests/reports-js/html-report/*

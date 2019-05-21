@@ -195,7 +195,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & mvn -q clean test-compile gauge:execute -Denv=ci-python -Dtags=python
+                      - path %GAUGE_ROOT%;%PATH% & gradlew.bat clean pythonFT
               artifacts:
                 - build:
                     source: testLogs
@@ -301,7 +301,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=/tmp/bin:$PATH mvn -q clean install -Denv=ci-python -Dtags="python"
+                      - PATH=/tmp/bin:$PATH ./gradlew clean pythonFT
               artifiacts:
                 - build:
                     source: testLogs

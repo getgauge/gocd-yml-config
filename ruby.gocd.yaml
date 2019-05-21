@@ -113,7 +113,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - PATH=$GAUGE_PREFIX/bin:$PATH mvn -q clean test-compile gauge:execute -Denv=ci-ruby -Dtags="ruby" -DinParallel=true
+                      - PATH=$GAUGE_PREFIX/bin:$PATH ./gradlew clean rubyFT
               artifacts:
                 - build:
                     source: gauge-tests/reports-ruby/html-report/*
