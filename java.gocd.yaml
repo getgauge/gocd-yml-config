@@ -230,7 +230,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - /c
-                      - path %GAUGE_ROOT%;%PATH% & gauge version & gradlew.bat clean javaFT
+                      - path %GAUGE_ROOT%;%PATH% & gauge version & gradlew.bat clean javaFT -Pnodes=2
               artifacts:
                 - build:
                     source: gauge-tests/reports-java/html-report/*
