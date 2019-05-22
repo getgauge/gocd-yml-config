@@ -30,3 +30,28 @@ pipelines:
                     arguments:
                       - -c
                       - go run build/make.go
+            windows:
+              elasticProfileId: windows-all
+              environment_variables:
+                GOPATH : c:/gauge
+                GOBIN : c:gauge/bin
+              tasks:
+                - exec:
+                    command: go
+                    arguments:
+                      - get
+                      - -d
+                      - -u
+                      - -t
+                      - -v
+                      - github.com/getgauge/spectacle
+                - exec:
+                    command: go
+                    arguments:
+                      - test
+                      - ./...
+                - exec:
+                    command: go
+                    arguments:
+                      - run
+                      - build/make.go
