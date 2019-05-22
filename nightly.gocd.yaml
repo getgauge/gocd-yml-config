@@ -102,3 +102,26 @@ pipelines:
       only_on_changes: yes
     stages:
       - *publish_nightly_bintray_publish_stage
+  Spectacle-Nightly-New:
+    group: Nightly
+    parameters:
+      pipeline: Spectacle-New
+      stage: package
+      job: package
+      source: distros
+      plugin: spectacle
+      rename: 1
+      UPDATE_INSTALL_JSON: 1
+      noplatform: 1
+    environment_variables:
+      INSTALL_PLUGIN_JSON: spectacle
+    materials:
+      package:
+        pipeline: Spectacle-New
+        stage: package
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
+    stages:
+      - *publish_nightly_bintray_publish_stage
+
