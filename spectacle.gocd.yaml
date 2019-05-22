@@ -1,5 +1,5 @@
 pipelines:
-  Spectacle-New:
+  Spectacle:
     group: Other_Plugins
     materials:
       spectacle:
@@ -94,7 +94,7 @@ pipelines:
                       - -rf
                       - distros
                 - fetch:
-                    pipeline: Spectacle-New
+                    pipeline: Spectacle
                     stage: package
                     job: package
                     source: distros
