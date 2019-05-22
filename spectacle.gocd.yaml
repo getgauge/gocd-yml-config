@@ -1,0 +1,32 @@
+pipelines:
+  Spectacle-New:
+    group: Other_Plugins
+    materials:
+      spectacle:
+        git : https://github.com/getgauge/spectacle
+    environment_variables:
+      GOPATH : /tmp
+      GOBIN : /tmp/bin
+    secure_variables:
+      GITHUB_TOKEN : AES:I3dqwn71FdbHJuV9dq8p1g==:F+KgcT2E9/sji7moKR3yA+PRvQkjeg7/TJJlncRKmYQ+tQOHn78jiYY3u6pTkswv
+    stages:
+      - build:
+          jobs:
+            linux:
+              elasticProfileId: centos-all
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - go get -d -u -t -v github.com/getgauge/spectacle
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - go test ./...
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - go run build/make.go

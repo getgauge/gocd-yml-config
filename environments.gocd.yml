@@ -44,3 +44,4 @@ environments:
       - Gradle-Plugin-Nightly
       - Common
       - Screenshot
+      - Spectacle-New
