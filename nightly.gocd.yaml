@@ -111,7 +111,7 @@ pipelines:
       source: distros
       plugin: spectacle
       rename: 1
-      UPDATE_INSTALL_JSON: 1
+      update_install_json: 1
       noplatform: 1
     environment_variables:
       INSTALL_PLUGIN_JSON: spectacle
