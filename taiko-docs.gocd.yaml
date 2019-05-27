@@ -37,7 +37,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
                 - fetch:
                     pipeline: Taiko-Documentation
                     stage: preview-build
@@ -93,7 +93,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
                 - fetch:
                     pipeline: Taiko-Documentation
                     stage: website-build
