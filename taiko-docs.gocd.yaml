@@ -5,7 +5,7 @@ pipelines:
       website:
         git: https://github.com/getgauge/taiko
     stages:
-      - preview:
+      - preview-build:
           jobs:
             build:
               environment_variables:
@@ -25,6 +25,8 @@ pipelines:
                 - build:
                     source: docs/site/*
                     destination: site
+      - preview-docs:
+          jobs:
             docs:
               elastic_profile_id: centos-all
               secure_variables:
@@ -38,7 +40,7 @@ pipelines:
                       - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
                 - fetch:
                     pipeline: Taiko-Documentation
-                    stage: preview
+                    stage: preview-build
                     job: build
                     source: site
                 - exec:
@@ -58,7 +60,7 @@ pipelines:
                       - s3://taiko-preview.gauge.org
                       - --cache-control
                       - max-age=604800,s-maxage=1800
-      - website:
+      - website-build:
           approval: manual
           jobs:
             build:
@@ -79,6 +81,8 @@ pipelines:
                 - build:
                     source: docs/site/*
                     destination: site
+      - website-publish:
+          jobs:
             publish:
               elastic_profile_id: centos-all
               secure_variables:
@@ -92,7 +96,7 @@ pipelines:
                       - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
                 - fetch:
                     pipeline: Taiko-Documentation
-                    stage: website
+                    stage: website-build
                     job: build
                     source: site
                 - exec:
