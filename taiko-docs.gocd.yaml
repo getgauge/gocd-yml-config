@@ -1,0 +1,114 @@
+pipelines:
+  Taiko-Documentaion:
+    group: Websites
+    materials:
+      website:
+        git: https://github.com/getgauge/taiko
+    stages:
+      - preview:
+          jobs:
+            build:
+              environment_variables:
+                TAG:  preview
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - docs
+              artifacts:
+                - build:
+                    source: docs/site/*
+                    destination: site
+            docs:
+              elastic_profile_id: centos-all
+              secure_variables:
+                aws_access_key_id: AES:T6fA+CfNYNFOBQ7ltgpa/A==:xm2OTpwUx/BhZOv4mj3j/3w0cWU9Hmd4pgrp9ekDjh4=
+                aws_secret_access_key: AES:E9OzqRMnNfEqwHsOIPbp8w==:z60Pl0zPbSd+Puzb10hskWMCokl65MFNLEHG7PrvOpMBwxqASjxvVLG5KJLjVsEX
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
+                - fetch:
+                    pipeline: Taiko-Documentaion
+                    stage: docs
+                    job: docs
+                    source: site
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://taiko-preview.gauge.org
+                      - --recursive
+                - exec:
+                    working_directory: site
+                    command: aws
+                    arguments:
+                      - s3
+                      - sync
+                      - .
+                      - s3://taiko-preview.gauge.org
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
+      - website:
+          approval: manual
+          jobs:
+            build:
+              environment_variables:
+                TAG:  prod
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - docs
+              artifacts:
+                - build:
+                    source: docs/site/*
+                    destination: site
+            publish:
+              elastic_profile_id: centos-all
+              secure_variables:
+                aws_access_key_id: AES:RoHNY96RpprTS3phq0XyCg==:kMiroXRUmI06/NslNEemev9GcJ/6fjSgiZFgx5padZI=
+                aws_secret_access_key: AES:vJlFOk7YtuoQmlJQAJzt9Q==:X5nlM5D+8NCBJMr7vx3J5pKuNo4jZYONEquzTrtXqFER7XAZBYlm1BirO7c8oPux
+              tasks:
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ &amp;&amp; echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" &gt; $HOME/.aws/config
+                - fetch:
+                    pipeline: Taiko-Documentaion
+                    stage: docs
+                    job: docs
+                    source: site
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://taiko.gauge.org
+                      - --recursive
+                - exec:
+                    working_directory: site
+                    command: aws
+                    arguments:
+                      - s3
+                      - sync
+                      - .
+                      - s3://taiko.gauge.org
+                      - --cache-control
+                      - max-age=604800,s-maxage=1800
