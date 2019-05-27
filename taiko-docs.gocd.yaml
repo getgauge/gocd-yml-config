@@ -20,7 +20,7 @@ pipelines:
                     command: npm
                     arguments:
                       - run
-                      - docs
+                      - doc
               artifacts:
                 - build:
                     source: docs/site/*
@@ -76,7 +76,7 @@ pipelines:
                     command: npm
                     arguments:
                       - run
-                      - docs
+                      - doc
               artifacts:
                 - build:
                     source: docs/site/*
