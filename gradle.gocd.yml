@@ -16,10 +16,6 @@ pipelines:
                     arguments:
                       - -c
                       - ./gradlew clean build
-              artifacts:
-                - build:
-                    source: build/distributions/gauge-gradle-plugin-*.zip
-                    destination: artifacts
       - publish:
           approval: manual
           jobs:
