@@ -21,16 +21,19 @@ pipelines:
       - functional-tests:
           jobs:
             linux-specs:
-              elastic_profile_id: ubuntu-node
+              environment_variables:
+                headless: false
+              elastic_profile_id: debian-node-xvfb
               tasks:
                 - exec:
                     command: npm
                     arguments:
                       - install
                 - exec:
-                    command: npm
+                    command: xvfb-run
                     arguments:
-                      - run 
+                      - npm
+                      - run
                       - test-functional
               artifacts:
                 - build:
@@ -47,7 +50,7 @@ pipelines:
                 - exec:
                     command: npm
                     arguments:
-                      - run 
+                      - run
                       - test-functional
               artifacts:
                 - build:
