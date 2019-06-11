@@ -19,8 +19,28 @@ pipelines:
                     arguments:
                       - test
       - functional-tests:
+          environment_variables:
+            TAIKO_HIGHLIGHT_ON_ACTION: false
           jobs:
-            linux-specs:
+            linux-headless:
+              environment_variables:
+                headless: true
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - test-functional
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            linux-headful:
               environment_variables:
                 headless: false
               elastic_profile_id: debian-node-xvfb
