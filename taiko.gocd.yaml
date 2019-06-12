@@ -54,7 +54,7 @@ pipelines:
                     arguments:
                       - npm
                       - run
-                      - test-functional
+                      - test-functional-headful
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
