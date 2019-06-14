@@ -18,6 +18,11 @@ pipelines:
                     command: npm
                     arguments:
                       - test
+                - exec:
+                    command: npm
+                    arguments:
+                      - run
+                      - examples
             windows:
               elastic_profile_id: windows-all
               tasks:
