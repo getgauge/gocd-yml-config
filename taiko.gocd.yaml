@@ -7,8 +7,19 @@ pipelines:
     stages:
       - unit-test:
           jobs:
-            test:
+            linux:
               elastic_profile_id: ubuntu-node
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: npm
+                    arguments:
+                      - test
+            windows:
+              elastic_profile_id: windows-all
               tasks:
                 - exec:
                     command: npm
