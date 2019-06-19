@@ -1,3 +1,70 @@
+common:
+  - linux_unittest_tasks: &linux_unittest_tasks
+    - exec:
+        command: nvm
+        arguments:
+          - use
+          - ${NODE_VERSION}
+    - exec:
+        command: npm
+        arguments:
+          - install
+    - exec:
+        command: npm
+        arguments:
+          - test
+    - exec:
+        command: npm
+        arguments:
+          - run
+          - examples
+  - windows_unittest_tasks: &windows_unittest_tasks
+    - exec:
+        command: nvm
+        arguments:
+          - use
+          - ${NODE_VERSION}
+    - exec:
+        command: npm
+        arguments:
+          - install
+    - exec:
+        command: npm
+        arguments:
+          - test
+  - headless_functionaltest_tasks: &headless_functionaltest_tasks
+    - exec:
+        command: nvm
+        arguments:
+          - use
+          - ${NODE_VERSION}
+    - exec:
+        command: npm
+        arguments:
+          - install
+    - exec:
+        command: npm
+        arguments:
+          - run
+          - test-functional
+  - headful_functionaltest_tasks: &headful_functionaltest_tasks
+    - exec:
+        command: nvm
+        arguments:
+          - use
+          - ${NODE_VERSION}
+    - exec:
+        command: npm
+        arguments:
+          - install
+    - exec:
+        command: xvfb-run
+        arguments:
+          - npm
+          - run
+          - test-functional
+
+
 pipelines:
   Taiko:
     group: Gauge-JS
@@ -7,87 +74,142 @@ pipelines:
     stages:
       - unit-test:
           jobs:
-            linux:
+            linux-node8:
+              environment_variables:
+                NODE_VERSION: 8
               elastic_profile_id: ubuntu-node
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - test
-                - exec:
-                    command: npm
-                    arguments:
-                      - run
-                      - examples
-            windows:
+               - *linux_unittest_tasks
+            linux-node10:
+              environment_variables:
+                NODE_VERSION: 10
+              elastic_profile_id: ubuntu-node
+              tasks:
+               - *linux_unittest_tasks
+            linux-node12:
+              environment_variables:
+                NODE_VERSION: 12
+              elastic_profile_id: ubuntu-node
+              tasks:
+               - *linux_unittest_tasks
+            windows-node8:
+              environment_variables:
+                NODE_VERSION: 8
               elastic_profile_id: windows-all
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - test
+                - *windows_unittest_tasks
+            windows-node10:
+              environment_variables:
+                NODE_VERSION: 10
+              elastic_profile_id: windows-all
+              tasks:
+                - *windows_unittest_tasks
+            windows-node12:
+              environment_variables:
+                NODE_VERSION: 12
+              elastic_profile_id: windows-all
+              tasks:
+                - *windows_unittest_tasks
       - functional-tests:
           environment_variables:
             TAIKO_HIGHLIGHT_ON_ACTION: false
           jobs:
-            linux-headless:
+            linux-headless-node8:
               environment_variables:
                 headless: true
+                NODE_VERSION: 8
               elastic_profile_id: ubuntu-node
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - run
-                      - test-functional
+                - *headless_functionaltest_tasks
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
                     destination: reports
-            linux-headful:
+            linux-headless-node10:
+              environment_variables:
+                headless: true
+                NODE_VERSION: 10
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - *headless_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            linux-headless-node12:
+              environment_variables:
+                headless: true
+                NODE_VERSION: 12
+              elastic_profile_id: ubuntu-node
+              tasks:
+                - *headless_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            linux-headful-node8:
               environment_variables:
                 headless: false
+                NODE_VERSION: 8
               elastic_profile_id: debian-node-xvfb
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: xvfb-run
-                    arguments:
-                      - npm
-                      - run
-                      - test-functional
+                - *headful_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            linux-headful-node10:
+              environment_variables:
+                headless: false
+                NODE_VERSION: 10
+              elastic_profile_id: debian-node-xvfb
+              tasks:
+                - *headful_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            linux-headful-node12:
+              environment_variables:
+                headless: false
+                NODE_VERSION: 12
+              elastic_profile_id: debian-node-xvfb
+              tasks:
+                - *headful_functionaltest_tasks
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
                     destination: reports
 
-            windows-specs:
+            windows-node8:
+              environment_variables:
+                headless: true
+                NODE_VERSION: 8
               elastic_profile_id: windows-all
               tasks:
-                - exec:
-                    command: npm
-                    arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - run
-                      - test-functional
+                - *headless_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            windows-node10:
+              environment_variables:
+                headless: true
+                NODE_VERSION: 10
+              elastic_profile_id: windows-all
+              tasks:
+                - *headless_functionaltest_tasks
+              artifacts:
+                - build:
+                    source: test/functional-tests/reports/html-report
+                    destination: reports
+            windows-node12:
+              environment_variables:
+                headless: true
+                NODE_VERSION: 12
+              elastic_profile_id: windows-all
+              tasks:
+                - *headless_functionaltest_tasks
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
