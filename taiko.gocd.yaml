@@ -4,7 +4,7 @@ common:
         command: /bin/bash
         arguments:
           - -c
-          - nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
+          - source /root/.nvm/nvm.sh && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
         command: nvm
