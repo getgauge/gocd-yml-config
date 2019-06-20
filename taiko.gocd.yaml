@@ -1,23 +1,10 @@
 common:
   - linux_unittest_tasks: &linux_unittest_tasks
     - exec:
-        command: nvm
+        command: /bin/bash
         arguments:
-          - use
-          - ${NODE_VERSION}
-    - exec:
-        command: npm
-        arguments:
-          - install
-    - exec:
-        command: npm
-        arguments:
-          - test
-    - exec:
-        command: npm
-        arguments:
-          - run
-          - examples
+          - -c
+          - nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
         command: nvm
