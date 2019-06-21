@@ -4,7 +4,7 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - cat ~/.profile && . ~/.profile && whoami && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
+          - nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
         command: nvm
@@ -36,19 +36,10 @@ common:
           - examples
   - headless_functionaltest_tasks: &headless_functionaltest_tasks
     - exec:
-        command: nvm
+        command: /bin/sh
         arguments:
-          - use
-          - ${NODE_VERSION}
-    - exec:
-        command: npm
-        arguments:
-          - install
-    - exec:
-        command: npm
-        arguments:
-          - run
-          - test-functional
+          - c
+          - nvm use ${NODE_VERSION} && npm install && npm run test-functional
   - headful_functionaltest_tasks: &headful_functionaltest_tasks
     - exec:
         command: nvm
