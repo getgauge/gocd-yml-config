@@ -4,7 +4,7 @@ common:
         command: /bin/sh
         arguments:
           - -c
-          - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
+          - . ~/.profile && whoami && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
         command: nvm
