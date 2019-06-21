@@ -38,7 +38,7 @@ common:
     - exec:
         command: /bin/sh
         arguments:
-          - c
+          - -c
           - nvm use ${NODE_VERSION} && npm install && npm run test-functional
   - headful_functionaltest_tasks: &headful_functionaltest_tasks
     - exec:
