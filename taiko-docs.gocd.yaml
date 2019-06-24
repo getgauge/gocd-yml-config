@@ -65,14 +65,10 @@ pipelines:
               elastic_profile_id: ubuntu-node
               tasks:
                 - exec:
-                    command: npm
+                    command: /bin/sh
                     arguments:
-                      - install
-                - exec:
-                    command: npm
-                    arguments:
-                      - run
-                      - doc
+                      - -c
+                      - . ~/.profile && npm install && npm run doc
               artifacts:
                 - build:
                     source: docs/site/*
