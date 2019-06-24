@@ -40,22 +40,6 @@ common:
         arguments:
           - -c
           - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm run test-functional
-  - headful_functionaltest_tasks: &headful_functionaltest_tasks
-    - exec:
-        command: nvm
-        arguments:
-          - use
-          - ${NODE_VERSION}
-    - exec:
-        command: npm
-        arguments:
-          - install
-    - exec:
-        command: xvfb-run
-        arguments:
-          - npm
-          - run
-          - test-functional
 
 
 pipelines:
@@ -160,35 +144,21 @@ pipelines:
                 - build:
                     source: test/functional-tests/reports/html-report
                     destination: reports
-            linux-headful-node8:
+            linux-headful:
               environment_variables:
                 headless: false
-                NODE_VERSION: 8
               elastic_profile_id: debian-node-xvfb
               tasks:
-                - *headful_functionaltest_tasks
-              artifacts:
-                - build:
-                    source: test/functional-tests/reports/html-report
-                    destination: reports
-            linux-headful-node10:
-              environment_variables:
-                headless: false
-                NODE_VERSION: 10
-              elastic_profile_id: debian-node-xvfb
-              tasks:
-                - *headful_functionaltest_tasks
-              artifacts:
-                - build:
-                    source: test/functional-tests/reports/html-report
-                    destination: reports
-            linux-headful-node12:
-              environment_variables:
-                headless: false
-                NODE_VERSION: 12
-              elastic_profile_id: debian-node-xvfb
-              tasks:
-                - *headful_functionaltest_tasks
+                - exec:
+                    command: npm
+                    arguments:
+                      - install
+                - exec:
+                    command: xvfb-run
+                    arguments:
+                      - npm
+                      - run
+                      - test-functional
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
