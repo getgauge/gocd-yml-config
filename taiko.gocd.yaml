@@ -41,7 +41,7 @@ common:
           - -c
           - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm run test-functional
   - headless_functionaltest_tasks_windows: &headless_functionaltest_tasks_windows
-    -exec:
+    - exec:
         command: nvm
         arguments:
           - list
