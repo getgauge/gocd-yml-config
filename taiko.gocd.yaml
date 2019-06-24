@@ -34,12 +34,27 @@ common:
         arguments:
           - run
           - examples
-  - headless_functionaltest_tasks: &headless_functionaltest_tasks
+  - headless_functionaltest_tasks-linux: &headless_functionaltest_tasks-linux
     - exec:
         command: /bin/sh
         arguments:
           - -c
           - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm run test-functional
+  - headless_functionaltest_tasks_windows: &headless_functionaltest_tasks_windows
+    - exec:
+        command: nvm
+        arguments:
+          - use
+          - ${NODE_VERSION}
+    - exec:
+        command: npm
+        arguments:
+          - install
+    - exec:
+        command: npm
+        arguments:
+          - run
+          - test-functional
 
 
 pipelines:
@@ -71,7 +86,7 @@ pipelines:
                - *linux_unittest_tasks
             windows-node8:
               environment_variables:
-                NODE_VERSION: 8
+                NODE_VERSION: 8.16.0
               elastic_profile_id: windows-all
               tasks:
                 - *windows_unittest_tasks
@@ -117,7 +132,7 @@ pipelines:
                 NODE_VERSION: 8
               elastic_profile_id: ubuntu-node
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks-linux
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -128,7 +143,7 @@ pipelines:
                 NODE_VERSION: 10
               elastic_profile_id: ubuntu-node
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks-linux
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -139,7 +154,7 @@ pipelines:
                 NODE_VERSION: 12
               elastic_profile_id: ubuntu-node
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks-linux
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -167,10 +182,10 @@ pipelines:
             windows-node8:
               environment_variables:
                 headless: true
-                NODE_VERSION: 8
+                NODE_VERSION: 8.16.0
               elastic_profile_id: windows-all
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks_windows
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -181,7 +196,7 @@ pipelines:
                 NODE_VERSION: 10
               elastic_profile_id: windows-all
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks_windows
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
@@ -192,7 +207,7 @@ pipelines:
                 NODE_VERSION: 12
               elastic_profile_id: windows-all
               tasks:
-                - *headless_functionaltest_tasks
+                - *headless_functionaltest_tasks_windows
               artifacts:
                 - build:
                     source: test/functional-tests/reports/html-report
