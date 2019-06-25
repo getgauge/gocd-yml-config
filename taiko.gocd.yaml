@@ -48,6 +48,11 @@ common:
     - exec:
         command: nvm
         arguments:
+          - install
+          - ${NODE_VERSION}
+    - exec:
+        command: nvm
+        arguments:
           - use
           - ${NODE_VERSION}
     - exec:
