@@ -21,6 +21,14 @@ common:
           - use
           - "%NODE_VERSION%"
     - exec:
+        command: node
+        arguments:
+          - -v
+    - exec:
+        command: npm
+        arguments:
+          - --version
+    - exec:
         command: npm
         arguments:
           - install
