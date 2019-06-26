@@ -9,10 +9,6 @@ common:
     - exec:
         command: nvm
         arguments:
-          - on
-    - exec:
-        command: nvm
-        arguments:
           - install
           - "%NODE_VERSION%"
     - exec:
@@ -20,6 +16,10 @@ common:
         arguments:
           - use
           - "%NODE_VERSION%"
+    - exec:
+        command: nvm
+        arguments:
+          - on
     - exec:
         command: node
         arguments:
