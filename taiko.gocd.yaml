@@ -28,6 +28,12 @@ common:
         command: npm
         arguments:
           - test
+  - linux_examples_tasks: &linux_examples_tasks
+    - exec:
+        command: /bin/sh
+        arguments:
+          - -c
+          - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm run examples
   - windows_examples_tasks: &windows_examples_tasks
     - exec:
         command: nvm
@@ -131,6 +137,24 @@ pipelines:
                 - *windows_unittest_tasks
       - taiko-examples:
           jobs:
+            linux-node8:
+              environment_variables:
+                NODE_VERSION: 8
+              elastic_profile_id: ubuntu-node
+              tasks:
+               - *linux_examples_tasks
+            linux-node10:
+              environment_variables:
+                NODE_VERSION: 10
+              elastic_profile_id: ubuntu-node
+              tasks:
+               - *linux_examples_tasks
+            linux-node12:
+              environment_variables:
+                NODE_VERSION: 12
+              elastic_profile_id: ubuntu-node
+              tasks:
+               - *linux_examples_tasks
             windows-node8:
               environment_variables:
                 NODE_VERSION: 8.16.0
