@@ -7,9 +7,9 @@ common:
           - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
-        command: echo
+        command: node
         arguments:
-          - "%NODE_VERSION%"
+          - -v
     - exec:
         command: nvm
         arguments:
