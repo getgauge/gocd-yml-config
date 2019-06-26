@@ -9,17 +9,17 @@ common:
     - exec:
         command: echo
         arguments:
-          - ${NODE_VERSION}
+          - $Env:NODE_VERSION
     - exec:
         command: nvm
         arguments:
           - install
-          - ${NODE_VERSION}
+          - $Env:NODE_VERSION
     - exec:
         command: nvm
         arguments:
           - use
-          - ${NODE_VERSION}
+          - $Env:NODE_VERSION
     - exec:
         command: npm
         arguments:
