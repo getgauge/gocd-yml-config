@@ -21,14 +21,6 @@ common:
         arguments:
           - on
     - exec:
-        command: node
-        arguments:
-          - -v
-    - exec:
-        command: npm
-        arguments:
-          - --version
-    - exec:
         command: npm
         arguments:
           - install
@@ -41,12 +33,16 @@ common:
         command: nvm
         arguments:
           - install
-          - ${NODE_VERSION}
+          - "%NODE_VERSION%"
     - exec:
         command: nvm
         arguments:
           - use
-          - ${NODE_VERSION}
+          - "%NODE_VERSION%"
+    - exec:
+        command: nvm
+        arguments:
+          - on
     - exec:
         command: npm
         arguments:
@@ -66,17 +62,17 @@ common:
     - exec:
         command: nvm
         arguments:
-          - list
-    - exec:
-        command: nvm
-        arguments:
           - install
-          - ${NODE_VERSION}
+          - "%NODE_VERSION%"
     - exec:
         command: nvm
         arguments:
           - use
-          - ${NODE_VERSION}
+          - "%NODE_VERSION%"
+    - exec:
+        command: nvm
+        arguments:
+          - on
     - exec:
         command: npm
         arguments:
