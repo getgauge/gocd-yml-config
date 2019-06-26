@@ -113,7 +113,7 @@ pipelines:
                - *linux_unittest_tasks
             windows-node8:
               environment_variables:
-                NODE_VERSION: 8
+                NODE_VERSION: 8.16.0
               elastic_profile_id: windows-all
               tasks:
                 - *windows_unittest_tasks
@@ -133,7 +133,7 @@ pipelines:
           jobs:
             windows-node8:
               environment_variables:
-                NODE_VERSION: 8
+                NODE_VERSION: 8.16.0
               elastic_profile_id: windows-all
               tasks:
                 - *windows_examples_tasks
@@ -209,7 +209,7 @@ pipelines:
             windows-node8:
               environment_variables:
                 headless: true
-                NODE_VERSION: 8
+                NODE_VERSION: 8.16.0
               elastic_profile_id: windows-all
               tasks:
                 - *headless_functionaltest_tasks_windows
