@@ -7,6 +7,10 @@ common:
           - . ~/.profile && nvm use ${NODE_VERSION} && npm install && npm test && npm run examples
   - windows_unittest_tasks: &windows_unittest_tasks
     - exec:
+        command: echo
+        arguments:
+          - ${NODE_VERSION}
+    - exec:
         command: nvm
         arguments:
           - install
@@ -105,7 +109,7 @@ pipelines:
                - *linux_unittest_tasks
             windows-node8:
               environment_variables:
-                NODE_VERSION: 8.16.0
+                NODE_VERSION: 8
               elastic_profile_id: windows-all
               tasks:
                 - *windows_unittest_tasks
@@ -201,7 +205,7 @@ pipelines:
             windows-node8:
               environment_variables:
                 headless: true
-                NODE_VERSION: 8.16.0
+                NODE_VERSION: 8
               elastic_profile_id: windows-all
               tasks:
                 - *headless_functionaltest_tasks_windows
