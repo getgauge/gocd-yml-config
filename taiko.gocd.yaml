@@ -266,9 +266,10 @@ pipelines:
                 NPM_TOKEN: AES:smCSdWEkiHlJgx9yY+uCQQ==:oJgEJ1fMOzrQ7Ot62KcOj8dqPFKApy8X2E19uy793RzIl1NEi3JTTbHGn2CyH6ew
               tasks:
                 - exec:
-                    command: npm
+                    command: /bin/sh
                     arguments:
-                      - install
+                      - -c
+                      - . ~/.profile && nvm use 10 && npm install
                 - exec:
                     command: /bin/bash
                     arguments:
