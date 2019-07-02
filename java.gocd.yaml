@@ -429,6 +429,20 @@ pipelines:
                       - /c
                       - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
                 - exec:
+                    command: nvm
+                    arguments:
+                      - install
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - use
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - on
+                - exec:
                     command: cmd
                     arguments:
                       - /c
@@ -542,6 +556,20 @@ pipelines:
                     arguments:
                       - /c
                       - path %GAUGE_ROOT%;%PATH% & gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master
+                - exec:
+                    command: nvm
+                    arguments:
+                      - install
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - use
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - on
                 - exec:
                     command: cmd
                     arguments:

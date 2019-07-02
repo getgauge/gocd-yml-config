@@ -169,6 +169,20 @@ pipelines:
                     - "%GAUGE_ROOT%/gauge"
                     - version
                - exec:
+                   command: nvm
+                   arguments:
+                    - install
+                    - 10
+                - exec:
+                   command: nvm
+                   arguments:
+                    - use
+                    - 10
+                - exec:
+                   command: nvm
+                   arguments:
+                    - on
+               - exec:
                    command: cmd
                    arguments:
                     - /c
@@ -252,6 +266,20 @@ pipelines:
                     - /c
                     - "%GAUGE_ROOT%/gauge"
                     - version
+               - exec:
+                   command: nvm
+                   arguments:
+                    - install
+                    - 10
+               - exec:
+                   command: nvm
+                   arguments:
+                    - use
+                    - 10
+               - exec:
+                   command: nvm
+                   arguments:
+                    - on
                - exec:
                    command: cmd
                    arguments:
