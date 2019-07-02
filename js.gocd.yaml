@@ -268,12 +268,6 @@ pipelines:
                     job: package
                     source: deploy
                 - exec:
-                    working_directory: deploy
-                    command: cmd
-                    arguments:
-                      - /c
-                      - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
-                - exec:
                     command: nvm
                     arguments:
                       - install
@@ -287,6 +281,12 @@ pipelines:
                     command: nvm
                     arguments:
                       - on
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
                 - exec:
                     command: cmd
                     arguments:
