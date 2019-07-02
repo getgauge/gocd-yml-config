@@ -269,12 +269,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - . ~/.profile && nvm use 10 && npm install
-                - exec:
-                    command: /bin/bash
-                    arguments:
-                      - -c
-                      - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc && npm publish
+                      - . ~/.profile && nvm use 10 && npm install && echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc && npm publish
             github:
               elastic_profile_id: centos-all
               environment_variables:
