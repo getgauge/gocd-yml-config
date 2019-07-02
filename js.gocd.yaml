@@ -125,6 +125,20 @@ pipelines:
                     job: package
                     source: deploy
                 - exec:
+                    command: nvm
+                    arguments:
+                      - install
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - use
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - on
+                - exec:
                     working_directory: deploy
                     command: cmd
                     arguments:
