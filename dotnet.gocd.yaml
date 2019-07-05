@@ -147,7 +147,7 @@ pipelines:
                - exec:
                    command: unzip
                    arguments:
-                    - "-o gauge-linux.x86_64.zip -d $GAUGE_ROOT"
+                    - -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
                - exec:
                    command: $GAUGE_ROOT/gauge
                    arguments:
@@ -172,13 +172,15 @@ pipelines:
                     - $GAUGE_ROOT;$PATH & gradlew clean dotnetFT
                - exec:
                     run_if: any
-                    command: rm -rf
+                    command: rm
                     arguments:
+                    - -rf
                     - $GAUGE_ROOT/gauge
                - exec:
                     run_if: any
-                    command: rm -rf
+                    command: rm
                     arguments:
+                    - -rf
                     - $GAUGE_HOME/*
               artifacts:
                 - build:
