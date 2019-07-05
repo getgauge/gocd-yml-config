@@ -126,6 +126,64 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
+            linux:
+              elastic_profile_id: gauge-centos
+              environment_variables:
+                GAUGE_ROOT: $HOME/gauge_root
+                GAUGE_HOME: $HOME/gauge_plugins
+                DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+              tasks:
+               - fetch:
+                   pipeline: Gauge-Build
+                   stage: linux
+                   job: sign
+                   is_file: yes
+                   source: test_installers/gauge-1.0.5-darwin.x86_64.zip
+               - fetch:
+                   pipeline: dotnet-package
+                   stage: artifact
+                   job: installer
+                   source: artifacts
+               - exec:
+                   command: unzip
+                   arguments:
+                    - "-o gauge-1.0.5-darwin.x86_64.zip -d $GAUGE_ROOT"
+               - exec:
+                   command: $GAUGE_ROOT/gauge
+                   arguments:
+                    - config
+                    - gauge_repository_url
+                    - https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/
+               - exec:
+                   command: $GAUGE_ROOT/gauge
+                   arguments:
+                    - uninstall
+                    - dotnet
+               - exec:
+                   working_directory: artifacts
+                   command: for %f in (gauge-dotnet*.zip) do $GAUGE_ROOT/gauge install dotnet -f %f
+               - exec:
+                   command: $GAUGE_ROOT/gauge
+                   arguments:
+                    - install
+               - exec:
+                    command: path
+                    arguments:
+                    - $GAUGE_ROOT;$PATH & gradlew clean dotnetFT
+               - exec:
+                    run_if: any
+                    command: rm -rf
+                    arguments:
+                    - $GAUGE_ROOT/gauge
+               - exec:
+                    run_if: any
+                    command: rm -rf
+                    arguments:
+                    - $GAUGE_HOME/*
+              artifacts:
+                - build:
+                    source: logs
+                    destination: logs
   dotnet-LSP:
     group: Gauge-Dotnet
     materials:
