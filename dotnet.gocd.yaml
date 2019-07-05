@@ -147,7 +147,10 @@ pipelines:
                - exec:
                    command: unzip
                    arguments:
-                    - -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
+                    - -o
+                    - gauge-linux.x86_64.zip
+                    - -d
+                    - $GAUGE_ROOT
                - exec:
                    command: $GAUGE_ROOT/gauge
                    arguments:
