@@ -127,7 +127,7 @@ pipelines:
                     source: logs
                     destination: logs
             linux:
-              elastic_profile_id: gauge-centos
+              elastic_profile_id: centos-all
               environment_variables:
                 GAUGE_ROOT: $HOME/gauge_root
                 GAUGE_HOME: $HOME/gauge_plugins
