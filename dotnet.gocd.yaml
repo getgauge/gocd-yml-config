@@ -138,7 +138,7 @@ pipelines:
                    stage: windows
                    job: sign
                    is_file: yes
-                   source: test_installers/gauge-1.0.5-linux.x86_64.zip
+                   source: test_installers/gauge-linux.x86_64.zip
                - fetch:
                    pipeline: dotnet-package
                    stage: artifact
@@ -147,7 +147,7 @@ pipelines:
                - exec:
                    command: unzip
                    arguments:
-                    - "-o gauge-1.0.5-linux.x86_64.zip -d $GAUGE_ROOT"
+                    - "-o gauge-linux.x86_64.zip -d $GAUGE_ROOT"
                - exec:
                    command: $GAUGE_ROOT/gauge
                    arguments:
