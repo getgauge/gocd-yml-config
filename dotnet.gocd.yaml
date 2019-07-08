@@ -129,8 +129,7 @@ pipelines:
             linux:
               elastic_profile_id: centos-all
               environment_variables:
-                GAUGE_ROOT: $HOME/gauge_root
-                GAUGE_HOME: $HOME/gauge_plugins
+                GAUGE_ROOT: /tmp
                 DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
               tasks:
                - fetch:
@@ -148,7 +147,7 @@ pipelines:
                    command: /bin/sh
                    arguments:
                     - -c
-                    - unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
+                    - mkdir -p $GAUGE_ROOT && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
                - exec:
                    command: /bin/sh
                    arguments:
@@ -164,7 +163,7 @@ pipelines:
                    command: /bin/sh
                    arguments:
                    - -c
-                   - for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done
+                   - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
                - exec:
                    command: /bin/sh
                    arguments:
@@ -182,12 +181,6 @@ pipelines:
                     arguments:
                     - -c
                     - "rm -rf $GAUGE_ROOT/gauge"
-               - exec:
-                    run_if: any
-                    command: /bin/sh
-                    arguments:
-                    - -c
-                    - "rm -rf $GAUGE_HOME/*"
               artifacts:
                 - build:
                     source: logs
