@@ -145,23 +145,20 @@ pipelines:
                    job: installer
                    source: artifacts
                - exec:
-                   command: unzip
+                   command: /bin/sh
                    arguments:
-                    - -o
-                    - gauge-linux.x86_64.zip
-                    - -d
-                    - $GAUGE_ROOT
+                    - -c
+                    - unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
                - exec:
-                   command: $GAUGE_ROOT/gauge
+                   command: /bin/sh
                    arguments:
-                    - config
-                    - gauge_repository_url
-                    - https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/
+                    - -c
+                    - "$GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
                - exec:
-                   command: $GAUGE_ROOT/gauge
+                   command: /bin/sh
                    arguments:
-                    - uninstall
-                    - dotnet
+                    - -c
+                    - "$GAUGE_ROOT/gauge uninstall dotnet"
                - exec:
                    working_directory: artifacts
                    command: /bin/sh
@@ -169,25 +166,28 @@ pipelines:
                    - -c
                    - for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done
                - exec:
-                   command: $GAUGE_ROOT/gauge
+                   command: /bin/sh
                    arguments:
+                    - -c
+                    - $GAUGE_ROOT/gauge
                     - install
                - exec:
-                    command: path
+                    command: /bin/sh
                     arguments:
-                    - $GAUGE_ROOT;$PATH & gradlew clean dotnetFT
+                    - -c
+                    - "path $GAUGE_ROOT;$PATH & gradlew clean dotnetFT"
                - exec:
                     run_if: any
-                    command: rm
+                    command: /bin/sh
                     arguments:
-                    - -rf
-                    - $GAUGE_ROOT/gauge
+                    - -c
+                    - "rm -rf $GAUGE_ROOT/gauge"
                - exec:
                     run_if: any
-                    command: rm
+                    command: /bin/sh
                     arguments:
-                    - -rf
-                    - $GAUGE_HOME/*
+                    - -c
+                    - "rm -rf $GAUGE_HOME/*"
               artifacts:
                 - build:
                     source: logs
