@@ -164,7 +164,10 @@ pipelines:
                     - dotnet
                - exec:
                    working_directory: artifacts
-                   command: for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done
+                   command: /bin/sh
+                   arguments:
+                   - -c
+                   - for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done
                - exec:
                    command: $GAUGE_ROOT/gauge
                    arguments:
