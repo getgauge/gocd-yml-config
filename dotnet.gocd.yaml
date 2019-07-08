@@ -169,7 +169,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - "PATH=$GAUGE_ROOT; & ./gradlew clean dotnetFT"
+                    - "PATH=$GAUGE_ROOT:$PATH ./gradlew clean dotnetFT"
               artifacts:
                 - build:
                     source: logs
