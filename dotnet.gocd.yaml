@@ -154,11 +154,6 @@ pipelines:
                     - -c
                     - "$GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
                - exec:
-                   command: /bin/sh
-                   arguments:
-                    - -c
-                    - "$GAUGE_ROOT/gauge uninstall dotnet"
-               - exec:
                    working_directory: artifacts
                    command: /bin/sh
                    arguments:
@@ -174,13 +169,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - "PATH=$GAUGE_ROOT;$PATH & ./gradlew clean dotnetFT"
-               - exec:
-                    run_if: any
-                    command: /bin/sh
-                    arguments:
-                    - -c
-                    - "rm -rf $GAUGE_ROOT/gauge"
+                    - "PATH=$GAUGE_ROOT; & ./gradlew clean dotnetFT"
               artifacts:
                 - build:
                     source: logs
