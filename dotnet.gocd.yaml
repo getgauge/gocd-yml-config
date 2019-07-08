@@ -174,7 +174,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - "path $GAUGE_ROOT;$PATH & gradlew clean dotnetFT"
+                    - "PATH=$GAUGE_ROOT;$PATH & ./gradlew clean dotnetFT"
                - exec:
                     run_if: any
                     command: /bin/sh
