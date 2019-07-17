@@ -115,12 +115,12 @@ pipelines:
                     command: nvm
                     arguments:
                       - install
-                      - 10
+                      - 10.16.0
                 - exec:
                     command: nvm
                     arguments:
                       - use
-                      - 10
+                      - 10.16.0
                 - exec:
                     command: nvm
                     arguments:
