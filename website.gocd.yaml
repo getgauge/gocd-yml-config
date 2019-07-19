@@ -197,6 +197,13 @@ pipelines:
                       - rm
                       - s3://docs.gauge.org/master
                       - --recursive
+                - exec:
+                    command: aws
+                    arguments:
+                      - s3
+                      - rm
+                      - s3://docs.gauge.org/redesign
+                      - --recursive
                 - fetch:
                     stage: build
                     job: build
