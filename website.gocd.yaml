@@ -17,7 +17,7 @@ pipelines:
                     command: rbenv
                     arguments:
                       - local
-                      - 2.4.0
+                      - 2.6.0
                 - exec:
                     command: bundle
                     arguments:
@@ -83,7 +83,7 @@ pipelines:
                     command: rbenv
                     arguments:
                       - local
-                      - 2.4.0
+                      - 2.6.0
                 - exec:
                     command: bundle
                     arguments:

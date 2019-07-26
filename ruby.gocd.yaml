@@ -181,7 +181,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - rbenv local 2.4.0 && gem install bundler
+                      - rbenv local 2.6.0 && gem install bundler
                 - exec:
                     working_directory: deploy
                     command: /bin/sh
@@ -254,7 +254,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                       - -c
-                      - rbenv local 2.4.0 && gem install bundler
+                      - rbenv local 2.6.0 && gem install bundler
                 - exec:
                     working_directory: deploy
                     command: /bin/sh
