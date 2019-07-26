@@ -22,6 +22,7 @@ pipelines:
                 elastic_profile_id: centos-all
                 environment_variables:
                   GOPATH: /tmp
+                  githubUser: getgauge-contrib
                   repoName: taiko-screencast
                   uploadArtifact: no
                 secure_variables:
