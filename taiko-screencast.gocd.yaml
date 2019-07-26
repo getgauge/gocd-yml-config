@@ -1,6 +1,6 @@
 pipelines:
   Taiko-ScreenCast:
-    group: Gauge-JS
+    group: Other_Plugins
     materials:
       taiko:
         git: https://github.com/getgauge-contrib/taiko-screencast.git
