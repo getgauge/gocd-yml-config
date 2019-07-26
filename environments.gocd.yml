@@ -47,3 +47,4 @@ environments:
       - Spectacle
       - Spectacle-Nightly
       - Taiko-Documentation
+      - Taiko-ScreenCast

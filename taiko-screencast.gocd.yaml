@@ -1,0 +1,31 @@
+pipelines:
+  Taiko-ScreenCast:
+    group: Gauge-JS
+    materials:
+      taiko:
+        git: https://github.com/getgauge-contrib/taiko-screencast.git
+    stages:
+      - publish:
+            approval: manual
+            jobs:
+              publish:
+                elastic_profile_id: ubuntu-node
+                secure_variables:
+                  NPM_TOKEN: AES:QdYQCbRHW4uzg4UHU9hOXA==:SVivr5sQsquXsz9eRqGpN7OQwEHc+W9mCa5l2Z/O1QRQfsJYjl1QsyxM4PRBk+OC
+                tasks:
+                  - exec:
+                      command: /bin/sh
+                      arguments:
+                        - -c
+                        - . ~/.profile && nvm use 10 && npm install && echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>~/.npmrc && npm publish
+              github:
+                elastic_profile_id: centos-all
+                environment_variables:
+                  GOPATH: /tmp
+                  repoName: taiko-screencast
+                  uploadArtifact: no
+                secure_variables:
+                  GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
+                tasks:
+                  - exec:
+                      command: build/github_release.sh      
