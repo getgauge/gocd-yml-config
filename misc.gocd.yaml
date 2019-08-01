@@ -102,12 +102,12 @@ pipelines:
                 aws_secret_access_key: AES:6wNPU9BVo6Qk+rknRmOR+w==:ZWWg9x0OsjrgIA1b9NTS0Vf3ee7N+7U8chv4BspSV5vc3lgiUQjjPjpeDGqf4vFN
               tasks:
                 - exec:
-                  command: /bin/sh
-                  arguments:
-                    - -c
-                    - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
                 - exec:
-                  command: aws
-                  arguments:
-                    - s3
-                    - ls
+                    command: aws
+                    arguments:
+                      - s3
+                      - ls
