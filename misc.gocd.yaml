@@ -84,30 +84,30 @@ pipelines:
                       - -v
                       - github.com/getgauge/common
   ClaDataBackup:
-      group: Misc
-      materials:
-        common:
-          git: https://github.com/getgauge/gauge-bot.git
-      stages:
-        - backup:
-            jobs:
-              takeBackup:
-                elastic_profile_id: centos-all
-                environment_variables:
-                  APP_URL: https://gauge-bot.herokuapp.com
-                secure_variables:
-                  CONTRIBUTOR_URL: AES:YFWEpR2BbJVPJ0HQAPBcHg==:y7erOSheyc4tPtfr4TFWNdngj8AmOkKtP6HNe4XeaNo=
-                  BACKUP_BUCKET_NAME: AES:4mb2qbu7ZJ2cmXx2XJF/Pg==:g0+09vYyEr2krqbLoMhJxrjNtdBKOlY0fl4YA3f0Q1Y=
-                  aws_access_key_id: AES:D/vE19/LyZwDImNV1DSBWg==:8eWsaqPbvcZT/ccRbvOqC/Z1y1CzVLDskVRuvNT/I/0=
-                  aws_secret_access_key: AES:6wNPU9BVo6Qk+rknRmOR+w==:ZWWg9x0OsjrgIA1b9NTS0Vf3ee7N+7U8chv4BspSV5vc3lgiUQjjPjpeDGqf4vFN
-                tasks:
-                  - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
-                  - exec:
-                    command: aws
-                    arguments:
-                      - s3
-                      - ls
+    group: Misc
+    materials:
+      common:
+        git: https://github.com/getgauge/gauge-bot.git
+    stages:
+      - backup:
+          jobs:
+            takeBackup:
+              elastic_profile_id: centos-all
+              environment_variables:
+                APP_URL: https://gauge-bot.herokuapp.com
+              secure_variables:
+                CONTRIBUTOR_URL: AES:YFWEpR2BbJVPJ0HQAPBcHg==:y7erOSheyc4tPtfr4TFWNdngj8AmOkKtP6HNe4XeaNo=
+                BACKUP_BUCKET_NAME: AES:4mb2qbu7ZJ2cmXx2XJF/Pg==:g0+09vYyEr2krqbLoMhJxrjNtdBKOlY0fl4YA3f0Q1Y=
+                aws_access_key_id: AES:D/vE19/LyZwDImNV1DSBWg==:8eWsaqPbvcZT/ccRbvOqC/Z1y1CzVLDskVRuvNT/I/0=
+                aws_secret_access_key: AES:6wNPU9BVo6Qk+rknRmOR+w==:ZWWg9x0OsjrgIA1b9NTS0Vf3ee7N+7U8chv4BspSV5vc3lgiUQjjPjpeDGqf4vFN
+              tasks:
+                - exec:
+                  command: /bin/sh
+                  arguments:
+                    - -c
+                    - mkdir -p $HOME/.aws/ && echo -e "[default]\naws_access_key_id = $aws_access_key_id\naws_secret_access_key = $aws_secret_access_key\nregion=us-west-2\noutput=json" > $HOME/.aws/config
+                - exec:
+                  command: aws
+                  arguments:
+                    - s3
+                    - ls
