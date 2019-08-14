@@ -205,7 +205,7 @@ pipelines:
                       - --cache-control
                       - max-age=1800,s-maxage=1800
       - deploy:
-          manual: true
+          approval: manual
           jobs:
             aws:
               elastic_profile_id: centos-all
