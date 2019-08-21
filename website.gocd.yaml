@@ -148,7 +148,7 @@ pipelines:
       LC_ALL: en_US.utf-8
       LANG: en_US.utf-8
     stages:
-      - build:
+      - preview-build:
           jobs:
             build:
               elastic_profile_id: centos-all
@@ -165,7 +165,7 @@ pipelines:
                     command: /bin/bash
                     arguments:
                       - -c
-                      - source ./docs/bin/activate && pip install -r requirements.txt && make zip && deactivate
+                      - source ./docs/bin/activate && pip install -r requirements.txt && make preview-build && deactivate
               artifacts:
                - build:
                     source: _build/html/*
@@ -191,7 +191,7 @@ pipelines:
                       - s3://docs-preview.gauge.org
                       - --recursive
                 - fetch:
-                    stage: build
+                    stage: preview-build
                     job: build
                     source: deploy
                 - exec:
@@ -204,8 +204,30 @@ pipelines:
                       - s3://docs-preview.gauge.org
                       - --cache-control
                       - max-age=1800,s-maxage=1800
-      - deploy:
+      - prod-build:
           approval: manual
+          jobs:
+            build:
+              elastic_profile_id: centos-all
+              tasks:
+                - exec:
+                    command:  git
+                    arguments:
+                      - version
+                - exec:
+                    command: virtualenv
+                    arguments:
+                      - docs
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - source ./docs/bin/activate && pip install -r requirements.txt && make prod-build && deactivate
+              artifacts:
+               - build:
+                    source: _build/html/*
+                    destination: deploy
+      - deploy:
           jobs:
             aws:
               elastic_profile_id: centos-all
@@ -223,17 +245,10 @@ pipelines:
                     arguments:
                       - s3
                       - rm
-                      - s3://docs.gauge.org/latest
-                      - --recursive
-                - exec:
-                    command: aws
-                    arguments:
-                      - s3
-                      - rm
-                      - s3://docs.gauge.org/master
+                      - s3://docs.gauge.org
                       - --recursive
                 - fetch:
-                    stage: build
+                    stage: prod-build
                     job: build
                     source: deploy
                 - exec:
