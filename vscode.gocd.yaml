@@ -86,7 +86,9 @@ pipelines:
                       - -c
                       - PATH=$GAUGE_ROOT/bin:$PATH xvfb-run npm test
             windows:
-              elastic_profile_id: windows-all
+              resources:
+                - windows
+                - VS
               environment_variables:
                 GAUGE_ROOT: C:\tmp
               tasks:
