@@ -168,7 +168,7 @@ pipelines:
                       - source ./docs/bin/activate && pip install -r requirements.txt && make preview-build && deactivate
               artifacts:
                - build:
-                    source: _build/html/*
+                    source: _build/*
                     destination: deploy
       - preview:
           jobs:
@@ -225,7 +225,7 @@ pipelines:
                       - source ./docs/bin/activate && pip install -r requirements.txt && make prod-build && deactivate
               artifacts:
                - build:
-                    source: _build/html/*
+                    source: _build/*
                     destination: deploy
       - deploy:
           jobs:
