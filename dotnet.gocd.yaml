@@ -327,7 +327,7 @@ pipelines:
                     command: /bin/sh
                     arguments:
                     - -c
-                    - "PATH=$GAUGE_ROOT:$PATH source $HOME/.nvm/nvm.sh && nvm use 10 && gauge run specs --env=dotnet-wd --tags='!knownIssue'"
+                    - "PATH=$GAUGE_ROOT:$PATH source $HOME/.nvm/nvm.sh && nvm use 10 && gauge run --env=dotnet-wd --tags='!knownIssue'"
       - no-wd:
           clean_workspace: true
           jobs:
