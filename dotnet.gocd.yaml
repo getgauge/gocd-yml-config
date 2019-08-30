@@ -426,6 +426,50 @@ pipelines:
                 - build:
                     source: logs
                     destination: logs
+            linux:
+              elastic_profile_id: centos-all
+              environment_variables:
+                GAUGE_ROOT: /tmp
+                DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+              tasks:
+               - fetch:
+                   pipeline: Gauge-Build
+                   stage: windows
+                   job: sign
+                   is_file: yes
+                   source: test_installers/gauge-linux.x86_64.zip
+               - fetch:
+                   pipeline: dotnet-package
+                   stage: artifact
+                   job: installer
+                   source: artifacts
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - mkdir -p $GAUGE_ROOT && unzip -o gauge-linux.x86_64.zip -d $GAUGE_ROOT
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - "$GAUGE_ROOT/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
+               - exec:
+                   working_directory: artifacts
+                   command: /bin/sh
+                   arguments:
+                   - -c
+                   - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
+               - exec:
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - $GAUGE_ROOT/gauge
+                    - install
+               - exec:
+                    command: /bin/sh
+                    arguments:
+                    - -c
+                    - "PATH=$GAUGE_ROOT:$PATH source $HOME/.nvm/nvm.sh && nvm use 10 && gauge run --env=dotnet-no-wd --tags='!knownIssue'"
   dotnet-release:
     group: Gauge-Dotnet
     materials:
