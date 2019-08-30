@@ -315,8 +315,14 @@ pipelines:
                    working_directory: artifacts
                    command: /bin/sh
                    arguments:
-                   - -c
-                   - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
+                    - -c
+                    - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
+               - exec:
+                   working_directory: artifacts
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - "source $HOME/.nvm/nvm.sh && nvm use 10 && npm install"
                - exec:
                    command: /bin/sh
                    arguments:
@@ -324,8 +330,8 @@ pipelines:
                     - $GAUGE_ROOT/gauge
                     - install
                - exec:
-                    command: /bin/sh
-                    arguments:
+                   command: /bin/sh
+                   arguments:
                     - -c
                     - "PATH=$GAUGE_ROOT:$PATH source $HOME/.nvm/nvm.sh && nvm use 10 && gauge run --env=dotnet-wd --tags='!knownIssue'"
       - no-wd:
@@ -457,8 +463,14 @@ pipelines:
                    working_directory: artifacts
                    command: /bin/sh
                    arguments:
-                   - -c
-                   - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
+                    - -c
+                    - "for f in gauge-dotnet*.zip; do $GAUGE_ROOT/gauge install dotnet -f $f; done"
+               - exec:
+                   working_directory: artifacts
+                   command: /bin/sh
+                   arguments:
+                    - -c
+                    - "source $HOME/.nvm/nvm.sh && nvm use 10 && npm install"
                - exec:
                    command: /bin/sh
                    arguments:
