@@ -203,7 +203,7 @@ pipelines:
                       - .
                       - s3://docs-preview.gauge.org
                       - --cache-control
-                      - max-age=1800,s-maxage=1800
+                      - max-age=604800,s-maxage=1800
       - prod-build:
           approval: manual
           jobs:
