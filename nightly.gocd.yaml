@@ -124,4 +124,25 @@ pipelines:
       only_on_changes: yes
     stages:
       - *publish_nightly_bintray_publish_stage
-
+  Gauge-Js-Offline-Nightly:
+    group: Nightly
+    parameters:
+      pipeline: JS-Build
+      stage: package
+      job: offline-package
+      source: deploy
+      plugin: gauge-js-offline
+      rename: 1
+      update_install_json: 0
+      noplatform: 0
+    environment_variables:
+      BINTRAY_REPO: gauge-js
+    materials:
+      package:
+        pipeline: "#{pipeline}"
+        stage: "#{stage}"
+    timer:
+      spec: *timer_spec
+      only_on_changes: yes
+    stages:
+      - *publish_nightly_bintray_publish_stage
