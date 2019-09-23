@@ -134,7 +134,7 @@ pipelines:
       plugin: gauge-js-offline
       rename: 1
       update_install_json: 0
-      noplatform: 0
+      noplatform: 1
     environment_variables:
       BINTRAY_REPO: gauge-js
     materials:
