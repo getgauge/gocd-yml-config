@@ -102,6 +102,82 @@ pipelines:
                 - build:
                     source: gauge-tests/testLogs
                     destination: test-logs
+            linux-offline:
+              elastic_profile_id: centos-jdk-mvn-node
+              environment_variables:
+                GAUGE_ROOT: /tmp
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-linux.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - mkdir -p $GAUGE_ROOT/bin && unzip gauge-linux.x86_64.zip -d $GAUGE_ROOT/bin
+                - fetch:
+                    pipeline:  JS-Build
+                    stage: package
+                    job: offline-package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls gauge-js-offline*.zip | sed "s/^gauge-js-offline-\([^;]*\).zip/\1/"); $GAUGE_ROOT/bin/gauge install js -f gauge-js-offline-$version.zip)
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_ROOT/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
+                - exec:
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - ($GAUGE_ROOT/bin/gauge install && $GAUGE_ROOT/bin/gauge version)
+                - exec:
+                    working_directory: gauge-tests
+                    command: /bin/sh
+                    arguments:
+                      - -c
+                      - PATH=$GAUGE_ROOT/bin:$PATH ./gradlew clean jsFT
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-js/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-js/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
             windows:
               elastic_profile_id: windows-all
               environment_variables:
@@ -144,6 +220,97 @@ pipelines:
                     arguments:
                       - /c
                       - for %f in (gauge-js-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
+                - fetch:
+                    pipeline: HTML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\\gauge install html-report -f %f"
+                - fetch:
+                    pipeline:  XML_Report
+                    stage: package
+                    job: package
+                    source: deploy
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%\\gauge install xml-report -f %f"
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%\\gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master"
+                - exec:
+                    working_directory: gauge-tests
+                    command: cmd
+                    arguments:
+                      - /c
+                      - "%GAUGE_ROOT%\\gauge install && %GAUGE_ROOT%\\gauge version"
+                - exec:
+                    working_directory: gauge-tests
+                    command: cmd
+                    arguments:
+                      - /c
+                      - path %GAUGE_ROOT%;%PATH% & gradlew.bat clean jsFT
+              artifacts:
+                - build:
+                    source: gauge-tests/reports-js/html-report/*
+                    destination: html-report
+                - build:
+                    source: gauge-tests/reports-js/xml-report/*
+                    destination: xml-report
+                - build:
+                    source: gauge-tests/testLogs
+                    destination: test-logs
+            windows-offline:
+              elastic_profile_id: windows-all
+              environment_variables:
+                GAUGE_ROOT: C:\gauge_root
+                GAUGE_HOME: C:\gauge_plugins
+              tasks:
+                - fetch:
+                    pipeline: Gauge-Build
+                    stage: windows
+                    job: sign
+                    source: test_installers/gauge-windows.x86_64.zip
+                    is_file: yes
+                - exec:
+                    command: cmd
+                    arguments:
+                      - /c
+                      - unzip -o gauge-windows.x86_64.zip -d %GAUGE_ROOT%
+                - fetch:
+                    pipeline:  JS-Build
+                    stage: package
+                    job: offline-package
+                    source: deploy
+                - exec:
+                    command: nvm
+                    arguments:
+                      - install
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - use
+                      - 10
+                - exec:
+                    command: nvm
+                    arguments:
+                      - on
+                - exec:
+                    working_directory: deploy
+                    command: cmd
+                    arguments:
+                      - /c
+                      - for %f in (gauge-js-offline-*.zip) do %GAUGE_ROOT%\gauge install js -f %f
                 - fetch:
                     pipeline: HTML_Report
                     stage: package
