@@ -25,8 +25,6 @@ environments:
       - Java-FT
       - Java-LSP-Tests
       - Java-Deploy
-      - VSCode-Build
-      - VSCode-Tests
       - gauge.org
       - docs_gauge_org
       - manpage.gauge.org
