@@ -16,8 +16,6 @@ environments:
       - Gauge-Deploy-Deb
       - Gauge-Deploy-RPM
       - Gauge-Deploy-NPM
-      - Ruby-FT
-      - Ruby-LSP-Tests
       - Taiko
       - Java-Build
       - Java-Deploy
