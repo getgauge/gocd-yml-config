@@ -1,14 +1,8 @@
 environments:
   all:
     pipelines:
-      - dotnet-build
-      - dotnet-package
-      - dotnet-FT
       - gauge-proto
-      - CSharp-Lib
-      - CSharp-Core
       - Csharp-FT
-      - dotnet-LSP
       - Gauge-Build
       - Gauge-Deploy
       - Gauge-Deploy-Brew
@@ -24,7 +18,6 @@ environments:
       - manpage.gauge.org
       - check-all-readme-files
       - Taiko-Benchmark
-      - Gradle-Build
       - Common
       - Screenshot
       - Spectacle
