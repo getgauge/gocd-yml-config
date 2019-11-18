@@ -20,8 +20,6 @@ environments:
       - Ruby-LSP-Tests
       - Taiko
       - Java-Build
-      - Java-FT
-      - Java-LSP-Tests
       - Java-Deploy
       - gauge.org
       - docs_gauge_org
