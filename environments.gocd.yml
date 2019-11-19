@@ -19,7 +19,5 @@ environments:
       - check-all-readme-files
       - Taiko-Benchmark
       - Common
-      - Screenshot
-      - Spectacle
       - Taiko-Documentation
       - Taiko-ScreenCast
