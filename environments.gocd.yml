@@ -10,7 +10,6 @@ environments:
       - Gauge-Deploy-Deb
       - Gauge-Deploy-RPM
       - Gauge-Deploy-NPM
-      - Taiko
       - Java-Build
       - Java-Deploy
       - gauge.org
@@ -18,6 +17,4 @@ environments:
       - manpage.gauge.org
       - check-all-readme-files
       - Taiko-Benchmark
-      - Common
       - Taiko-Documentation
-      - Taiko-ScreenCast
