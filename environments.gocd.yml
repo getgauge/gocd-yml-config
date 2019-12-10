@@ -16,5 +16,4 @@ environments:
       - docs_gauge_org
       - manpage.gauge.org
       - check-all-readme-files
-      - Taiko-Benchmark
       - Taiko-Documentation
