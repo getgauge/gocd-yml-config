@@ -13,7 +13,6 @@ environments:
       - Java-Build
       - Java-Deploy
       - gauge.org
-      - docs_gauge_org
       - manpage.gauge.org
       - check-all-readme-files
       - Taiko-Documentation
