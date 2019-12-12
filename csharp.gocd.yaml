@@ -10,12 +10,6 @@ pipelines:
       gauge:
         pipeline: Gauge-Build
         stage: windows
-      html-report:
-        pipeline: HTML_Report
-        stage: package
-      xml-report:
-        pipeline: XML_Report
-        stage: package
     environment_variables:
       enable_multithreading: true
       plugin_kill_timeout: 60000
@@ -76,53 +70,6 @@ pipelines:
                     arguments:
                       - /c
                       - "for %f in (gauge-csharp-*.zip) do %GAUGE_ROOT%/gauge install csharp -f %f"
-                - fetch:
-                    pipeline: HTML_Report
-                    stage: package
-                    job: package
-                    source: deploy
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge uninstall html-report && %GAUGE_ROOT%/gauge uninstall xml-report"
-                - exec:
-                    working_directory: deploy
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "for %f in (html-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install html-report -f %f"
-                - fetch:
-                    pipeline: XML_Report
-                    stage: package
-                    job: package
-                    source: deploy
-                - exec:
-                    working_directory: deploy
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "for %f in (xml-report-*-windows.x86_64.zip) do %GAUGE_ROOT%/gauge install xml-report -f %f"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      -  "%GAUGE_ROOT%/gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge uninstall java"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge install java"
-                - exec:
-                    command: cmd
-                    arguments:
-                      - /c
-                      - "%GAUGE_ROOT%/gauge -v"
                 - exec:
                     command: cmd
                     arguments:
@@ -175,43 +122,6 @@ pipelines:
                     arguments:
                       - -c
                       - (version=$(ls gauge-csharp-*.zip | sed "s/^gauge-csharp-\([^;]*\).zip/\1/"); $GAUGE_PREFIX/bin/gauge install csharp -f gauge-csharp-$version.zip)
-                - fetch:
-                    pipeline: HTML_Report
-                    stage: package
-                    job: package
-                    source: deploy
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls html-report-*-linux.x86_64.zip | sed "s/^html-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install html-report -f html-report-$version-linux.x86_64.zip)
-                - fetch:
-                    pipeline: XML_Report
-                    stage: package
-                    job: package
-                    source: deploy
-                - exec:
-                    working_directory: deploy
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - (version=$(ls xml-report-*-linux.x86_64.zip | sed "s/^xml-report-\([^;]*\)-linux.x86_64.zip/\1/"); $GAUGE_PREFIX/bin/gauge install xml-report -f xml-report-$version-linux.x86_64.zip)
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - echo "gauge_repository_url = https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/" >> ~/.gauge/config/gauge.properties
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - $GAUGE_PREFIX/bin/gauge install
-                - exec:
-                    command: /bin/sh
-                    arguments:
-                      - -c
-                      - $GAUGE_PREFIX/bin/gauge -v
                 - exec:
                     command: /bin/sh
                     arguments:
