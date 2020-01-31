@@ -4,7 +4,6 @@ pipelines:
     materials:
       gauge:
         git: https://github.com/getgauge/gauge.git
-        destination: src/github.com/getgauge/gauge
         shallow_clone: true
     secure_variables:
       GITHUB_TOKEN: AES:5M8sxVr62XcjB5nQXkByQA==:2htgkabgxfyPGtwzwUmKI8Aa4V3gg/kA9hSpMw+Z+wTScfcWrHHYH9mEMQbZ21IP
@@ -17,7 +16,7 @@ pipelines:
                - exec:
                   command: /bin/bash
                   arguments:
-                   - ./src/github.com/getgauge/gauge/build/run.sh
+                   - ./build/run.sh
                    - test
             windows:
               elastic_profile_id: windows-all
@@ -31,7 +30,7 @@ pipelines:
                    - -NonInteractive
                    - -NoProfile
                    - -File
-                   - .\src\github.com\getgauge\gauge\build\run.ps1
+                   - .\build\run.ps1
                    - -task
                    - test
       - package:
@@ -49,25 +48,24 @@ pipelines:
                   command: /bin/bash
                   arguments:
                    - -c
-                   - src/github.com/getgauge/gauge/build/package.sh
+                   - build/package.sh
                - exec:
-                  working_directory: src/github.com/getgauge/gauge
                   command: /bin/bash
                   arguments:
                     - -c
                     - (git log -n 1 | grep -e "commit \w*" | awk '{print $2}' > build-revision)
               artifacts:
                - build:
-                  source: src/github.com/getgauge/gauge/bin/*
+                  source: bin/*
                   destination: bin
                - build:
-                  source: src/github.com/getgauge/gauge/deploy/*
+                  source: deploy/*
                   destination: deploy
                - build:
-                  source: src/github.com/getgauge/gauge/build/*
+                  source: build/*
                   destination: build
                - build:
-                  source: src/github.com/getgauge/gauge/build-revision
+                  source: build-revision
       - deb:
           jobs:
             create_deb:
@@ -77,10 +75,10 @@ pipelines:
                   command: /bin/bash
                   arguments:
                    - -c
-                   - PATH=/usr/lib/go-1.10/bin:$PATH src/github.com/getgauge/gauge/build/mkdeb.sh
+                   - PATH=/usr/lib/go-1.10/bin:$PATH build/mkdeb.sh
               artifacts:
                - build:
-                  source: src/github.com/getgauge/gauge/deploy/*.deb
+                  source: deploy/*.deb
                   destination: deploy
       - rpm:
           jobs:
@@ -91,10 +89,10 @@ pipelines:
                   command: /bin/bash
                   arguments:
                    - -c
-                   - src/github.com/getgauge/gauge/build/mkrpm.sh
+                   - build/mkrpm.sh
               artifacts:
                - build:
-                  source: src/github.com/getgauge/gauge/deploy/*.rpm
+                  source: deploy/*.rpm
                   destination: deploy
       - windows:
           clean_workspace: true
@@ -110,13 +108,11 @@ pipelines:
                   stage: package
                   job: darwin_linux
                   source: bin
-                  destination: src/github.com/getgauge/gauge/
                - fetch:
                   pipeline: Gauge-Build
                   stage: package
                   job: darwin_linux
                   source: deploy
-                  destination: src/github.com/getgauge/gauge/
                - exec:
                   command: powershell.exe
                   arguments:
@@ -126,13 +122,13 @@ pipelines:
                    - -NonInteractive
                    - -NoProfile
                    - -File
-                   - .\src\github.com\getgauge\gauge\build\sign_windows_artifacts.ps1
+                   - .\build\sign_windows_artifacts.ps1
               artifacts:
                - build:
-                  source: src/github.com/getgauge/gauge/deploy/*
+                  source: deploy/*
                   destination: deploy
                - build:
-                  source: src/github.com/getgauge/gauge/test_installers/*
+                  source: test_installers/*
                   destination: test_installers
   Gauge-Deploy:
     group: Gauge
